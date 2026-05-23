@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Motorplace - Startup Chile Prototipo</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -16,7 +16,20 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#000;font-family:var(--font);overflow:hidden;height:100vh}
-#app{width:100%;max-width:480px;height:100vh;margin:0 auto;position:relative;overflow:hidden;background:var(--bg);box-shadow: 0 0 40px rgba(232,0,29,0.15);}
+
+/* Ajuste de contenedor con margen inferior para evitar bloqueo de barras móviles */
+#app{
+  width:100%;
+  max-width:480px;
+  height:100vh;
+  max-height: calc(100vh - 40px);
+  margin: 10px auto;
+  position:relative;
+  overflow:hidden;
+  background:var(--bg);
+  box-shadow:0 0 40px rgba(232,0,29,0.15);
+  border-radius: 16px;
+}
 
 /* SPLASH */
 #splash{position:absolute;inset:0;z-index:950;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(232,0,29,.22),transparent 70%),var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease}
@@ -27,36 +40,42 @@ body{background:#000;font-family:var(--font);overflow:hidden;height:100vh}
 .sp-word em{color:var(--red);font-style:normal}
 .sp-tag{font-size:11px;color:var(--gray);letter-spacing:3px;text-transform:uppercase;margin:6px 0 40px;position:relative;z-index:2}
 .sp-bar{width:180px;height:2px;background:var(--surf2);border-radius:2px;overflow:hidden;position:relative;z-index:2}
-.sp-fill{height:100%;background:linear-gradient(90deg,var(--red),#ff4d6d);animation:spload 1.8s ease forwards}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--red),#ff4d6d);animation:spload 1.5s ease forwards}
 @keyframes spload{from{width:0}to{width:100%}}
 
 /* LOGIN */
-#login{position:absolute;inset:0;z-index:800;display:none;overflow-y:auto;background:var(--bg)}
+#login{position:absolute;inset:0;z-index:800;overflow-y:auto;background:var(--bg);display: flex;flex-direction: column;}
 .login-hero{height:180px;background:linear-gradient(145deg,#1a0006,#0a0a0a);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:24px;color:var(--white)}
 .login-hero::after{content:'🏎️';position:absolute;font-size:120px;bottom:-12px;right:-16px;opacity:.07;transform:scaleX(-1)}
-.login-body{padding:24px 20px 100px}
+.login-body{padding:24px 20px 100px; flex: 1;}
 .divrow{display:flex;align-items:center;gap:10px;color:var(--gray2);font-size:12px;margin:14px 0}
 .divrow::before,.divrow::after{content:'';flex:1;height:1px;background:var(--border)}
+.mb10{margin-bottom:10px}
 
-/* MAPA INTERACTIVO */
+/* MAPA */
 #mapScreen{position:absolute;inset:0;z-index:1;display:none}
-.map-wrap{position:absolute;inset:0;top:0;bottom:72px;overflow:hidden}
-.map-placeholder{position:absolute;inset:0;background:#0b101f;background-image:radial-gradient(circle at 50% 50%, #17213c 0%, #0a0f1e 100%);transition:transform 0.4s ease}
-.map-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);background-size:30px 30px;}
+.map-wrap{position:absolute;inset:0;bottom:72px;overflow:hidden}
+.map-placeholder{position:absolute;inset:0;background:#0b101f;background-image:radial-gradient(circle at 50% 50%,#17213c 0%,#0a0f1e 100%);transition:transform 0.4s ease}
+.map-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:30px 30px}
 
-/* Pines Interactivos */
-.sim-pin{position:absolute;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:translate(-50%, -100%);transition:transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
-.sim-pin:hover{transform:translate(-50%, -105%) scale(1.08);}
-.pin-ico{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,0.6);border:2.5px solid #fff}
-.pin-ico.premium{background:linear-gradient(135deg, var(--red), #b91c1c);box-shadow:0 0 25px var(--redg), 0 6px 15px rgba(232,0,29,0.4)}
-.pin-ico.verde{background:linear-gradient(135deg, var(--green), #15803d);box-shadow:0 0 25px rgba(34,197,94,0.3), 0 6px 15px rgba(34,197,94,0.4)}
-.pin-lbl{background:rgba(11,16,31,0.92);padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;color:var(--white);margin-top:5px;border:1px solid var(--border);white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,0.3)}
+/* Roads simuladas */
+.road{position:absolute;background:rgba(255,255,255,0.04)}
+.road-h{height:1.5px;left:0;right:0}
+.road-v{width:1.5px;top:0;bottom:0}
+.road-main{background:rgba(255,255,255,0.07)}
+
+/* Pines */
+.sim-pin{position:absolute;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-100%);transition:transform 0.2s cubic-bezier(0.175,0.885,0.32,1.275)}
+.pin-ico{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,0.6);border:2.5px solid rgba(255,255,255,0.3)}
+.pin-ico.premium{background:linear-gradient(135deg,var(--red),#b91c1c);box-shadow:0 0 25px var(--redg),0 6px 15px rgba(232,0,29,.4)}
+.pin-ico.verde{background:linear-gradient(135deg,var(--green),#15803d);box-shadow:0 0 25px rgba(34,197,94,0.3),0 6px 15px rgba(34,197,94,.4)}
+.pin-lbl{background:rgba(11,16,31,.92);padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;color:var(--white);margin-top:5px;border:1px solid var(--border);white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,.3)}
 
 /* UI Overlays */
 .float-hdr{position:absolute;top:14px;left:14px;right:14px;z-index:50;display:flex;gap:10px;align-items:center}
 .menu-btn{width:48px;height:48px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:19px;color:var(--white);box-shadow:0 4px 20px rgba(0,0,0,.5);backdrop-filter:blur(12px)}
-.srch-wrap{flex:1;height:48px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;gap:10px;padding:0 14px;box-shadow:0 4px 20px rgba(0,0,0,.5);backdrop-filter:blur(12px);cursor:pointer}
-.srch-wrap input{background:none;border:none;outline:none;color:var(--white);font-size:14px;font-family:var(--font);flex:1;pointer-events:none}
+.srch-wrap{flex:1;height:48px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;gap:10px;padding:0 14px;box-shadow:0 4px 20px rgba(0,0,0,.5);backdrop-filter:blur(12px)}
+.srch-wrap input{background:none;border:none;outline:none;color:var(--white);font-size:14px;font-family:var(--font);flex:1}
 .notif-btn{width:48px;height:48px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.5);backdrop-filter:blur(12px);color:var(--white)}
 .ndot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--bg)}
 
@@ -69,13 +88,14 @@ body{background:#000;font-family:var(--font);overflow:hidden;height:100vh}
 .mc-n{font-size:22px;font-weight:900;font-family:'Bebas Neue';color:var(--green);letter-spacing:0.5px}
 .mc-l{font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
 
-.radius-ctrl{position:absolute;bottom:210px;left:14px;right:14px;z-index:50;background:rgba(17,24,39,.94);border:1px solid var(--border);border-radius:16px;padding:12px 14px;backdrop-filter:blur(12px);box-shadow:0 8px 25px rgba(0,0,0,0.5)}
+.radius-ctrl{position:absolute;bottom:120px;left:14px;right:14px;z-index:50;background:rgba(17,24,39,.94);border:1px solid var(--border);border-radius:16px;padding:12px 14px;backdrop-filter:blur(12px);box-shadow:0 8px 25px rgba(0,0,0,0.5)}
+.r-flex{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);margin-bottom:6px}
 .r-slider{width:100%;-webkit-appearance:none;height:4px;background:var(--surf2);border-radius:2px;outline:none;cursor:pointer}
 .r-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--red);border:3px solid #fff;box-shadow:0 2px 8px var(--redg)}
 
 /* Detail card */
-.detail-card{position:absolute;bottom:80px;left:14px;right:14px;z-index:50;background:linear-gradient(to bottom, var(--surf), #131a29);border:1px solid var(--border);border-radius:22px;padding:16px;box-shadow:0 -10px 35px rgba(0,0,0,.6);transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s;color:var(--white)}
-.detail-card.hidden{transform:translateY(250px);opacity:0;pointer-events:none}
+.detail-card{position:absolute;bottom:80px;left:14px;right:14px;z-index:100;background:linear-gradient(to bottom,var(--surf),#131a29);border:1px solid var(--border);border-radius:22px;padding:16px;box-shadow:0 -10px 35px rgba(0,0,0,.6);transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s;color:var(--white)}
+.detail-card.hidden{transform:translateY(300px);opacity:0;pointer-events:none}
 .dc-name{font-family:'Bebas Neue';font-size:24px;letter-spacing:1px}
 .dc-price{font-family:'Bebas Neue';font-size:28px;color:var(--red2);letter-spacing:1px}
 .dc-meta{font-size:11px;color:var(--gray);margin-top:2px}
@@ -83,33 +103,31 @@ body{background:#000;font-family:var(--font);overflow:hidden;height:100vh}
 .dtag{padding:4px 9px;border-radius:8px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:4px}
 .dtag-g{background:rgba(34,197,94,.15);color:var(--green)}
 .dtag-b{background:rgba(59,130,246,.15);color:var(--blue)}
-.dtag-cyan{background:rgba(6,182,212,.15);color:var(--cyan)}
 .dc-btns{display:flex;gap:8px;margin-top:12px}
 .dcbtn{flex:1;padding:12px;border:none;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
-.dcbtn-red{background:linear-gradient(135deg, var(--red), #b91c1c);color:#fff;box-shadow:0 4px 15px var(--redg)}
+.dcbtn-red{background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;box-shadow:0 4px 15px var(--redg)}
 .dcbtn-out{background:var(--surf2);color:var(--white);border:1px solid var(--border)}
 .dc-close{position:absolute;top:12px;right:12px;width:28px;height:28px;background:var(--surf2);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--gray)}
 
+/* TICKER */
+.ticker{position:absolute;bottom:72px;left:0;right:0;z-index:55;height:26px;background:rgba(232,0,29,.06);border-top:1px solid rgba(232,0,29,.1);overflow:hidden;display:flex;align-items:center}
+.tick-in{display:flex;animation:tick 28s linear infinite;width:max-content}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ti{display:flex;align-items:center;gap:5px;padding:0 16px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.ti-d{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0}
+
 /* BNAV */
 .bnav{position:absolute;bottom:0;left:0;right:0;z-index:60;height:72px;background:rgba(10,15,30,.97);border-top:1px solid var(--border);backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:space-around;padding-bottom:6px}
-.bni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:12px;transition:all .15s;position:relative}
-.bni-ico{font-size:19px;transition:all .2s;opacity:.4;color:var(--white)}
+.bni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:12px;transition:all .15s}
+.bni-ico{font-size:19px;opacity:.4;color:var(--white)}
 .bni-lbl{font-size:9px;font-weight:600;color:var(--gray);letter-spacing:.4px;text-transform:uppercase}
 .bni.on .bni-ico{opacity:1;color:var(--red2)}
 .bni.on .bni-lbl{color:var(--red2)}
 .bni-center{width:54px;height:54px;margin-top:-18px;background:linear-gradient(135deg,var(--red),#b91c1c);border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 22px var(--redg);font-size:24px;color:#fff}
 
-/* Ticker */
-.ticker{position:absolute;bottom:72px;left:0;right:0;z-index:55;height:28px;background:rgba(232,0,29,.06);border-top:1px solid rgba(232,0,29,.1);overflow:hidden;display:flex;align-items:center}
-.tick-in{display:flex;animation:tick 24s linear infinite;width:max-content}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.ti{display:flex;align-items:center;gap:5px;padding:0 16px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3)}
-.ti-d{width:5px;height:5px;border-radius:50%;background:var(--red)}
-
-/* DRAWER */
+/* DRAWER (Menú Lateral) */
 .drawer-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(5px);z-index:200;display:none}
-.drawer-overlay.on{display:block}
-.drawer{position:absolute;top:0;bottom:0;left:0;width:320px;background:var(--bg2);border-right:1px solid var(--border);z-index:300;transform:translateX(-100%);transition:transform .32s cubic-bezier(.16,1,.3,1);box-shadow:20px 0 60px rgba(0,0,0,.7);display:flex;flex-direction:column;color:var(--white)}
+.drawer{position:absolute;top:0;bottom:0;left:0;width:300px;background:var(--bg2);border-right:1px solid var(--border);z-index:300;transform:translateX(-100%);transition:transform .32s cubic-bezier(.16,1,.3,1);box-shadow:20px 0 60px rgba(0,0,0,.7);display:flex;flex-direction:column;color:var(--white)}
 .drawer.on{transform:translateX(0)}
 .drw-top{padding:24px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(232,0,29,.08),transparent)}
 .drw-logo{font-family:'Bebas Neue';font-size:28px;letter-spacing:2px}
@@ -119,492 +137,426 @@ body{background:#000;font-family:var(--font);overflow:hidden;height:100vh}
 .drw-av{width:46px;height:46px;background:linear-gradient(135deg,var(--red),#ff4d6d);border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0}
 .drw-uname{font-weight:700;font-size:15px}
 .drw-usub{font-size:11px;color:var(--green);margin-top:2px}
-.drw-items{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:2px;scrollbar-width:none}
-.drw-items::-webkit-scrollbar{display:none}
+.drw-items{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:2px}
 .drw-sep{font-size:9px;font-weight:700;color:var(--gray2);letter-spacing:2px;text-transform:uppercase;padding:10px 10px 6px}
 .di{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;color:var(--white);cursor:pointer;font-size:14px;font-weight:500;transition:all .15s}
-.di:active,.di.on{background:rgba(232,0,29,0.08);color:var(--red2)}
-.di-ico{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.di-label{flex:1}
-.di-sub{font-size:11px;color:var(--gray);margin-top:1px}
-.di-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:7px;background:rgba(34,197,94,0.15);color:var(--green)}
-.drw-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--gray2);text-align:center}
+.di:active{background:rgba(232,0,29,0.08);color:var(--red2)}
+.di-ico{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--surf)}
 
-/* SHEETS */
-.sheet{position:absolute;inset:0;z-index:400;background:var(--bg);transform:translateY(100%);transition:transform .35s cubic-bezier(.16,1,.3,1);overflow-y:auto;scrollbar-width:none;color:var(--white);display:none}
-.sheet::-webkit-scrollbar{display:none}
+/* SHEETS (Pantallas Completas) */
+.sheet{position:absolute;inset:0;z-index:400;background:var(--bg);transform:translateY(100%);transition:transform .35s cubic-bezier(.16,1,.3,1);overflow-y:auto;color:var(--white);display:none}
 .sheet.on{transform:translateY(0);display:block}
 .sheet-bar{display:flex;align-items:center;gap:12px;padding:16px;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:5}
 .sheet-back{width:40px;height:40px;background:var(--surf);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--gray);flex-shrink:0}
 .sheet-title{font-size:16px;font-weight:800;flex:1}
 .sheet-body{padding:16px}
 
-/* UI Card Elements inside sheets */
+/* UI Card Elements */
 .card{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
 .inp-group{margin-bottom:14px}
 .inp-lbl{font-size:10px;font-weight:700;color:var(--gray);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
-.inp{background:var(--surf2);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--white);font-size:14px;outline:none;width:100%}
+.inp{background:var(--surf2);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--white);font-size:14px;outline:none;width:100%;font-family:var(--font)}
 .btn{display:block;width:100%;padding:14px;border:none;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s;text-align:center;color:#fff}
 .btn-red{background:linear-gradient(135deg,var(--red),#c0001a);box-shadow:0 4px 20px var(--redg)}
 .btn-ghost{background:var(--surf2);color:var(--white);border:1px solid var(--border)}
 .btn-green{background:linear-gradient(135deg,var(--green),#16a34a)}
-.btn-blue{background:linear-gradient(135deg,var(--blue),#1d4ed8)}
-.badge{padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;display:inline-block}
-.badge-g{background:rgba(34,197,94,.15);color:var(--green)}
-.badge-b{background:rgba(59,130,246,.15);color:var(--blue)}
 .sec-ttl{font-size:17px;font-weight:800;margin-bottom:14px;font-family:'Bebas Neue';letter-spacing:1px}
 
-/* Chat simulation */
+/* Chat */
 .chat-box{background:rgba(0,0,0,.3);border-radius:12px;border:1px solid var(--border);height:180px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
 .cmsg{max-width:85%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.4}
 .cmsg.me{background:var(--red);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
 .cmsg.ai{background:var(--surf2);color:var(--white);align-self:flex-start;border-bottom-left-radius:4px}
 .cmsg.sys{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);align-self:center;font-size:11px;font-weight:600;border-radius:10px;text-align:center;width:100%}
+.chat-inp-wrap{display:flex;gap:8px;margin-top:8px}
 
-.v-card{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:12px;display:flex;gap:12px;margin-bottom:10px;cursor:pointer}
-.v-card-img{width:64px;height:64px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
-.v-name{font-size:14px;font-weight:700}
-.v-price{font-family:'Bebas Neue';font-size:18px;color:var(--red2)}
-.v-meta{font-size:11px;color:var(--gray)}
+/* Stat row */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.stat-val{font-weight:800;font-family:'Bebas Neue';font-size:18px}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <div id="splash">
-    <div class="sp-grid"></div>
-    <div class="sp-logo">🚗</div>
-    <div class="sp-word">MOTOR<em>PLACE</em></div>
-    <div class="sp-tag">Marketplace Automotriz · Chile 2026</div>
-    <div style="font-size:11px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;position:relative;z-index:2">Cargando Capa Georreferenciada</div>
-    <div class="sp-bar"><div class="sp-fill"></div></div>
-  </div>
+<div id="splash">
+  <div class="sp-grid"></div>
+  <div class="sp-logo">🚗</div>
+  <div class="sp-word">MOTOR<em>PLACE</em></div>
+  <div class="sp-tag">Marketplace Automotriz · Chile 2026</div>
+  <div style="font-size:11px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;position:relative;z-index:2">Cargando Capa Georreferenciada</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
 
-  <div id="login">
-    <div class="login-hero">
-      <div style="position:relative;z-index:2">
-        <div style="font-family:'Bebas Neue';font-size:40px;letter-spacing:3px">MOTOR<em style="color:var(--red)">PLACE</em></div>
-        <div style="font-size:11px;color:var(--gray);letter-spacing:3px;text-transform:uppercase">Prototipo Video Virtual Corfo</div>
-      </div>
-    </div>
-    <div class="login-body">
-      <h2 style="font-size:24px;font-weight:900;margin-bottom:4px">Validación de Negocio 👋</h2>
-      <p style="font-size:13px;color:var(--gray);margin-bottom:22px">Demostración en vivo de la arquitectura móvil.</p>
-      <button class="btn btn-red mb10" onclick="doLogin('particular')">🚗 &nbsp;Ingresar como Particular</button>
-      <button class="btn btn-ghost mb10" onclick="doLogin('automotora')" style="border-color:rgba(245,158,11,.4);color:var(--orange)">🏢 &nbsp;Ingresar como Automotora (SaaS)</button>
-      <div class="divrow">o con</div>
-      <button class="btn btn-ghost mb10" onclick="doLogin('particular')">🌐 &nbsp;Simular Google Auth</button>
+<div id="login">
+  <div class="login-hero">
+    <div style="position:relative;z-index:2">
+      <div style="font-family:'Bebas Neue';font-size:40px;letter-spacing:3px">MOTOR<em style="color:var(--red)">PLACE</em></div>
+      <div style="font-size:11px;color:var(--gray);letter-spacing:3px;text-transform:uppercase">Prototipo · Start-Up Chile CORFO</div>
     </div>
   </div>
+  <div class="login-body">
+    <h2 style="font-size:24px;font-weight:900;margin-bottom:4px">Bienvenido 👋</h2>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:22px">Demo en vivo de la arquitectura móvil.</p>
+    <button class="btn btn-red mb10" onclick="doLogin('particular')">🚗 &nbsp;Ingresar como Particular</button>
+    <button class="btn btn-ghost mb10" onclick="doLogin('automotora')" style="border-color:rgba(245,158,11,.4);color:var(--orange)">🏢 &nbsp;Ingresar como Automotora (SaaS)</button>
+    <div class="divrow">o con tu cuenta</div>
+    <button class="btn btn-ghost mb10" onclick="doLogin('particular')"><i class="fab fa-google"></i> &nbsp;Continuar con Google</button>
+  </div>
+</div>
 
-  <div id="mapScreen">
-    <div class="map-wrap">
-      <div id="gmap" class="map-placeholder">
-        <div class="map-grid-lines"></div>
-        
-        <div class="sim-pin" style="top: 38%; left: 32%;" onclick="showDetail('bmw')">
-          <div class="pin-ico premium"><i class="fa-solid fa-motorcycle"></i></div>
-          <div class="pin-lbl">BMW S1000XR HP</div>
-        </div>
-
-        <div class="sim-pin" style="top: 55%; left: 65%;" onclick="showDetail('mercedes')">
-          <div class="pin-ico verde"><i class="fa-solid fa-car"></i></div>
-          <div class="pin-lbl">⏱️ Disponible Ahora (Sector Oriente)</div>
-        </div>
-      </div>
-      <div class="map-overlay-dark"></div>
+<div id="mapScreen">
+  <div class="float-hdr">
+    <div class="menu-btn" onclick="openDrawer()"><i class="fas fa-bars"></i></div>
+    <div class="srch-wrap">
+      <i class="fas fa-search" style="color:var(--gray)"></i>
+      <input type="text" placeholder="Buscar marca o modelo en Santiago..." readonly>
     </div>
-
-    <div class="float-hdr">
-      <div class="menu-btn" onclick="openDrawer()"><i class="fa-solid fa-bars"></i></div>
-      <div class="srch-wrap" onclick="openSheet('busqueda')">
-        <i class="fa-solid fa-magnifying-glass" style="color:var(--gray2)"></i>
-        <input type="text" placeholder="Busca marca o modelo en Santiago…" readonly>
-        <i class="fa-solid fa-sliders" style="color:var(--purple)"></i>
-      </div>
-      <div class="notif-btn" onclick="openSheet('notif')"><i class="fa-solid fa-bell"></i><div class="ndot"></div></div>
-    </div>
-
-    <div class="map-chips">
-      <div class="mchip on" id="chip-all" onclick="toggleChip('all')">Todos</div>
-      <div class="mchip" id="chip-premium" onclick="toggleChip('premium')">Motos Premium</div>
-      <div class="mchip" id="chip-verde" onclick="toggleChip('verde')">Pines Verdes O-D</div>
-      <div class="mchip" id="chip-escrow" onclick="toggleChip('escrow')">Bóveda Escrow</div>
-    </div>
-
-    <div class="map-counter">
-      <div class="mc-n" id="mapCount">18</div>
-      <div class="mc-l" id="mapCountLabel">Cercanos</div>
-    </div>
-
-    <div class="radius-ctrl">
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray);margin-bottom:6px">
-        <span>🎯 Radio de cobertura activa (Geofencing)</span>
-        <span id="rval" style="color:var(--red2);font-weight:700">8 km</span>
-      </div>
-      <input type="range" class="r-slider" min="2" max="30" value="8" oninput="setRadius(this.value)">
-    </div>
-
-    <div class="ticker">
-      <div class="tick-in">
-        <div class="ti"><div class="ti-d"></div>BMW S1000XR HP · $10.5M transado</div>
-        <div class="ti"><div class="ti-d"></div>Mercedes GLC 300 · Bóveda Protegida</div>
-        <div class="ti"><div class="ti-d"></div>Fiat Doblò · Escaneo Exitoso</div>
-        <div class="ti"><div class="ti-d"></div>BMW S1000XR HP · $10.5M transado</div>
-      </div>
-    </div>
-
-    <div class="detail-card hidden" id="detailCard">
-      <div class="dc-close" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
-        <div style="font-size:36px" id="dc-emoji">🏍️</div>
-        <div style="flex:1">
-          <div class="dc-name" id="dc-name">BMW S1000XR HP</div>
-          <div class="dc-meta" id="dc-meta">2020 · 8,500 km · Las Condes</div>
-        </div>
-        <div class="dc-price" id="dc-price">$10.5M</div>
-      </div>
-      <div class="dc-tags" id="dc-tags">
-        <span class="dtag dtag-g"><i class="fa-solid fa-shield-halved"></i> Stock Verificado</span>
-        <span class="dtag dtag-cyan"><i class="fa-solid fa-bolt"></i> Freemium Disponible</span>
-      </div>
-      <div class="dc-btns">
-        <button class="dcbtn dcbtn-out" onclick="openSheet('escanner')"><i class="fa-solid fa-qrcode"></i> Escáner $500</button>
-        <button class="dcbtn dcbtn-out" onclick="openSheet('matchmaking')" id="btnMatch" style="display:none; border-color:var(--green); color:var(--green);"><i class="fa-solid fa-comments"></i> Conectar Ahora</button>
-        <button class="dcbtn dcbtn-red" onclick="openSheet('reserva')">🔒 Reservar Escrow</button>
-      </div>
-    </div>
-
-    <div class="bnav">
-      <div class="bnav-item bni on" onclick="resetViews()"><div class="bni-ico"><i class="fa-solid fa-map-location-dot"></i></div><div class="bni-lbl">Mapa</div></div>
-      <div class="bnav-item bni" onclick="openSheet('busqueda')"><div class="bni-ico"><i class="fa-solid fa-magnifying-glass"></i></div><div class="bni-lbl">Buscar</div></div>
-      <div class="bni-center" onclick="openSheet('publicar')"><i class="fa-solid fa-plus"></i></div>
-      <div class="bnav-item bni" onclick="openSheet('automotoras')"><div class="bni-ico"><i class="fa-solid fa-store"></i></div><div class="bni-lbl">Dealers</div></div>
-      <div class="bnav-item bni" onclick="openSheet('perfil')"><div class="bni-ico"><i class="fa-solid fa-user"></i></div><div class="bni-lbl">Perfil</div></div>
-    </div>
-
-    <div class="drawer-overlay" id="dov" onclick="closeDrawer()"></div>
-    <div class="drawer" id="drawer">
-      <div class="drw-top">
-        <div class="drw-logo">MOTOR<em>PLACE</em></div>
-        <div class="drw-close" onclick="closeDrawer()"><i class="fa-solid fa-xmark"></i></div>
-      </div>
-      <div class="drw-user">
-        <div class="drw-av">RM</div>
-        <div>
-          <div class="drw-uname">Rodrigo Monroy</div>
-          <div class="drw-usub"><i class="fa-solid fa-circle-check"></i> Ecosistema Validado</div>
-        </div>
-      </div>
-      <div class="drw-items">
-        <div class="drw-sep">Herramientas Anti-Fraude</div>
-        <div class="di" onclick="closeDrawer();openSheet('escanner')"><div class="di-ico" style="background:rgba(6,182,212,.1); color:var(--cyan);"><i class="fa-solid fa-qrcode"></i></div><div><div class="di-label">Escáner Express ($500)</div><div class="di-sub">Validación Higiénica Digital</div></div></div>
-        <div class="di" onclick="closeDrawer();openSheet('reserva')"><div class="di-ico" style="background:rgba(34,197,94,.1); color:var(--green);"><i class="fa-solid fa-vault"></i></div><div><div class="di-label">Bóveda Escrow</div><div class="di-sub">Garantías de Pago Neutral</div></div><div class="di-badge">FONDOS</div></div>
-        <div class="di" onclick="closeDrawer();openSheet('transferencia')"><div class="di-ico" style="background:rgba(139,92,246,.1); color:var(--purple);"><i class="fa-solid fa-file-signature"></i></div><div><div class="di-label">Transferencia Digital 24/7</div><div class="di-sub">Firma Remota Integrada</div></div></div>
-      </div>
-      <div class="drw-footer">Motorplace v2.6 · Corfo Ignite Pitch</div>
+    <div class="notif-btn" onclick="alert('Centro de notificaciones biométricas listo.')">
+      <i class="fas fa-bell"></i>
+      <div class="ndot"></div>
     </div>
   </div>
 
+  <div class="map-chips">
+    <div class="mchip on" onclick="filterMap('todos')">Todos</div>
+    <div class="mchip" onclick="filterMap('motos')">Motos Premium</div>
+    <div class="mchip" onclick="filterMap('oriente')">Sector Oriente</div>
+    <div class="mchip" onclick="openSheet('escrowSheet')">Bóveda Escrow</div>
+  </div>
 
-  <div class="sheet" id="sheet-escanner">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('escanner')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Escáner Express Anti-Fraude</div>
-    </div>
-    <div class="sheet-body">
-      <div class="card" style="background: linear-gradient(135deg, rgba(6,182,212,0.12), transparent); border-color: rgba(6,182,212,0.3);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <span class="badge badge-b" style="background:rgba(6,182,212,0.2); color:var(--cyan);">ESTRATEGIA FREEMIUM</span>
-          <div style="font-family:'Bebas Neue'; font-size:24px; color:var(--cyan);">$500 CLP</div>
-        </div>
-        <div class="sec-ttl" style="margin-bottom:4px;">Validación Flash Inmediata</div>
-        <p style="font-size: 12px; color: var(--gray);">Evita estafas clonando datos. Cruza bases de datos públicas, encargo por robo y remates por seguro al costo de procesamiento de la API.</p>
+  <div class="map-counter">
+    <div class="mc-n" id="carCounter">18</div>
+    <div class="mc-l">Cercanos</div>
+  </div>
+
+  <div class="map-wrap">
+    <div class="map-placeholder" id="mapBg">
+      <div class="map-grid-lines"></div>
+      
+      <div class="road road-h road-main" style="top:40%"></div>
+      <div class="road road-v road-main" style="left:50%"></div>
+      <div class="road road-h" style="top:70%"></div>
+      <div class="road road-v" style="left:25%"></div>
+
+      <div class="sim-pin" id="pin-moto" style="top:45%; left:35%;" onclick="openDetail('moto')">
+        <div class="pin-ico premium"><i class="fas fa-motorcycle"></i></div>
+        <div class="pin-lbl">BMW S1000XR HP</div>
       </div>
 
-      <div class="card">
-        <div class="inp-group">
-          <div class="inp-lbl">Ingresa la Patente del Vehículo</div>
-          <input type="text" class="inp" id="scanInput" value="GC-FX-85" style="text-transform: uppercase; font-weight: 900; font-size: 18px; letter-spacing: 2px; text-align: center; color: var(--cyan);">
-        </div>
-        
-        <div style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2); padding:10px; border-radius:10px; font-size:11px; color:var(--orange); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-bolt"></i>
-          <span>Te quedan <strong>0 consultas gratis</strong> de cortesía. El siguiente escaneo tiene un micro-costo de $500.</span>
-        </div>
-
-        <button class="btn btn-blue" onclick="triggerExpressScan()"><i class="fa-solid fa-fingerprint"></i> Pagar $500 y Escanear Activo</button>
-      </div>
-
-      <div id="scanResultsBlock" style="display:none;">
-        <div class="card" style="border-color:var(--green); background:rgba(34,197,94,0.02)">
-          <div class="inp-lbl" style="color:var(--green); font-size:11px; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i> Reporte Higiénico Generado Exitosamente</div>
-          <div style="font-size:12px; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:6px;"><span>🏛️ Registro Civil (Propietario):</span> <span style="color:var(--white); font-weight:600;">Rodrigo M. (Limpio)</span></div>
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:6px;"><span>⚠️ Encargo por Robo (Carabineros):</span> <span style="color:var(--green); font-weight:700;">SIN ENCARGO</span></div>
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:6px;"><span>💥 Historial Pérdida Total (AACH):</span> <span style="color:var(--green); font-weight:700;">NO REGISTRA REMATES</span></div>
-            <div style="display:flex; justify-content:space-between;"><span>📋 Estado Técnico General:</span> <span style="color:var(--white);">Homologado Activo</span></div>
-          </div>
-        </div>
+      <div class="sim-pin" id="pin-mercedes" style="top:65%; left:65%;" onclick="openDetail('mercedes')">
+        <div class="pin-ico verde"><i class="fas fa-car"></i></div>
+        <div class="pin-lbl">💥 Disponible Ahora (Sector Oriente)</div>
       </div>
     </div>
   </div>
 
-  <div class="sheet" id="sheet-reserva">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('reserva')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Bóveda Escrow Neutral</div>
+  <div class="radius-ctrl">
+    <div class="r-flex">
+      <span>Radio de Cobertura Activa (Geofencing)</span>
+      <span id="radiusVal" style="color:var(--red2);font-weight:700">8 km</span>
     </div>
-    <div class="sheet-body">
-      <div class="card" style="background: linear-gradient(135deg, rgba(34,197,94,0.1), transparent); border-color: rgba(34,197,94,0.3);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <span class="badge badge-g">POZO NEUTRAL TRANSACCIONAL</span>
-          <i class="fa-solid fa-lock" style="color:var(--green); font-size:20px;"></i>
-        </div>
-        <div style="font-family:'Bebas Neue'; font-size:32px;">$250.000 CLP</div>
-        <p style="font-size:12px; color:var(--gray); margin-top:4px;">Fondos en resguardo temporal. El dinero no se le entrega al vendedor hasta que el comprador asista físicamente al Hub Seguro y libere el dinero digitalmente.</p>
-      </div>
-      <button class="btn btn-red" onclick="closeSheet('reserva')">Entendido, Volver al Mapa</button>
+    <input type="range" class="r-slider" id="radiusRange" min="2" max="30" value="8" oninput="updateRadius(this.value)">
+  </div>
+
+  <div class="detail-card hidden" id="detailCard">
+    <div class="dc-close" onclick="closeDetail()"><i class="fas fa-times"></i></div>
+    <div id="detailContent"></div>
+  </div>
+
+  <div class="ticker">
+    <div class="tick-in">
+      <div class="ti"><div class="ti-d"></div>FIAT DOBLÒ: ESCANEO COMPLETADO EXITOSAMENTE</div>
+      <div class="ti"><div class="ti-d"></div>S1000XR HP VENDIDA EN CHUCRE MANZUR - $10.5M</div>
+      <div class="ti"><div class="ti-d"></div>BÓVEDA ESCROW ACTIVE: RESERVA ASEGURADA</div>
+      <div class="ti"><div class="ti-d"></div>FIAT DOBLÒ: ESCANEO COMPLETADO EXITOSAMENTE</div>
+      <div class="ti"><div class="ti-d"></div>S1000XR HP VENDIDA EN CHUCRE MANZUR - $10.5M</div>
     </div>
   </div>
 
-  <div class="sheet" id="sheet-matchmaking">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('matchmaking')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Match On-Demand Activo</div>
+  <div class="bnav">
+    <div class="bni on" onclick="switchBnav(this, 'mapa')">
+      <i class="fas fa-map-marked-alt bni-ico"></i>
+      <div class="bni-lbl">Explorar</div>
     </div>
-    <div class="sheet-body">
-      <div class="card" style="border-color: var(--green); background: rgba(34,197,94,0.02);">
-        <div class="sec-ttl" style="color:var(--green); margin:0;">Vendedor en Zona de Geofencing</div>
-        <p style="font-size:12px; color:var(--gray); margin-top:4px;">Estás en el cuadrante. El sistema agenda la muestra de inmediato de forma anónima y fluida.</p>
-      </div>
-      <div class="chat-box">
-        <div class="cmsg ai">Hola Rodrigo, veo que estás en el sector cotizando motos. Tengo un propietario verificado con disponibilidad inmediata a 5 minutos de tu posición.</div>
-        <div class="cmsg me">Excelente, me calza perfecto el tiempo. ¿Coordinamos la muestra express ahora?</div>
-        <div class="cmsg sys"><i class="fa-solid fa-robot fa-spin"></i> Conectando agendas de forma segura…</div>
-        <div class="cmsg ai">¡Confirmado! Ventana de exhibición asignada de 16:00 a 16:45 en el Hub Seguro Oriente.</div>
-      </div>
-      <button class="btn btn-green" style="margin-top:14px;" onclick="closeSheet('matchmaking')"><i class="fa-solid fa-location-arrow"></i> Guiar Ruta en Mapa</button>
+    <div class="bni" onclick="openSheet('escrowSheet')">
+      <i class="fas fa-shield-alt bni-ico"></i>
+      <div class="bni-lbl">Escrow</div>
+    </div>
+    <div class="bni-center" onclick="openSheet('publishSheet')">
+      <i class="fas fa-plus"></i>
+    </div>
+    <div class="bni" onclick="openSheet('dealerSheet')">
+      <i class="fas fa-building bni-ico"></i>
+      <div class="bni-lbl">Dealers</div>
+    </div>
+    <div class="bni" onclick="alert('Perfil de Rodrigo Monroy cargado (Suscripción Activa)')">
+      <i class="fas fa-user bni-ico"></i>
+      <div class="bni-lbl">Perfil</div>
     </div>
   </div>
+</div>
 
-  <div class="sheet" id="sheet-credito">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('credito')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Crédito Integrado (Rebate B2B)</div>
-    </div>
-    <div class="sheet-body">
-      <div class="card">
-        <div class="sec-ttl">Estrategia FinTech Automotoras</div>
-        <p style="font-size:12px; color:var(--gray);">La app procesa y origina la simulación bancaria, pero la comisión por colocación (Rebate) se transfiere íntegramente a la automotora dueña del stock.</p>
-      </div>
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drw-top">
+    <div class="drw-logo">MOTOR<em>PLACE</em></div>
+    <div class="drw-close" onclick="closeDrawer()"><i class="fas fa-times"></i></div>
+  </div>
+  <div class="drw-user">
+    <div class="drw-av">RM</div>
+    <div>
+      <div class="drw-uname">Rodrigo Monroy</div>
+      <div class="drw-usub"><i class="fas fa-check-circle"></i> Verificado Premium</div>
     </div>
   </div>
+  <div class="drw-items">
+    <div class="drw-sep">Servicios Core</div>
+    <div class="di" onclick="closeDrawer(); openSheet('escrowSheet')">
+      <div class="di-ico" style="color:var(--orange)"><i class="fas fa-vault"></i></div>
+      <div class="di-label">Bóveda Escrow Neutral</div>
+    </div>
+    <div class="di" onclick="closeDrawer(); alert('Módulo de Transferencia 24/7 con Firma Biométrica Remota inicializado.')">
+      <div class="di-ico" style="color:var(--blue)"><i class="fas fa-signature"></i></div>
+      <div class="di-label">Transferencia Digital 24/7</div>
+      <div class="di-badge">Legal</div>
+    </div>
+    <div class="di" onclick="closeDrawer(); openSheet('dealerSheet')">
+      <div class="di-ico" style="color:var(--purple)"><i class="fas fa-chart-line"></i></div>
+      <div class="di-label">Portal Automotoras (SaaS)</div>
+    </div>
+  </div>
+  <div class="drw-footer">Motorplace App v2.4 — CORFO Pitch Mode</div>
+</div>
 
-  <div class="sheet" id="sheet-transferencia">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('transferencia')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Traspaso Electrónico 24/7</div>
-    </div>
-    <div class="sheet-body">
-      <div class="card">
-        <div class="sec-ttl">Firma Biométrica Avanzada</div>
-        <p style="font-size:12px; color:var(--gray);">Olvídate de las notarías los fines de semana. Traspaso directo con firma remota conectada directamente al Registro Civil.</p>
-      </div>
-    </div>
+<div class="sheet" id="escrowSheet">
+  <div class="sheet-bar">
+    <div class="sheet-back" onclick="closeSheet('escrowSheet')"><i class="fas fa-chevron-left"></i></div>
+    <div class="sheet-title">Bóveda Escrow Anti-Fraude</div>
   </div>
+  <div class="sheet-body">
+    <div class="card" style="background:linear-gradient(135deg, rgba(34,197,94,0.1), transparent)">
+      <h3 style="color:var(--green);margin-bottom:6px"><i class="fas fa-shield-halved"></i> Transacción Garantizada</h3>
+      <p style="font-size:12px;color:var(--gray)">Retenemos el valor de reserva de forma neutral hasta que se valide la firma y entrega física.</p>
+    </div>
+    <h4 class="sec-ttl">Estado de Transacción de Prueba</h4>
+    <div class="card">
+      <div class="stat-row"><span>Monto en Custodia:</span><span class="stat-val" style="color:var(--white)">$250.000 CLP</span></div>
+      <div class="stat-row"><span>Operación:</span><span style="font-weight:600">Reserva S1000XR</span></div>
+      <div class="stat-row"><span>Comprador:</span><span style="color:var(--gray)">Particular Chile</span></div>
+    </div>
+    <button class="btn btn-red" onclick="alert('Fondos liberados tras validación del Registro Civil.')">Liberar Fondos Transacción</button>
+  </div>
+</div>
 
-  <div class="sheet" id="sheet-busqueda">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('busqueda')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Resultados Indexados</div>
-    </div>
-    <div class="sheet-body">
-      <div class="v-card" onclick="closeSheet('busqueda'); showDetail('bmw')">
-        <div class="v-card-img">🏍️</div>
-        <div>
-          <div class="v-name">BMW S1000XR HP</div>
-          <div class="v-meta">Las Condes · 2020 · Verificada</div>
-          <div class="v-price">$10.500.000</div>
-        </div>
+<div class="sheet" id="publishSheet">
+  <div class="sheet-bar">
+    <div class="sheet-back" onclick="closeSheet('publishSheet')"><i class="fas fa-chevron-left"></i></div>
+    <div class="sheet-title">Publicación Indexada</div>
+  </div>
+  <div class="sheet-body">
+    <h3 class="sec-ttl">Sube tu Vehículo al Mapa al Instante</h3>
+    <div class="card">
+      <div class="inp-group">
+        <label class="inp-lbl">Patente Única Chilena</label>
+        <input type="text" class="inp" placeholder="AAAA00 o AA0000" style="text-transform:uppercase; font-weight:700; letter-spacing:2px">
       </div>
+      <p style="font-size:11px;color:var(--gray);margin-bottom:14px"><i class="fas fa-info-circle"></i> Validaremos el vehículo con Autofact y el Registro Civil automáticamente para geolocalizarlo.</p>
+      <button class="btn btn-green" onclick="alert('Vehículo indexado correctamente. Aparecerá en el mapa de su sector.'); closeSheet('publishSheet')">Validar e Indexar</button>
     </div>
   </div>
+</div>
 
-  <div class="sheet" id="sheet-automotoras">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('automotoras')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">SaaS Módulos Corporativos</div>
+<div class="sheet" id="dealerSheet">
+  <div class="sheet-bar">
+    <div class="sheet-back" onclick="closeSheet('dealerSheet')"><i class="fas fa-chevron-left"></i></div>
+    <div class="sheet-title">Panel Corporativo (SaaS)</div>
+  </div>
+  <div class="sheet-body">
+    <div class="card" style="background:var(--surf2)">
+      <div style="font-size:11px;color:var(--orange);font-weight:700;margin-bottom:4px">CONCESIONARIO PREMIUM</div>
+      <h2 font-family="'Bebas Neue'">DIMACO MOTOR</h2>
     </div>
-    <div class="sheet-body">
-      <div class="card">
-        <div class="sec-ttl">Panel de Control Concesionarios</div>
-        <p style="font-size:12px; color:var(--gray);">Suscripción mensual B2B activa para posicionamiento masivo en mapa e integración automática de APIs financieras.</p>
+    <h3 class="sec-ttl">Métricas del Stock Georreferenciado</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
+      <div class="card" style="text-align:center; margin:0">
+        <div style="font-size:24px; font-weight:800; color:var(--blue)">42</div>
+        <div style="font-size:9px; color:var(--gray); text-transform:uppercase">Autos Activos</div>
+      </div>
+      <div class="card" style="text-align:center; margin:0">
+        <div style="font-size:24px; font-weight:800; color:var(--green)">+18.4%</div>
+        <div style="font-size:9px; color:var(--gray); text-transform:uppercase">ROI Retorno Crédito</div>
       </div>
     </div>
+    <button class="btn btn-ghost" onclick="alert('Abriendo editor de carga masiva de stock vía API.')"><i class="fas fa-cloud-upload-alt"></i> Carga Masiva de Stock (API)</button>
   </div>
-
-  <div class="sheet" id="sheet-perfil">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('perfil')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Cuenta de Demostración</div>
-    </div>
-    <div class="sheet-body">
-      <div class="card" style="text-align:center;">
-        <div class="drw-av" style="width:64px; height:64px; font-size:24px; margin:0 auto 10px;">RM</div>
-        <div class="drw-uname">Rodrigo Monroy</div>
-        <div class="drw-usub" style="color:var(--gray)">info@12grados.cl</div>
-      </div>
-      <button class="btn btn-ghost" onclick="location.reload()">Cerrar Simulación</button>
-    </div>
-  </div>
-
-  <div class="sheet" id="sheet-publicar">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('publicar')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Indexar Activo al Mapa</div>
-    </div>
-    <div class="sheet-body">
-      <div class="card">
-        <div class="inp-group">
-          <div class="inp-lbl">Patente del Vehículo</div>
-          <input type="text" class="inp" placeholder="P. Ej. GCFX85">
-        </div>
-        <button class="btn btn-red" onclick="closeSheet('publicar'); alert('Validando contra Autofact e indexando coordenadas de forma segura.')">Validar e Indexar</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="sheet" id="sheet-notif">
-    <div class="sheet-bar">
-      <div class="sheet-back" onclick="closeSheet('notif')"><i class="fa-solid fa-arrow-left"></i></div>
-      <div class="sheet-title">Centro de Control de Alertas</div>
-    </div>
-    <div class="sheet-body">
-      <div class="card">
-        <div style="font-size:13px; font-weight:700; color:var(--green);"><i class="fa-solid fa-circle-check"></i> Alerta de Geofencing Activa</div>
-        <p style="font-size:12px; color:var(--gray); margin-top:4px;">El perímetro virtual del Test Drive dominical se configuró con éxito en un radio de 8 km a la redonda.</p>
-      </div>
-    </div>
-  </div>
+</div>
 
 </div>
 
 <script>
-// Ciclo de vida del Splash Screen
+// Temporizador de simulación de Splash Screen
 setTimeout(() => {
-  const splash = document.getElementById('splash');
-  if(splash) {
-    splash.style.opacity = '0';
-    setTimeout(() => {
-      splash.style.display = 'none';
-      document.getElementById('login').style.display = 'block';
-    }, 500);
-  }
-}, 2000);
+  document.getElementById('splash').style.opacity = '0';
+  setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 500);
+}, 1600);
 
-// Flujo de Autenticación simulado
-function doLogin(role) {
+// Control de flujo de login
+function doLogin(type) {
+  document.getElementById('login').style.style = 'none';
   document.getElementById('login').style.display = 'none';
   document.getElementById('mapScreen').style.display = 'block';
+  if(type === 'automotora') {
+    openSheet('dealerSheet');
+  }
 }
 
-// Drawer Control
-function openDrawer() {
-  document.getElementById('drawer').classList.add('on');
-  document.getElementById('dov').classList.add('on');
-}
-function closeDrawer() {
-  document.getElementById('drawer').classList.remove('on');
-  document.getElementById('dov').classList.remove('on');
-}
-
-// Control Matemático e Interactivo del Radio de Búsqueda en el Mapa
-function setRadius(val) {
-  document.getElementById('rval').innerText = val + " km";
+// Control del slider del mapa y cálculo dinámico de autos en zona
+function updateRadius(val) {
+  document.getElementById('radiusVal').innerText = val + ' km';
+  // Simulación matemática de cantidad según cobertura para Corfo
+  let calcCars = Math.floor(val * 2.2 + 1);
+  document.getElementById('carCounter').innerText = calcCars;
   
-  // Modificar dinámicamente la escala visual del fondo simulando Zoom in/out del mapa
-  const scaleEffect = 1 + ((val - 8) * 0.015);
-  document.getElementById('gmap').style.transform = `scale(${scaleEffect})`;
-  
-  // Cambiar el contador simulando el Geofencing
-  document.getElementById('mapCount').innerText = Math.floor(val * 2.2 + 1);
+  // Efecto visual de zoom simulado en el plano de fondo
+  let scaleFactor = 1 + (val - 8) * 0.015;
+  document.getElementById('mapBg').style.transform = 'scale(' + scaleFactor + ')';
 }
 
-// Lógica de los Filtros Rápidos (Chips)
-function toggleChip(id) {
-  document.querySelectorAll('.mchip').forEach(el => el.classList.remove('on'));
-  document.getElementById('chip-' + id).classList.add('on');
+// Manejo de Filtros Rápidos (Chips)
+function filterMap(filter) {
+  document.querySelectorAll('.mchip').forEach(c => c.classList.remove('on'));
+  event.target.classList.add('on');
   
-  const countEl = document.getElementById('mapCount');
-  const labelEl = document.getElementById('mapCountLabel');
+  let pinMoto = document.getElementById('pin-moto');
+  let pinMercedes = document.getElementById('pin-mercedes');
   
-  if(id === 'premium') {
-    countEl.innerText = "4";
-    labelEl.innerText = "Motos Premium";
-  } else if(id === 'verde') {
-    countEl.innerText = "1";
-    labelEl.innerText = "Pin Verde Activo";
+  if (filter === 'motos') {
+    pinMoto.style.display = 'flex';
+    pinMercedes.style.display = 'none';
+    document.getElementById('carCounter').innerText = '1';
+  } else if (filter === 'oriente') {
+    pinMoto.style.display = 'none';
+    pinMercedes.style.display = 'flex';
+    document.getElementById('carCounter').innerText = '12';
   } else {
-    countEl.innerText = "18";
-    labelEl.innerText = "Cercanos";
+    pinMoto.style.display = 'flex';
+    pinMercedes.style.display = 'flex';
+    document.getElementById('carCounter').innerText = '18';
   }
 }
 
-// Mutación de Datos Dinámica en la Tarjeta de Detalle Inferior
-function showDetail(type) {
-  const card = document.getElementById('detailCard');
-  const btnMatch = document.getElementById('btnMatch');
+// Lógica de Despliegue de Fichas de Vehículos Inteligentes
+function openDetail(car) {
+  let card = document.getElementById('detailCard');
+  let content = document.getElementById('detailContent');
+  
+  if (car === 'moto') {
+    content.innerHTML = `
+      <div class="dc-name">BMW S1000XR HP (2020)</div>
+      <div class="dc-price">$10.500.000 CLP</div>
+      <div class="dc-meta">8,500 km • Dueño Directo • Vitacura</div>
+      <div class="dc-tags">
+        <span class="dtag dtag-g"><i class="fas fa-check-circle"></i> Sin Multas</span>
+        <span class="dtag dtag-b"><i class="fas fa-shield"></i> Escrow Disponible</span>
+      </div>
+      <div class="dc-btns">
+        <button class="dcbtn dcbtn-red" onclick="runScanner()"><i class="fas fa-qrcode"></i> Escáner $500</button>
+        <button class="dcbtn dcbtn-out" onclick="openSheet('escrowSheet')">Reservar Seguro</button>
+      </div>
+    `;
+  } else if (car === 'mercedes') {
+    content.innerHTML = `
+      <div class="dc-name">MERCEDES BENZ GLC 300</div>
+      <div class="dc-price">$31.800.000 CLP</div>
+      <div class="dc-meta">24,000 km • Automotora Dimaco • Lo Barnechea</div>
+      <div class="dc-tags">
+        <span class="dtag dtag-cyan"><i class="fas fa-bolt"></i> Match Conectado</span>
+        <span class="dtag dtag-b"><i class="fas fa-percentage"></i> Crédito Disponible</span>
+      </div>
+      <div class="dc-btns">
+        <button class="dcbtn dcbtn-red" onclick="runMatchmaking()">Conectar Ahora</button>
+        <button class="dcbtn dcbtn-out" onclick="alert('Abriendo cotizador de crédito instantáneo.')">Ver Financiamiento</button>
+      </div>
+    `;
+  }
   card.classList.remove('hidden');
-
-  if(type === 'bmw') {
-    document.getElementById('dc-emoji').innerText = "🏍️";
-    document.getElementById('dc-name').innerText = "BMW S1000XR HP";
-    document.getElementById('dc-meta').innerText = "2020 · 8,500 km · Las Condes (Hub Seguro)";
-    document.getElementById('dc-price').innerText = "$10.5M";
-    btnMatch.style.display = 'none';
-  } else if (type === 'mercedes') {
-    document.getElementById('dc-emoji').innerText = "🚗";
-    document.getElementById('dc-name').innerText = "Mercedes GLC 300";
-    document.getElementById('dc-meta').innerText = "2022 · Vitacura · Pin Verde Activo";
-    document.getElementById('dc-price').innerText = "$34.5M";
-    btnMatch.style.display = 'flex'; // Activa flujo On-Demand
-  }
 }
+
 function closeDetail() {
   document.getElementById('detailCard').classList.add('hidden');
 }
 
-// Control Global de Pantallas Modales (Sheets)
+// Simulación interactiva del Escáner Exprés de $500
+function runScanner() {
+  let content = document.getElementById('detailContent');
+  content.innerHTML = `
+    <div style="text-align:center; padding:10px 0">
+      <i class="fas fa-spinner fa-spin" style="font-size:28px; color:var(--red2); margin-bottom:10px"></i>
+      <div style="font-weight:700;font-size:14px">EJECUTANDO ESCÁNER EXPRÉS...</div>
+      <div style="font-size:11px;color:var(--gray)">Consultando bases de multas transito, remates judiciales y encargo por robo...</div>
+    </div>
+  `;
+  setTimeout(() => {
+    content.innerHTML = `
+      <div style="font-family:'Bebas Neue'; font-size:20px; color:var(--green); margin-bottom:4px"><i class="fas fa-shield-check"></i> VEHÍCULO HIGIÉNICO REPOSITORIO</div>
+      <div class="card" style="background:rgba(0,0,0,0.2); padding:10px; margin-bottom:10px; font-size:12px; line-height:1.4">
+        📌 <strong>Registro Civil:</strong> 0 Gravámenes / Limpio<br>
+        📌 <strong>Encargo por Robo:</strong> Negativo Carabineros<br>
+        📌 <strong>Historial Remates:</strong> Ninguno Registrado
+      </div>
+      <button class="btn btn-ghost" style="padding:8px" onclick="openDetail('moto')">Volver a la Ficha</button>
+    `;
+  }, 2000);
+}
+
+// Simulación de Matchmaking On-Demand B2C
+function runMatchmaking() {
+  let content = document.getElementById('detailContent');
+  content.innerHTML = `
+    <div style="padding:10px 0">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--cyan)"><i class="fas fa-robot"></i> Chatbot Automático de Matchmaking</div>
+      <div class="chat-box" id="cbox">
+        <div class="cmsg sys">Conexión establecida para Mercedes GLC 300</div>
+        <div class="cmsg ai">Hola Rodrigo, veo que estás interesado en la GLC 300 de Dimaco. El vendedor está en línea ahora en Las Condes. ¿Quieres agendar una prueba hoy mismo?</div>
+      </div>
+      <div class="chat-inp-wrap">
+        <input type="text" class="chat-inp" placeholder="Responder al Concesionario...">
+        <button class="chat-send" onclick="alert('Mensaje enviado. Recibirás una alerta SMS.'); openDetail('mercedes')"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  `;
+}
+
+// Control del despliegue de Sheets inferiores de navegación
 function openSheet(id) {
-  const target = document.getElementById('sheet-' + id);
-  if(target) {
-    target.style.display = 'block';
-    setTimeout(() => target.classList.add('on'), 10);
-  }
+  document.getElementById(id).style.display = 'block';
+  setTimeout(() => { document.getElementById(id).classList.add('on'); }, 10);
 }
+
 function closeSheet(id) {
-  const target = document.getElementById('sheet-' + id);
-  if(target) {
-    target.classList.remove('on');
-    setTimeout(() => target.style.display = 'none', 350);
+  document.getElementById(id).classList.remove('on');
+  setTimeout(() => { document.getElementById(id).style.display = 'none'; }, 350);
+}
+
+// Drawer Menú Lateral Izquierdo
+function openDrawer() {
+  document.getElementById('drawerOverlay').style.display = 'block';
+  document.getElementById('drawer').classList.add('on');
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').style.display = 'none';
+  document.getElementById('drawer').classList.remove('on');
+}
+
+// Estilos activos en el Bottom Nav Bar
+function switchBnav(elem, target) {
+  document.querySelectorAll('.bni').forEach(item => item.classList.remove('on'));
+  elem.classList.add('on');
+  // Cierra cualquier sheet activa si vuelven a pinchar el mapa principal
+  if (target === 'mapa') {
+    document.querySelectorAll('.sheet').forEach(s => { s.classList.remove('on'); setTimeout(() => s.style.display='none',350); });
   }
-}
-
-// Reset de Vistas al presionar el botón de Mapa Principal
-function resetViews() {
-  document.querySelectorAll('.sheet').forEach(el => {
-    el.classList.remove('on');
-    el.style.display = 'none';
-  });
-  closeDetail();
-}
-
-// Lógica de Ejecución del Escáner Freemium de $500
-function triggerExpressScan() {
-  const resultBlock = document.getElementById('scanResultsBlock');
-  resultBlock.style.display = 'block';
-  resultBlock.scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 </body>
