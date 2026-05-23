@@ -3,694 +3,315 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Motorplace - CORFO Pitch Ultimate</title>
-<link href="https://fonts.googleapis.com/css2=family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>MotorPlace - Modelo Técnico Validado v5</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root{
-  --bg:#0a0f1e;--bg2:#111827;--surf:#1a2235;--surf2:#243050;
-  --red:#e8001d;--red2:#ff2d47;--redg:rgba(232,0,29,.2);
-  --green:#22c55e;--blue:#3b82f6;--orange:#f59e0b;--purple:#8b5cf6;--cyan:#06b6d4;
-  --white:#f1f5f9;--gray:#94a3b8;--gray2:#475569;
-  --border:rgba(255,255,255,.07);--font:'Inter',sans-serif;
+  --bg:#080c16;--bg2:#0f1424;--surf:#171e31;--surf2:#222b45;
+  --red:#e8001d;--red2:#ff334b;--redg:rgba(232,0,29,.15);
+  --green:#22c55e;--blue:#2563eb;--cyan:#06b6d4;--orange:#f59e0b;
+  --purple:#a855f7;
+  --white:#f8fafc;--gray:#94a3b8;--border:rgba(255,255,255,.08);
+  --font:'Inter',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#000;font-family:var(--font);overflow:hidden;height:100vh}
+body{background:#000;font-family:var(--font);overflow:hidden;height:100vh;display:flex;align-items:center;justify-content:center}
 
 #app{
-  width:100%;
-  max-width:480px;
-  height:100vh;
-  max-height: calc(100vh - 20px);
-  margin: 10px auto;
-  position:relative;
-  overflow:hidden;
-  background:var(--bg);
-  box-shadow:0 0 40px rgba(232,0,29,0.15);
-  border-radius: 16px;
+  width:100%;max-width:440px;height:100vh;max-height:880px;
+  position:relative;overflow:hidden;background:var(--bg);
+  box-shadow:0 0 40px rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.05);
 }
 
-/* SPLASH */
-#splash{position:absolute;inset:0;z-index:950;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(232,0,29,.22),transparent 70%),var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease}
-.sp-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,0,29,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,0,29,.04) 1px,transparent 1px);background-size:40px 40px}
-.sp-logo{width:90px;height:90px;background:linear-gradient(135deg,var(--red),#ff4d6d);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:20px;box-shadow:0 0 60px var(--redg),0 10px 40px rgba(232,0,29,.4);position:relative;z-index:2}
-.sp-word{font-family:'Bebas Neue';font-size:52px;letter-spacing:5px;color:var(--white)}
-.sp-word em{color:var(--red);font-style:normal}
-.sp-tag{font-size:11px;color:var(--gray);letter-spacing:3px;text-transform:uppercase;margin:6px 0 40px}
-.sp-bar{width:180px;height:2px;background:var(--surf2);border-radius:2px;overflow:hidden}
-.sp-fill{height:100%;background:linear-gradient(90deg,var(--red),#ff4d6d);animation:spload 1.2s ease forwards}
-@keyframes spload{from{width:0}to{width:100%}}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;z-index:10}
+.screen.active{display:flex}
 
-/* LOGIN MULTI-PANTALLA */
-#login{position:absolute;inset:0;z-index:800;background:var(--bg);overflow-y:auto;display:block}
-.login-hero{height:160px;background:linear-gradient(145deg,#1a0006,#0a0a0a);display:flex;align-items:flex-end;padding:24px;color:var(--white)}
-.login-body{padding:24px 20px}
-.divrow{display:flex;align-items:center;gap:10px;color:var(--gray2);font-size:12px;margin:14px 0}
-.divrow::before,.divrow::after{content:'';flex:1;height:1px;background:var(--border)}
-.mb10{margin-bottom:10px}
+.hdr{height:60px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between}
+.hdr-logo{font-family:'Bebas Neue';font-size:26px;letter-spacing:1px;color:var(--white)}
+.hdr-logo em{color:var(--red);font-style:normal}
 
-/* FORMULARIOS INTERNOS DE LOGIN */
-.login-sub-form{display:none;background:var(--surf);padding:16px;border-radius:14px;border:1px solid var(--border);margin-top:10px}
+.login-box{padding:30px 20px;display:flex;flex-direction:column;gap:12px;margin-top:auto;margin-bottom:auto}
 
-/* MAPA */
-#mapScreen{position:absolute;inset:0;z-index:1;display:none}
-.map-wrap{position:absolute;inset:0;bottom:72px;overflow:hidden}
-.map-placeholder{position:absolute;inset:0;background:#0b101f;background-image:radial-gradient(circle at 50% 50%,#17213c 0%,#0a0f1e 100%);transition:transform 0.4s ease}
-.map-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:30px 30px}
+.map-container{flex:1;position:relative;background:#0d1325;background-image:radial-gradient(var(--surf2) 1px, transparent 0);background-size:24px 24px}
+#pinsWrapper{position:absolute;inset:0}
+.map-pin{position:absolute;transform:translate(-50%, -50%);cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.pin-ball{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(0,0,0,0.5);border:2px solid #fff}
+.pin-ball.standard{background:linear-gradient(135deg, var(--blue), #1d4ed8)}
+.pin-ball.premium{background:linear-gradient(135deg, var(--green), #15803d);box-shadow:0 0 15px var(--green);border-color:var(--green)}
+.pin-ball.dealer{background:linear-gradient(135deg, var(--purple), #6b21a8);box-shadow:0 0 12px var(--purple);border-color:var(--purple)}
 
-/* Pines Contenedor */
-#pinsContainer{position:absolute;inset:0}
-.sim-pin{position:absolute;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-100%);transition:all 0.2s}
-.pin-ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,0.5);border:2px solid rgba(255,255,255,0.4)}
-.pin-ico.moto{background:linear-gradient(135deg,var(--red),#b91c1c)}
-.pin-ico.car{background:linear-gradient(135deg,var(--blue),#1d4ed8)}
-.pin-ico.dealer{background:linear-gradient(135deg,var(--orange),#c2410c)}
-.pin-lbl{background:rgba(11,16,31,.92);padding:2px 6px;border-radius:10px;font-size:9px;font-weight:700;color:var(--white);margin-top:3px;white-space:nowrap;border:1px solid var(--border)}
+.pin-tag{background:rgba(8,12,22,0.9);padding:2px 6px;border-radius:8px;font-size:9px;color:#fff;margin-top:4px;font-weight:700;white-space:nowrap;border:1px solid var(--border)}
 
-/* UI Overlays */
-.float-hdr{position:absolute;top:14px;left:14px;right:14px;z-index:50;display:flex;gap:10px;align-items:center}
-.menu-btn{width:44px;height:44px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--white);backdrop-filter:blur(12px)}
-.srch-wrap{flex:1;height:44px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 14px;backdrop-filter:blur(12px)}
-.srch-wrap input{background:none;border:none;outline:none;color:var(--white);font-size:13px;width:100%}
+.slide-card{position:absolute;bottom:68px;left:12px;right:12px;background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:0 -10px 30px rgba(0,0,0,0.5);transform:translateY(150%);transition:transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);z-index:90}
+.slide-card.open{transform:translateY(0)}
 
-.map-chips{position:absolute;top:72px;left:0;right:0;z-index:50;display:flex;gap:6px;overflow-x:auto;padding:0 14px;scrollbar-width:none}
-.mchip{background:rgba(17,24,39,.92);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;color:var(--white)}
-.mchip.on{background:var(--red);border-color:var(--red)}
+.bnav{height:64px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:80}
+.bnav-item{display:flex;flex-direction:column;align-items:center;color:var(--gray);cursor:pointer;font-size:10px;font-weight:600;text-transform:uppercase;gap:3px}
+.bnav-item.active{color:var(--red2)}
+.bnav-item i{font-size:18px}
 
-.map-counter{position:absolute;top:120px;right:14px;z-index:50;background:rgba(17,24,39,.92);border:1px solid var(--border);border-radius:12px;padding:6px 12px;text-align:center}
-.mc-n{font-size:18px;font-weight:900;font-family:'Bebas Neue';color:var(--green)}
-.mc-l{font-size:8px;color:var(--gray);text-transform:uppercase}
-
-/* CARD DETALLE EXTENDIDA */
-.detail-card{position:absolute;bottom:80px;left:12px;right:12px;z-index:110;background:var(--surf);border:1px solid var(--border);border-radius:18px;padding:14px;box-shadow:0 -10px 30px rgba(0,0,0,.6);transition:all .3s ease;color:var(--white)}
-.detail-card.hidden{transform:translateY(120%);opacity:0;pointer-events:none}
-.dc-img-placeholder{width:100%;height:110px;background:var(--surf2);border-radius:10px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.05)}
-.dc-img-placeholder::after{content:'MOTORPLACE VERIFIED';position:absolute;bottom:6px;right:6px;background:rgba(34,197,94,0.8);color:#000;font-size:8px;font-weight:900;padding:2px 6px;border-radius:4px}
-.dc-name{font-family:'Bebas Neue';font-size:22px;letter-spacing:0.5px}
-.dc-price{font-family:'Bebas Neue';font-size:24px;color:var(--red2)}
-.dc-meta{font-size:11px;color:var(--gray);margin:2px 0 8px}
-.dc-btns{display:flex;gap:6px}
-.dcbtn{flex:1;padding:10px;border:none;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
-.dcbtn-red{background:var(--red);color:#fff}
-.dcbtn-out{background:var(--surf2);color:var(--white);border:1px solid var(--border)}
-.dc-close{position:absolute;top:10px;right:10px;width:24px;height:24px;background:var(--surf2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gray)}
-
-/* BOTTOM NAV BAR */
-.bnav{position:absolute;bottom:0;left:0;right:0;z-index:60;height:68px;background:rgba(10,15,30,.97);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding-bottom:4px}
-.bni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;color:var(--gray)}
-.bni-ico{font-size:18px;opacity:.5}
-.bni-lbl{font-size:9px;font-weight:600;text-transform:uppercase}
-.bni.on{color:var(--red2)}
-.bni.on .bni-ico{opacity:1}
-.bni-center{width:48px;height:48px;margin-top:-14px;background:var(--red);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;box-shadow:0 4px 15px var(--redg)}
-
-/* SHEETS EXPANSIVAS */
-.sheet{position:absolute;inset:0;z-index:400;background:var(--bg);transform:translateY(100%);transition:transform .3s ease;overflow-y:auto;display:none;color:var(--white)}
-.sheet.on{transform:translateY(0);display:block}
-.sheet-bar{display:flex;align-items:center;gap:12px;padding:14px;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:5}
-.sheet-back{width:36px;height:36px;background:var(--surf);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gray)}
-.sheet-title{font-size:15px;font-weight:800;flex:1}
-.sheet-body{padding:14px}
-
-/* UI COMPONENTES */
-.card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
-.inp-group{margin-bottom:12px}
-.inp-lbl{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;margin-bottom:4px;display:block}
-.inp{background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--white);font-size:13px;outline:none;width:100%}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;color:#fff}
+.scroller{flex:1;overflow-y:auto;padding:16px}
+.ui-card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.f-group{margin-bottom:10px}
+.f-lbl{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;margin-bottom:4px;display:block}
+.f-inp{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:10px;color:#fff;font-size:13px;outline:none}
+.btn{width:100%;padding:11px;border:none;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
 .btn-red{background:var(--red)}
-.btn-green{background:var(--green)}
+.btn-blue{background:var(--blue)}
+.btn-green{background:var(--green);color:#000}
+.btn-purple{background:var(--purple);color:#fff}
 .btn-ghost{background:var(--surf2);border:1px solid var(--border)}
-.sec-ttl{font-size:16px;font-weight:800;margin-bottom:10px;font-family:'Bebas Neue';letter-spacing:0.5px}
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px}
 
-/* TICKER */
-.ticker{position:absolute;bottom:68px;left:0;right:0;z-index:55;height:24px;background:rgba(232,0,29,.06);border-top:1px solid rgba(232,0,29,.1);overflow:hidden;display:flex;align-items:center}
-.tick-in{display:flex;animation:tick 25s linear infinite;width:max-content}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.ti{display:flex;align-items:center;gap:5px;padding:0 16px;font-size:9px;font-weight:700;color:rgba(255,255,255,.4)}
+.badge-express{background:rgba(34,197,94,0.15);border:1px solid var(--green);color:var(--green);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block;margin-bottom:6px}
+.badge-autofact{background:rgba(6,182,212,0.15);border:1px solid var(--cyan);color:var(--cyan);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block;margin-bottom:6px}
+.badge-none{background:rgba(148,163,184,0.1);border:1px solid var(--gray);color:var(--gray);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block;margin-bottom:6px}
 
-/* DRAWER */
-.drawer-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none}
-.drawer{position:absolute;top:0;bottom:0;left:0;width:280px;background:var(--bg2);z-index:300;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;color:var(--white)}
-.drawer.on{transform:translateX(0)}
-.drw-top{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.drw-user{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
-.drw-av{width:40px;height:40px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}
-.di{display:flex;align-items:center;gap:12px;padding:12px 20px;color:var(--white);cursor:pointer;font-size:13px}
+.af-modal{position:absolute;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column}
+.af-modal.active{display:flex}
 </style>
 </head>
 <body>
+
 <div id="app">
 
-<div id="splash">
-  <div class="sp-grid"></div>
-  <div class="sp-logo">🚗</div>
-  <div class="sp-word">MOTOR<em>PLACE</em></div>
-  <div class="sp-tag">CORFO PITCH MODE · 2026</div>
-  <div class="sp-bar"><div class="sp-fill"></div></div>
-</div>
-
-<div id="login">
-  <div class="login-hero">
-    <div>
-      <div style="font-family:'Bebas Neue';font-size:36px;letter-spacing:2px">MOTOR<em style="color:var(--red)">PLACE</em></div>
-      <div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1px">Infraestructura Tecnológica Automotriz</div>
-    </div>
-  </div>
-  <div class="login-body">
-    <div id="loginMenu">
-      <h2 style="font-size:20px;font-weight:800;margin-bottom:14px">Iniciar Módulo de Validación</h2>
-      <button class="btn btn-red mb10" onclick="showLoginInput('particular')">🚗 &nbsp;Ingresar como Particular</button>
-      <button class="btn btn-ghost mb10" onclick="showLoginInput('automotora')" style="border-color:var(--orange);color:var(--orange)">🏢 &nbsp;Ingresar como Automotora (SaaS)</button>
-      <div class="divrow">O CONEXIÓN DIRECTA BIOMÉTRICA</div>
-      <button class="btn btn-ghost" onclick="executeDirectLogin('Google User')"><i class="fab fa-google"></i> &nbsp;Continuar con Google</button>
-    </div>
-
-    <div id="formParticular" class="login-sub-form">
-      <h3 class="sec-ttl">Acceso Ciudadano</h3>
-      <div class="inp-group">
-        <label class="inp-lbl">RUT Usuario</label>
-        <input type="text" class="inp" placeholder="12.345.678-9" id="rutPart">
+  <div class="screen active" id="scrLogin">
+    <div class="login-box">
+      <div style="text-align:center;margin-bottom:25px">
+        <h1 style="font-family:'Bebas Neue';font-size:48px;color:#fff;letter-spacing:2px">MOTOR<span style="color:var(--red)">PLACE</span></h1>
+        <p style="font-size:11px;color:var(--gray)">Ecosistema V2 - Verificación Técnica Real</p>
       </div>
-      <button class="btn btn-red mb10" onclick="executeDirectLogin('Particular Registrado')">Validar e Ingresar</button>
-      <button class="btn btn-ghost" onclick="resetLoginMenu()" style="padding:6px; font-size:11px">Volver atrás</button>
-    </div>
-
-    <div id="formAutomotora" class="login-sub-form">
-      <h3 class="sec-ttl" style="color:var(--orange)">Registro en Nodo Concesionarios</h3>
-      <div class="inp-group">
-        <label class="inp-lbl">Nombre de la Automotora / Dealer</label>
-        <input type="text" class="inp" placeholder="Ej. Dimaco Motor Oriente" id="dealerNameInput" value="Dimaco Motor">
-      </div>
-      <div class="inp-group">
-        <label class="inp-lbl">Patente Comercial / RUT Empresa</label>
-        <input type="text" class="inp" placeholder="76.xxx.xxx-k">
-      </div>
-      <div style="background:rgba(245,158,11,0.1); padding:8px; border-radius:8px; font-size:11px; color:var(--orange); margin-bottom:12px">
-        <i class="fas fa-check-double"></i> <strong>Beneficio CORFO SaaS:</strong> Publicación e indexación base gratis para concesionarios asociados.
-      </div>
-      <button class="btn btn-green mb10" onclick="executeDirectLogin('SaaS Dealer')">Activar Panel e Ingresar</button>
-      <button class="btn btn-ghost" onclick="resetLoginMenu()" style="padding:6px; font-size:11px">Volver atrás</button>
+      <button class="btn btn-blue" onclick="setRole('particular')"><i class="fas fa-user"></i> Entrar como Comprador / Particular</button>
+      <button class="btn btn-purple" onclick="setRole('automotora')"><i class="fas fa-building"></i> Entrar como Automotora SaaS</button>
     </div>
   </div>
-</div>
 
-<div id="mapScreen">
-  <div class="float-hdr">
-    <div class="menu-btn" onclick="openDrawer()"><i class="fas fa-bars"></i></div>
-    <div class="srch-wrap">
-      <i class="fas fa-search" style="color:var(--gray)"></i>
-      <input type="text" id="mapSearchInp" placeholder="Buscar entre 20 vehículos activos..." onkeyup="searchVehicles(this.value)">
+  <div class="screen" id="scrMap">
+    <div class="hdr">
+      <div class="hdr-logo">MOTOR<em>PLACE</em></div>
+      <div id="roleIndicator" style="font-size:11px;font-weight:700;color:var(--blue)">PARTICULAR</div>
     </div>
-    <div class="menu-btn" style="color:var(--green)" onclick="alert('Conexión encriptada vía API Registro Civil activa.')"><i class="fas fa-fingerprint"></i></div>
-  </div>
+    
+    <div class="map-container"><div id="pinsWrapper"></div></div>
 
-  <div class="map-chips">
-    <div class="mchip on" onclick="filterType('todos', this)">Todos (20)</div>
-    <div class="mchip" onclick="filterType('moto', this)">Motos</div>
-    <div class="mchip" onclick="filterType('auto', this)">Autos</div>
-    <div class="mchip" style="color:var(--orange)" onclick="openSheet('dealerSheet')">⚙️ Mi Stock SaaS</div>
-  </div>
-
-  <div class="map-counter">
-    <div class="mc-n" id="totalCounter">20</div>
-    <div class="mc-l">En el Mapa</div>
-  </div>
-
-  <div class="map-wrap">
-    <div class="map-placeholder">
-      <div class="map-grid-lines"></div>
-      <div id="pinsContainer">
+    <div class="slide-card" id="detailCard">
+      <div style="position:absolute;top:-35px;right:0;background:var(--red);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer" onclick="closeDetail()"><i class="fas fa-times"></i></div>
+      
+      <div id="afBadgeContainer"></div>
+      
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div>
+          <h3 style="font-family:'Bebas Neue';font-size:24px;color:#fff" id="lblTitle">Modelo</h3>
+          <p style="font-size:11px;color:var(--gray)" id="lblMeta">KM • Ubicación</p>
         </div>
+        <div style="font-family:'Bebas Neue';font-size:24px;color:var(--red2)" id="lblPrice">$0</div>
+      </div>
+
+      <div class="ui-card" style="padding:10px;background:var(--bg2);margin-bottom:10px;border:1px solid rgba(255,255,255,0.03)">
+        <span class="f-lbl">Estado del Vehículo:</span>
+        <p style="font-size:11px;color:var(--white);line-height:1.4" id="lblDesc">Detalles...</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px" id="boxActions"></div>
+    </div>
+
+    <div class="bnav" id="mainNav"></div>
+  </div>
+
+  <div class="screen" id="scrPublish">
+    <div class="hdr"><div class="hdr-logo">NUEVO AVISO GRATUITO</div></div>
+    <div class="scroller">
+      <h3 style="font-family:'Bebas Neue';font-size:20px;margin-bottom:8px">Publicar Particular</h3>
+      <div class="ui-card">
+        <div class="f-group"><label class="f-lbl">Vehículo</label><input type="text" class="f-inp" id="pModel" value="BMW S1000XR HP"></div>
+        <div style="display:flex;gap:6px">
+          <div class="f-group" style="flex:1"><label class="f-lbl">Año</label><input type="number" class="f-inp" id="pYear" value="2020"></div>
+          <div class="f-group" style="flex:1"><label class="f-lbl">Precio ($)</label><input type="number" class="f-inp" id="pPrice" value="10500000"></div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <div class="f-group" style="flex:1"><label class="f-lbl">Kilometraje</label><input type="text" class="f-inp" id="pKm" value="8.500 km"></div>
+          <div class="f-group" style="flex:1"><label class="f-lbl">Patente</label><input type="text" class="f-inp" id="pPlate" value="HP-2020"></div>
+        </div>
+
+        <div class="ui-card" style="background:rgba(34,197,94,0.06);border:1px solid var(--green);margin-top:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <input type="checkbox" id="chkExpress" checked style="width:18px;height:18px;accent-color:var(--green)">
+            <label for="chkExpress" style="font-size:12px;font-weight:800;color:var(--green);cursor:pointer">⚡ Activar Sello Express por $500</label>
+          </div>
+          <p style="font-size:11px;color:var(--gray)">Extrae instantáneamente reportes sin costo de API (Filtro de Remates Latch + Multas de Tránsito). Pin verde destacado en el mapa.</p>
+        </div>
+
+        <button class="btn btn-blue" style="margin-top:10px" onclick="saveParticularProduct()"><i class="fas fa-cloud-arrow-up"></i> Publicar Ahora</button>
+      </div>
     </div>
   </div>
 
-  <div class="detail-card hidden" id="detailCard">
-    <div class="dc-close" onclick="closeDetail()"><i class="fas fa-times"></i></div>
-    <div id="detailCardContent"></div>
-  </div>
-
-  <div class="ticker">
-    <div class="tick-in">
-      <div class="ti">⚡ API ASHE: ESCANEO COMPLETADO CON ÉXITO</div>
-      <div class="ti">🛡️ ESCROW VALIDADOR: FONDOS RESGUARDADOS DE FORMA NEUTRAL</div>
-      <div class="ti">🚗 API AUTOFACT: SIN LIMITACIONES DE TRANSFERENCIA ENCONTRADAS</div>
-      <div class="ti">💼 TRANSFERENCIAS ONLINE: PROCESO BIOMÉTRICO HOMOLOGADO</div>
+  <div class="af-modal" id="afModal">
+    <div class="hdr" style="background:#1e293b;border-bottom:2px solid var(--cyan)">
+      <div style="color:#fff;font-weight:700;font-size:12px" id="modalHeaderTitle">REPORTE</div>
+      <div onclick="closeAfModal()" style="color:#fff;cursor:pointer;background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:6px;font-size:11px">Cerrar</div>
     </div>
+    <div class="scroller" style="background:#0f172a" id="modalContent"></div>
   </div>
-
-  <div class="bnav">
-    <div class="bni on" onclick="closeAllSheets()">
-      <i class="fas fa-map-location-dot bni-ico"></i>
-      <div class="bni-lbl">Mapa</div>
-    </div>
-    <div class="bni" onclick="openSheet('escrowSheet')">
-      <i class="fas fa-vault bni-ico"></i>
-      <div class="bni-lbl">FIP / Escrow</div>
-    </div>
-    <div class="bni-center" onclick="openSheet('publishSheet')">
-      <i class="fas fa-qrcode"></i>
-    </div>
-    <div class="bni" onclick="openSheet('creditSheet')">
-      <i class="fas fa-percentage bni-ico"></i>
-      <div class="bni-lbl">Créditos</div>
-    </div>
-    <div class="bni" onclick="openSheet('txSheet')">
-      <i class="fas fa-signature bni-ico"></i>
-      <div class="bni-lbl">Traspaso</div>
-    </div>
-  </div>
-</div>
-
-<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-<div class="drawer" id="drawer">
-  <div class="drw-top">
-    <div class="drw-logo">MOTOR<em>PLACE</em></div>
-    <div class="drw-close" onclick="closeDrawer()"><i class="fas fa-times"></i></div>
-  </div>
-  <div class="drw-user">
-    <div class="drw-av" id="avatarName">U</div>
-    <div>
-      <div class="drw-uname" id="profileName">Rodrigo Monroy</div>
-      <div class="drw-usub" id="profileRole" style="color:var(--green)">Particular verificado</div>
-    </div>
-  </div>
-  <div class="di" onclick="closeDrawer(); openSheet('escrowSheet')"><i class="fas fa-shield" style="color:var(--orange)"></i> Bóveda Escrow Neutral</div>
-  <div class="di" onclick="closeDrawer(); openSheet('dealerSheet')"><i class="fas fa-building" style="color:var(--blue)"></i> Panel SaaS de Concesionaria</div>
-  <div class="di" onclick="location.reload()"><i class="fas fa-power-off" style="color:var(--red)"></i> Cerrar Sesión Demo</div>
-</div>
-
-<div class="sheet" id="escrowSheet">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('escrowSheet')"><i class="fas fa-chevron-left"></i></div>
-    <div class="sheet-title">FIP Premium ($500) y Escrow</div>
-  </div>
-  <div class="sheet-body">
-    <div class="card" style="background:linear-gradient(135deg, rgba(232,0,29,0.1), transparent)">
-      <h3 style="color:var(--red2); margin-bottom:6px"><i class="fas fa-bolt"></i> Escáner FIP Higiénico</h3>
-      <p style="font-size:12px; color:var(--gray)">Por solo <strong>$500 CLP</strong>, el usuario particular bloquea fraudes triangulando Autofact, multas del Registro Civil e historial de remates mediante API.</p>
-    </div>
-    <h3 class="sec-ttl">Demostración de Custodia Neutral</h3>
-    <div class="card">
-      <div class="stat-row"><span>Monto en Custodia Neutral:</span><span class="stat-val" style="color:var(--green)">$350.000 CLP</span></div>
-      <div class="stat-row"><span>Estado de Fondos:</span><span style="color:var(--orange); font-weight:700">Retenido en Bóveda</span></div>
-      <div class="stat-row"><span>Validación Biométrica Comprador:</span><span style="color:var(--green)"><i class="fas fa-circle-check"></i> Aprobado</span></div>
-    </div>
-    <button class="btn btn-red" onclick="simulateApiCall('Liberando fondos de forma segura hacia el vendedor tras firma conforme en Registro Civil...', 'Fondos liquidados con éxito.')">Aprobar Liberación Escrow</button>
-  </div>
-</div>
-
-<div class="sheet" id="publishSheet">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('publishSheet')"><i class="fas fa-chevron-left"></i></div>
-    <div class="sheet-title">Indexación Automatizada de Autos</div>
-  </div>
-  <div class="sheet-body">
-    <h3 class="sec-ttl">Publicación Inmediata Georreferenciada</h3>
-    <div class="card">
-      <div class="inp-group">
-        <label class="inp-lbl">Patente del Vehículo</label>
-        <input type="text" class="inp" id="pubPatente" placeholder="BBCC11" style="text-transform:uppercase; font-weight:700; letter-spacing:2px">
-      </div>
-      <div class="inp-group">
-        <label class="inp-lbl">Precio sugerido de Venta ($)</label>
-        <input type="number" class="inp" id="pubPrecio" placeholder="12500000">
-      </div>
-      <p style="font-size:11px; color:var(--gray); margin-bottom:12px">
-        <i class="fas fa-network-wired"></i> Al presionar validar, el sistema se conecta en tiempo real con la **API de Autofact** y el **Registro Civil** para extraer marca, modelo, multas y validar que tú eres el dueño legal.
-      </p>
-      <button class="btn btn-green" onclick="publishFromParticular()">Escanear, Validar e Indexar en Mapa</button>
-    </div>
-  </div>
-</div>
-
-<div class="sheet" id="creditSheet">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('creditSheet')"><i class="fas fa-chevron-left"></i></div>
-    <div class="sheet-title">Simulador de Crédito Automotriz Integrado</div>
-  </div>
-  <div class="sheet-body">
-    <h3 class="sec-ttl">Evaluación Comercial Instantánea</h3>
-    <div class="card">
-      <div class="inp-group">
-        <label class="inp-lbl">Monto de Pie Técnico ($)</label>
-        <input type="number" class="inp" value="5000000">
-      </div>
-      <div class="inp-group">
-        <label class="inp-lbl">Plazo de Cuotas</label>
-        <select class="inp" style="background:var(--surf2); color:white">
-          <option>24 Meses</option>
-          <option selected>36 Meses</option>
-          <option>48 Meses</option>
-        </select>
-      </div>
-      <div class="card" style="background:rgba(255,255,255,0.03); border:none">
-        <div class="stat-row"><span>Pre-aprobación de Crédito:</span><span style="color:var(--green); font-weight:700">APROBADO RE-ESTRUCTURADO</span></div>
-        <div class="stat-row"><span>Cuota Mensual Estimada:</span><span class="stat-val">$245.900 CLP</span></div>
-      </div>
-      <button class="btn btn-red" onclick="alert('Solicitud enviada a Tanner, Falabella y Eurocapital mediante API Financiera.')">Solicitar Financiamiento Express</button>
-    </div>
-  </div>
-</div>
-
-<div class="sheet" id="txSheet">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('txSheet')"><i class="fas fa-chevron-left"></i></div>
-    <div class="sheet-title">Portal de Transferencias Digitales</div>
-  </div>
-  <div class="sheet-body">
-    <h3 class="sec-ttl">Contrato de Compraventa Digital con Firma Remota</h3>
-    <div class="card">
-      <div class="inp-group">
-        <label class="inp-lbl">Selecciona el Vehículo a Transferir</label>
-        <select class="inp" style="background:var(--surf2); color:white" id="txCarSelect">
-          <option>BMW S1000XR HP (Patente: GHJK99)</option>
-          <option>Subaru XV 2013 (Patente: FLST44)</option>
-          <option>Fiat Doblò Multijet (Patente: KXWZ12)</option>
-        </select>
-      </div>
-      <div class="inp-group">
-        <label class="inp-lbl">RUT del Comprador Adquiriente</label>
-        <input type="text" class="inp" placeholder="23.456.789-0">
-      </div>
-      <div style="background:rgba(6,182,212,0.1); padding:10px; border-radius:10px; font-size:11px; color:var(--cyan); margin-bottom:12px; line-height:1.4">
-        <i class="fas fa-fingerprint"></i> El sistema usará la firma digital biométrica homologada con el **Registro Civil** y la pasarela **Ashe API** para firma inmediata remota sin notaría.
-      </div>
-      <button class="btn btn-red" onclick="simulateApiCall('Estableciendo pasarela segura con Registro Civil y firmando actas digitales...', 'Firma legal estampada con éxito. Transferencia en proceso de inscripción.')">Iniciar Firma de Transferencia Online</button>
-    </div>
-  </div>
-</div>
-
-<div class="sheet" id="dealerSheet">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('dealerSheet')"><i class="fas fa-chevron-left"></i></div>
-    <div class="sheet-title" id="dealerSheetTitle">Panel SaaS Concesionario</div>
-  </div>
-  <div class="sheet-body">
-    <div class="card" style="background:linear-gradient(135deg, #1e293b, var(--surf2))">
-      <div style="font-size:10px; color:var(--orange); font-weight:700">MÓDULO DE GESTIÓN SAAS</div>
-      <h2 style="font-family:'Bebas Neue'; font-size:26px" id="dealerPanelName">Dimaco Motor</h2>
-      <div style="font-size:11px; color:var(--green)"><i class="fas fa-circle"></i> Sincronización API de Stock Activa (Carga Gratis)</div>
-    </div>
-
-    <h3 class="sec-ttl">Ingresar Nuevo Auto al Stock Geolocalizado</h3>
-    <div class="card">
-      <div class="inp-group">
-        <label class="inp-lbl">Marca y Modelo</label>
-        <input type="text" class="inp" id="addModelo" placeholder="Ej. Porsche Cayenne S">
-      </div>
-      <div class="inp-group">
-        <label class="inp-lbl">Año</label>
-        <input type="number" class="inp" id="addAnio" placeholder="2022">
-      </div>
-      <div class="inp-group">
-        <label class="inp-lbl">Precio de Lista ($ CLP)</label>
-        <input type="number" class="inp" id="addPrecio" placeholder="68000000">
-      </div>
-      <div class="inp-group">
-        <label class="inp-lbl">Fotografía del Vehículo</label>
-        <input type="file" class="inp" style="padding:6px; font-size:11px" id="addFoto">
-      </div>
-      <button class="btn btn-green" onclick="addVehicleFromDealer()">Guardar y Publicar en el Mapa Gratis</button>
-    </div>
-  </div>
-</div>
 
 </div>
 
 <script>
-let vehicles = [
-  { id: 1, name: "BMW S1000XR HP", price: "$10.500.000", type: "moto", year: "2020", km: "8.500 km", loc: "Vitacura", lat: 35, lng: 25, emoji: "🏍️", color: "moto", info: "Limpio, sin multas. Único dueño." },
-  { id: 2, name: "Mercedes Benz GLC 300", price: "$31.800.000", type: "auto", year: "2021", km: "24.000 km", loc: "Lo Barnechea", lat: 60, lng: 70, emoji: "🚙", color: "car", info: "Crédito aprobado Tanner." },
-  { id: 3, name: "Subaru XV 2.0 Dynamic", price: "$11.200.000", type: "auto", year: "2013", km: "140.000 km", loc: "Las Condes", lat: 20, lng: 60, emoji: "🚗", color: "car", info: "Consumo optimizado, mantención al día." },
-  { id: 4, name: "Fiat Doblò Multijet", price: "$8.900.000", type: "auto", year: "2018", km: "95.000 km", loc: "Santiago Centro", lat: 75, lng: 20, emoji: "🚐", color: "car", info: "Inyectores calibrados, Autofact limpio." },
-  { id: 5, name: "Toyota RAV4 Super", price: "$18.500.000", type: "auto", year: "2022", km: "30.000 km", loc: "Providencia", lat: 40, lng: 45, emoji: "SUV", color: "car", info: "Única dueña, mantención de marca." },
-  { id: 6, name: "Ducati Monster 821", price: "$8.700.000", type: "moto", year: "2019", km: "12.000 km", loc: "Vitacura", lat: 15, lng: 30, emoji: "🏍️", color: "moto", info: "Frenos Brembo nuevos." },
-  { id: 7, name: "Suzuki Swift Sport", price: "$10.400.000", type: "auto", year: "2020", km: "45.000 km", loc: "Ñuñoa", lat: 55, lng: 40, emoji: "🚗", color: "car", info: "Turbo de fábrica, sin detalles." },
-  { id: 8, name: "Ford Ranger XLT", price: "$22.000.000", type: "auto", year: "2021", km: "58.000 km", loc: "Colina", lat: 85, lng: 80, emoji: "🛻", color: "car", info: "4x4 diésel, sin multas tag." },
-  { id: 9, name: "Mazda CX-5 Core", price: "$15.900.000", type: "auto", year: "2019", km: "60.000 km", loc: "La Reina", lat: 30, lng: 85, emoji: "🚙", color: "car", info: "Garantía extendida vigente." },
-  { id: 10, name: "Yamaha MT-09 Hyper", price: "$9.200.000", type: "moto", year: "2021", km: "7.000 km", loc: "Las Condes", lat: 25, lng: 75, emoji: "🏍️", color: "moto", info: "Filtro K&N, impecable estado." },
-  { id: 11, name: "Peugeot 208 Diésel", price: "$12.800.000", type: "auto", year: "2021", km: "38.000 km", loc: "San Miguel", lat: 90, lng: 35, emoji: "🚗", color: "car", info: "Rendimiento 24km/l real." },
-  { id: 12, name: "Honda Civic EXT", price: "$16.500.000", type: "auto", year: "2020", km: "40.000 km", loc: "Macul", lat: 65, lng: 50, emoji: "🏎️", color: "car", info: "Caja CVT, full cuero." },
-  { id: 13, name: "BMW 320i M Sport", price: "$24.900.000", type: "auto", year: "2018", km: "72.000 km", loc: "Vitacura", lat: 48, lng: 15, emoji: "🚗", color: "car", info: "Kit estético M, escapes deportivos." },
-  { id: 14, name: "Kawasaki Z900", price: "$8.400.000", type: "moto", year: "2020", km: "14.000 km", loc: "Providencia", lat: 50, lng: 30, emoji: "🏍️", color: "moto", info: "Papeles al día hasta 2027." },
-  { id: 15, name: "Hyundai Tucson GL", price: "$14.200.000", type: "auto", year: "2018", km: "80.000 km", loc: "Maipú", lat: 70, lng: 10, emoji: "🚙", color: "car", info: "Familiar, láminas de seguridad." },
-  { id: 16, name: "Chevrolet Colorado", price: "$19.800.000", type: "auto", year: "2020", km: "65.000 km", loc: "Lampa", lat: 10, lng: 50, emoji: "🛻", color: "car", info: "Lista para traspaso inmediato." },
-  { id: 17, name: "Kia Morning Town", price: "$6.900.000", type: "auto", year: "2017", km: "90.000 km", loc: "Estación Central", lat: 80, lng: 15, emoji: "🚗", color: "car", info: "Económico, ideal aplicaciones." },
-  { id: 18, name: "KTM 390 Adventure", price: "$4.900.000", type: "moto", year: "2022", km: "5.000 km", loc: "La Florida", lat: 82, lng: 60, emoji: "🏍️", color: "moto", info: "Defensas integrales, maletas." },
-  { id: 19, name: "Volkswagen Golf GTI", price: "$23.500.000", type: "auto", year: "2019", km: "50.000 km", loc: "Lo Barnechea", lat: 42, lng: 85, emoji: "🏎️", color: "car", info: "Reprogramación Stage 1 formal." },
-  { id: 20, name: "Nissan Qashqai Sense", price: "$13.400.000", type: "auto", year: "2019", km: "70.000 km", loc: "Peñalolén", lat: 52, lng: 68, emoji: "🚙", color: "car", info: "Único dueño, Autofact OK." }
+let mockCars = [
+  { id: 1, name: "Subaru XV 2.0 Premium", price: "$11.200.000", type: "standard", year: "2013", km: "140.000 km", loc: "Vitacura", top: 35, left: 40, emoji: "🚙", desc: "Excelente estado mecánico, versión AWD.", reportLevel: 'none' },
+  { id: 2, name: "Fiat Doblò Multijet", price: "$8.900.000", type: "standard", year: "2018", km: "95.000 km", loc: "Las Condes", top: 55, left: 60, emoji: "🚐", desc: "Furgón de carga diésel, muy económico.", reportLevel: 'express' }
 ];
 
-// Flujo Login Dinámico
-function showLoginInput(type) {
-  document.getElementById('loginMenu').style.display = 'none';
-  if(type === 'particular') {
-    document.getElementById('formParticular').style.display = 'block';
+function setRole(role) {
+  let ind = document.getElementById('roleIndicator');
+  let nav = document.getElementById('mainNav');
+  if(role === 'automotora') {
+    ind.innerText = "SaaS AUTOMOTORA"; ind.style.color = "var(--purple)";
+    nav.innerHTML = `<div class="bnav-item active" onclick="changeScreen('map')"><i class="fas fa-map"></i><span>Mapa Stock</span></div>`;
   } else {
-    document.getElementById('formAutomotora').style.display = 'block';
+    ind.innerText = "PARTICULAR"; ind.style.color = "var(--blue)";
+    nav.innerHTML = `
+      <div class="bnav-item active" onclick="changeScreen('map')"><i class="fas fa-map"></i><span>Ver Mapa</span></div>
+      <div class="bnav-item" onclick="changeScreen('publish')"><i class="fas fa-plus-circle"></i><span>Publicar</span></div>
+    `;
   }
+  renderPins();
+  changeScreen('map');
 }
 
-function resetLoginMenu() {
-  document.getElementById('formParticular').style.display = 'none';
-  document.getElementById('formAutomotora').style.display = 'none';
-  document.getElementById('loginMenu').style.display = 'block';
-}
-
-function executeDirectLogin(typeLabel) {
-  let finalUser = "Rodrigo Monroy";
-  let finalRole = "Particular Verificado";
-  
-  if(typeLabel === 'SaaS Dealer') {
-    let customDealer = document.getElementById('dealerNameInput').value || "Automotora Premium";
-    finalUser = customDealer;
-    finalRole = "Nodo Corporativo SaaS Activo";
-    document.getElementById('dealerPanelName').innerText = customDealer;
-    document.getElementById('avatarName').innerText = customDealer.substring(0,2).toUpperCase();
-  } else {
-    document.getElementById('avatarName').innerText = "RM";
-  }
-  
-  document.getElementById('profileName').innerText = finalUser;
-  document.getElementById('profileRole').innerText = finalRole;
-  
-  // Transición limpia
-  document.getElementById('login').style.opacity = '0';
-  setTimeout(() => {
-    document.getElementById('login').style.display = 'none';
-    document.getElementById('mapScreen').style.display = 'block';
-    renderPins(vehicles);
-    if(typeLabel === 'SaaS Dealer') openSheet('dealerSheet');
-  }, 300);
-}
-
-// Ocultar Splash Inicial
-setTimeout(() => {
-  document.getElementById('splash').style.opacity = '0';
-  setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 400);
-}, 1200);
-
-// Renderizado de Pines en el mapa
-function renderPins(dataPool) {
-  let container = document.getElementById('pinsContainer');
-  container.innerHTML = "";
-  dataPool.forEach(v => {
+function renderPins() {
+  let wrapper = document.getElementById('pinsWrapper');
+  wrapper.innerHTML = "";
+  mockCars.forEach(car => {
     let pin = document.createElement('div');
-    pin.className = 'sim-pin';
-    pin.style.top = v.lat + '%';
-    pin.style.left = v.lng + '%';
-    pin.onclick = () => openCarDetail(v.id);
+    pin.className = 'map-pin';
+    pin.style.top = car.top + '%';
+    pin.style.left = car.left + '%';
+    pin.onclick = () => openCarDetails(car);
+    
+    let pClass = car.reportLevel === 'express' ? 'premium' : (car.reportLevel === 'autofact' ? 'dealer' : 'standard');
     
     pin.innerHTML = `
-      <div class="pin-ico ${v.color}">${v.emoji}</div>
-      <div class="pin-lbl">${v.name}</div>
+      <div class="pin-ball ${pClass}">${car.emoji}</div>
+      <div class="pin-tag">${car.name} ${car.reportLevel === 'express' ? '⚡' : (car.reportLevel === 'autofact' ? '⭐' : '')}</div>
     `;
-    container.appendChild(pin);
+    wrapper.appendChild(pin);
   });
-  document.getElementById('totalCounter').innerText = dataPool.length;
 }
 
-// Mostrar Detalle de Auto con Fotos y Simulación de APIs
-function openCarDetail(id) {
-  let car = vehicles.find(v => v.id === id);
-  if(!car) return;
-  
-  let card = document.getElementById('detailCard');
-  let content = document.getElementById('detailCardContent');
-  
-  content.innerHTML = `
-    <div class="dc-img-placeholder">
-      <span style="font-size:42px">${car.emoji}</span>
-    </div>
-    <div style="display:flex; justify-content:space-between; align-items:flex-start">
-      <div>
-        <div class="dc-name">${car.name} (${car.year})</div>
-        <div class="dc-meta">${car.km} • ${car.loc} • Autofact Verificado</div>
+function openCarDetails(car) {
+  document.getElementById('lblTitle').innerText = `${car.name} (${car.year})`;
+  document.getElementById('lblMeta').innerText = `${car.km} • ${car.loc}`;
+  document.getElementById('lblPrice').innerText = car.price;
+  document.getElementById('lblDesc').innerText = car.desc;
+
+  let badges = document.getElementById('afBadgeContainer');
+  let box = document.getElementById('boxActions');
+
+  if(car.reportLevel === 'none') {
+    badges.innerHTML = `<div class="badge-none"><i class="fas fa-eye-slash"></i> Datos no verificados por la plataforma</div>`;
+    box.innerHTML = `
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-green" style="flex:1" onclick="buyExpress(${car.id})"><i class="fas fa-bolt"></i> Escáner Express ($500)</button>
+        <button class="btn btn-purple" style="flex:1" onclick="buyAutofactFull(${car.id})"><i class="fas fa-file-invoice-dollar"></i> Autofact Oficial ($7.000)</button>
       </div>
-      <div class="dc-price">${car.price}</div>
-    </div>
-    <p style="font-size:12px; color:var(--gray); margin:4px 0 10px; line-height:1.4"><i class="fas fa-quote-left"></i> ${car.info}</p>
-    <div class="dc-btns">
-      <button class="dcbtn dcbtn-red" onclick="triggerFipPremium('${car.name}')"><i class="fas fa-bolt"></i> Escáner FIP $500</button>
-      <button class="dcbtn dcbtn-out" onclick="openSheet('creditSheet')"><i class="fas fa-percentage"></i> Ver Crédito</button>
-    </div>
-  `;
-  card.classList.remove('hidden');
+    `;
+  } else if(car.reportLevel === 'express') {
+    badges.innerHTML = `
+      <div class="badge-express"><i class="fas fa-bolt"></i> Filtro Express Activo ($500)</div>
+      <div class="badge-none" style="background:rgba(245,158,11,0.1);color:var(--orange);border-color:var(--orange)"><i class="fas fa-check"></i> Multas + Remates OK</div>
+    `;
+    box.innerHTML = `
+      <button class="btn btn-green" style="width:100%" onclick="openReportModal('express', '${car.name}')"><i class="fas fa-search"></i> Abrir Escáner Digital (Multas/Remates)</button>
+      <button class="btn btn-purple" style="width:100%;margin-top:4px" onclick="buyAutofactFull(${car.id})"><i class="fas fa-file-invoice-dollar"></i> Solicitar Informe Autofact Full ($7.000)</button>
+    `;
+  } else if(car.reportLevel === 'autofact') {
+    badges.innerHTML = `
+      <div class="badge-autofact"><i class="fas fa-certificate"></i> Certificado Completo Autofact ($7.000)</div>
+    `;
+    box.innerHTML = `
+      <button class="btn btn-purple" style="width:100%" onclick="openReportModal('autofact', '${car.name}')"><i class="fas fa-file-contract"></i> Descargar PDF Autofact Certificado</button>
+    `;
+  }
+  document.getElementById('detailCard').classList.add('open');
 }
 
-function closeDetail() {
-  document.getElementById('detailCard').classList.add('hidden');
+function closeDetail() { document.getElementById('detailCard').classList.remove('open'); }
+
+function buyExpress(id) {
+  let car = mockCars.find(c => c.id === id);
+  car.reportLevel = 'express';
+  renderPins(); openCarDetails(car);
 }
 
-// Simular llamada FIP Premium de $500
-function triggerFipPremium(carName) {
-  let content = document.getElementById('detailCardContent');
-  content.innerHTML = `
-    <div style="text-align:center; padding:15px 0">
-      <i class="fas fa-sync fa-spin" style="font-size:32px; color:var(--red2); margin-bottom:12px"></i>
-      <div style="font-weight:800; font-size:13px; letter-spacing:1px">CONECTANDO A CONSECIONARIO ASHE API & AUTOFACT...</div>
-      <p style="font-size:11px; color:var(--gray); margin-top:4px">Verificando limitaciones de dominio y multas tag en tiempo real...</p>
-    </div>
-  `;
-  setTimeout(() => {
+function buyAutofactFull(id) {
+  let car = mockCars.find(c => c.id === id);
+  car.reportLevel = 'autofact';
+  renderPins(); openCarDetails(car);
+}
+
+function openReportModal(level, name) {
+  let title = document.getElementById('modalHeaderTitle');
+  let content = document.getElementById('modalContent');
+  
+  if(level === 'express') {
+    title.innerHTML = `<i class="fas fa-bolt" style="color:var(--green)"></i> ESCÁNER DIGITAL EXPRESS ($500)`;
     content.innerHTML = `
-      <div style="color:var(--green); font-family:'Bebas Neue'; font-size:22px; margin-bottom:6px"><i class="fas fa-shield-check"></i> VEHÍCULO HIGIÉNICO HOMOLOGADO</div>
-      <div style="background:rgba(255,255,255,0.04); border:1px solid var(--border); padding:10px; border-radius:10px; font-size:11px; line-height:1.5; margin-bottom:12px">
-        ✅ <strong>Registro Civil:</strong> 0 Prohibiciones de Enajenar<br>
-        ✅ <strong>Autofact Score:</strong> 9.8/10 (Sin registros de pérdida total)<br>
-        ✅ <strong>Multas de Tránsito:</strong> Ninguna activa al día de hoy
+      <div style="text-align:center;margin-bottom:15px">
+        <h2 style="font-family:'Bebas Neue';font-size:24px;color:#fff">${name.toUpperCase()}</h2>
+        <p style="font-size:11px;color:var(--green)">CRUCE DE BASES DE DATOS PÚBLICAS RECOLECTADAS</p>
       </div>
-      <button class="btn btn-ghost" style="padding:8px; font-size:11px" onclick="closeDetail()">Volver al Mapa</button>
+      <div class="ui-card" style="background:#1e293b;border-left:4px solid var(--green)">
+        <h4 style="color:var(--green);font-size:11px"><i class="fas fa-car-burst"></i> HISTORIAL DE REMATES (LATCH):</h4>
+        <p style="font-size:12px;color:#fff;margin-top:4px">Limpio. No registra ingresos en rematadoras por siniestros de pérdida total.</p>
+      </div>
+      <div class="ui-card" style="background:#1e293b;border-left:4px solid var(--green)">
+        <h4 style="color:var(--green);font-size:11px"><i class="fas fa-traffic-light"></i> REGISTRO DE MULTAS (JPL):</h4>
+        <p style="font-size:12px;color:#fff;margin-top:4px">0 infracciones vigentes informadas en juzgados ni multas TAG pendientes.</p>
+      </div>
+      <p style="font-size:10px;color:var(--gray);text-align:center">Nota: Este escáner rápido no incluye estado legal de prendas o embargos del Registro Civil.</p>
     `;
-  }, 1800);
-}
-
-// Inyección de Autos desde Panel SaaS Concesionaria
-function addVehicleFromDealer() {
-  let model = document.getElementById('addModelo').value;
-  let anio = document.getElementById('addAnio').value;
-  let precio = document.getElementById('addPrecio').value;
-  
-  if(!model || !precio) {
-    alert("Por favor completa los campos para indexar el vehículo.");
-    return;
-  }
-  
-  let newId = vehicles.length + 1;
-  let formatPrice = "$ " + parseInt(precio).toLocaleString('es-CL');
-  
-  let newCar = {
-    id: newId,
-    name: model,
-    price: formatPrice,
-    type: "auto",
-    year: anio || "2026",
-    km: "0 km (Nuevo Stock)",
-    loc: "Nodo Concesión SaaS",
-    lat: 30 + Math.random() * 40,
-    lng: 20 + Math.random() * 50,
-    emoji: "🏎️",
-    color: "dealer",
-    info: "Cargado mediante API SaaS Corporativa de forma gratuita."
-  };
-  
-  vehicles.push(newCar);
-  renderPins(vehicles);
-  closeSheet('dealerSheet');
-  alert("Vehículo '" + model + "' indexado con éxito en el mapa en tiempo real. Configurado costo $0 por suscripción corporativa SaaS.");
-}
-
-// Indexación desde Particular con Patente
-function publishFromParticular() {
-  let pat = document.getElementById('pubPatente').value;
-  let prc = document.getElementById('pubPrecio').value;
-  
-  if(!pat || !prc) {
-    alert("Ingresa la patente y el precio para simular el Autofact.");
-    return;
-  }
-  
-  alert("Consultando pasarela Autofact API externa para patente " + pat + "...");
-  
-  let newId = vehicles.length + 1;
-  let formatPrice = "$ " + parseInt(prc).toLocaleString('es-CL');
-  
-  let userCar = {
-    id: newId,
-    name: "Vehículo Patente " + pat.toUpperCase(),
-    price: formatPrice,
-    type: "auto",
-    year: "2021",
-    km: "42.000 km",
-    loc: "Santiago Oriente",
-    lat: 50,
-    lng: 50,
-    emoji: "🚗",
-    color: "car",
-    info: "Validado automáticamente con Registro Civil. Propietario coincide."
-  };
-  
-  vehicles.push(userCar);
-  renderPins(vehicles);
-  closeSheet('publishSheet');
-  openCarDetail(newId);
-}
-
-// Buscador de vehículos en tiempo real
-function searchVehicles(query) {
-  let q = query.toLowerCase();
-  let filtered = vehicles.filter(v => v.name.toLowerCase().includes(q) || v.loc.toLowerCase().includes(q));
-  renderPins(filtered);
-}
-
-// Filtros por Tipo (Chips)
-function filterType(type, element) {
-  document.querySelectorAll('.mchip').forEach(c => c.classList.remove('on'));
-  element.classList.add('on');
-  if(type === 'todos') {
-    renderPins(vehicles);
   } else {
-    let filtered = vehicles.filter(v => v.type === type);
-    renderPins(filtered);
+    title.innerHTML = `<i class="fas fa-file-contract" style="color:var(--cyan)"></i> INFORME COMPLETO API AUTOFACT ($7.000)`;
+    content.innerHTML = `
+      <div style="text-align:center;margin-bottom:15px">
+        <h2 style="font-family:'Bebas Neue';font-size:24px;color:#fff">${name.toUpperCase()}</h2>
+        <p style="font-size:11px;color:var(--cyan)">SISTEMA DE CONSULTA CORPORATIVA OFICIAL</p>
+      </div>
+      <div class="ui-card" style="background:#1e293b;border-left:4px solid var(--orange)">
+        <h4 style="color:var(--orange);font-size:11px"><i class="fas fa-gavel"></i> REGISTRO CIVIL (PRENDAS Y PROHIBICIONES):</h4>
+        <p style="font-size:12px;color:#fff;margin-top:4px">**VERIFICADO:** Vehículo libre de prendas, embargos o prohibiciones judiciales de transferir.</p>
+      </div>
+      <div class="ui-card" style="background:#1e293b;border-left:4px solid var(--cyan)">
+        <h4 style="color:var(--cyan);font-size:11px"><i class="fas fa-history"></i> HISTORIAL PROPIETARIOS Y REVISIÓN TÉCNICA:</h4>
+        <p style="font-size:12px;color:#fff;margin-top:4px">Lecturas de kilometraje consistentes. Registra 2 dueños anteriores vigentes en historial.</p>
+      </div>
+    `;
   }
+  document.getElementById('afModal').classList.add('active');
 }
 
-// Control General de Paneles (Sheets)
-function openSheet(id) {
-  document.getElementById(id).style.display = 'block';
-  setTimeout(() => { document.getElementById(id).classList.add('on'); }, 10);
+function closeAfModal() { document.getElementById('afModal').classList.remove('active'); }
+
+function saveParticularProduct() {
+  let name = document.getElementById('pModel').value;
+  let price = document.getElementById('pPrice').value;
+  let isExpress = document.getElementById('chkExpress').checked;
+  
+  let newObj = {
+    id: mockCars.length + 1, name: name, price: "$ " + parseInt(price).toLocaleString('es-CL'),
+    type: "standard", year: document.getElementById('pYear').value, km: document.getElementById('pKm').value,
+    loc: "Santiago", desc: "Aviso de propietario.", top: 40, left: 45, emoji: "🏍️",
+    reportLevel: isExpress ? 'express' : 'none'
+  };
+  mockCars.push(newObj); renderPins(); changeScreen('map'); openCarDetails(newObj);
 }
 
-function closeSheet(id) {
-  document.getElementById(id).classList.remove('on');
-  setTimeout(() => { document.getElementById(id).style.display = 'none'; }, 300);
+function changeScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('scr' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active');
 }
-
-function closeAllSheets() {
-  document.querySelectorAll('.sheet').forEach(s => {
-    s.classList.remove('on');
-    setTimeout(() => s.style.display = 'none', 300);
-  });
-}
-
-function simulateApiCall(loadingText, successText) {
-  alert(loadingText);
-  setTimeout(() => {
-    alert(successText);
-  }, 1000);
-}
-
-function openDrawer() {
-  document.getElementById('drawerOverlay').style.display = 'block';
-  document.getElementById('drawer').classList.add('on');
-}
-
-function closeDrawer() {
-  document.getElementById('drawerOverlay').style.display = 'none';
-  document.getElementById('drawer').classList.remove('on');
-}
+setRole('particular');
 </script>
 </body>
 </html>
