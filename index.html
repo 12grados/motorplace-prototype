@@ -11,7 +11,7 @@
 <body>
 <div id="app">
 
-<!-- ===================== SPLASH ===================== -->
+<!-- SPLASH -->
 <div id="splash">
   <div class="sp-grid"></div>
   <div class="sp-logo">🚗</div>
@@ -21,7 +21,7 @@
   <div class="sp-bar"><div class="sp-fill"></div></div>
 </div>
 
-<!-- ===================== ONBOARDING ===================== -->
+<!-- ONBOARDING -->
 <div id="onboarding">
   <div style="padding:16px;display:flex;justify-content:flex-end">
     <button onclick="obSkip()" style="background:none;border:none;color:var(--gray);font-size:13px;cursor:pointer;font-family:var(--font)">Saltar →</button>
@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<!-- ===================== LOGIN ===================== -->
+<!-- LOGIN -->
 <div id="login">
   <div class="login-hero">
     <div class="login-hero-content">
@@ -46,8 +46,6 @@
       <div class="login-tab on" id="tab-login" onclick="switchLoginTab('login')">Ingresar</div>
       <div class="login-tab" id="tab-register" onclick="switchLoginTab('register')">Registrarse</div>
     </div>
-
-    <!-- FORM LOGIN -->
     <div id="login-form">
       <h2 style="font-size:22px;font-weight:900;margin-bottom:4px">Bienvenido 👋</h2>
       <p style="font-size:13px;color:var(--gray);margin-bottom:20px">Selecciona tu rol para continuar.</p>
@@ -57,8 +55,6 @@
       <button class="btn btn-ghost" onclick="doLogin('particular')">🌐 Google Auth (Simulado)</button>
       <p style="font-size:11px;color:var(--gray2);text-align:center;margin-top:12px">Demo interactivo · Validación de negocio Motorplace</p>
     </div>
-
-    <!-- FORM REGISTRO -->
     <div id="register-form" style="display:none">
       <h2 style="font-size:22px;font-weight:900;margin-bottom:4px">Crear cuenta 🚀</h2>
       <p style="font-size:13px;color:var(--gray);margin-bottom:20px">Es gratis. Solo toma 2 minutos.</p>
@@ -70,29 +66,22 @@
       <div class="inp-g">
         <div class="inp-lbl">Tipo de cuenta</div>
         <div style="display:flex;gap:8px">
-          <div class="mchip on" style="flex:1;text-align:center" onclick="this.classList.add('on');this.nextElementSibling.classList.remove('on')">🚗 Particular</div>
-          <div class="mchip" style="flex:1;text-align:center" onclick="this.classList.add('on');this.previousElementSibling.classList.remove('on')">🏢 Automotora</div>
+          <div class="mchip on" style="flex:1;text-align:center">🚗 Particular</div>
+          <div class="mchip" style="flex:1;text-align:center">🏢 Automotora</div>
         </div>
       </div>
       <button class="btn btn-red" onclick="doLogin('particular')">✅ Crear cuenta y verificar KYC</button>
-      <p style="font-size:11px;color:var(--gray2);text-align:center;margin-top:8px">Al registrarte aceptas los Términos y la Política de Privacidad</p>
     </div>
   </div>
 </div>
 
-<!-- ===================== MAP SCREEN ===================== -->
+<!-- MAP SCREEN -->
 <div id="mapScreen">
-
-  <!-- Mapa interactivo -->
   <div class="map-wrap" id="mapWrap">
     <div id="mapCanvas" style="position:absolute;width:300%;height:300%;top:-100%;left:-100%;transform-origin:center center;will-change:transform">
-
-      <!-- Fondo urbano -->
       <div style="position:absolute;inset:0;background:#0a0e1a;
         background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
         background-size:80px 80px,80px 80px,16px 16px,16px 16px"></div>
-
-      <!-- Calles principales -->
       <div class="road-main" style="position:absolute;top:50%;left:0;right:0;height:4px;transform:translateY(-50%)"></div>
       <div class="road-main" style="position:absolute;left:50%;top:0;bottom:0;width:4px;transform:translateX(-50%)"></div>
       <div class="road-h" style="top:33%;height:2px"></div>
@@ -103,58 +92,50 @@
       <div class="road-v" style="left:66%;width:2px"></div>
       <div class="road-v" style="left:20%;width:1.5px"></div>
       <div class="road-v" style="left:80%;width:1.5px"></div>
-
-      <!-- Etiquetas de zonas -->
       <div class="zone-lbl" style="top:25%;left:55%">PROVIDENCIA</div>
       <div class="zone-lbl" style="top:55%;left:18%">LAS CONDES</div>
       <div class="zone-lbl" style="top:70%;left:58%">ÑUÑOA</div>
       <div class="zone-lbl" style="top:30%;left:72%">VITACURA</div>
       <div class="zone-lbl" style="top:15%;left:30%">RECOLETA</div>
       <div class="zone-lbl" style="top:80%;left:35%">MACUL</div>
-
-      <!-- Pulse BMW -->
       <div class="pulse" style="top:39%;left:32%;width:60px;height:60px;border-color:rgba(232,0,29,.4);animation-delay:0s"></div>
       <div class="pulse" style="top:39%;left:32%;width:60px;height:60px;border-color:rgba(232,0,29,.2);animation-delay:.7s"></div>
-
-      <!-- PIN: BMW (disponible) -->
+      <!-- PIN BMW -->
       <div class="sim-pin" style="top:39%;left:32%" onclick="showDetail('bmw')">
         <div class="pin-ico premium"><i class="fa-solid fa-motorcycle"></i></div>
         <div class="pin-lbl">BMW S1000XR · $11.6M</div>
       </div>
-
-      <!-- PIN: Mercedes (disponible) -->
+      <!-- PIN Mercedes -->
       <div class="sim-pin" style="top:52%;left:62%" onclick="showDetail('mercedes')">
         <div class="pin-ico verde"><i class="fa-solid fa-car"></i></div>
         <div class="pin-lbl">Mercedes GLA · $18.9M</div>
       </div>
-
-      <!-- PIN: Toyota (sin stock) -->
+      <!-- PIN Toyota sin stock -->
       <div class="sim-pin unavailable" style="top:65%;left:42%" onclick="showDetail('toyota')">
         <div class="pin-ico unavail">❌</div>
         <div class="pin-lbl unavail-lbl">Corolla Cross · Sin Stock</div>
       </div>
-
-      <!-- PIN: Suzuki (reservado) -->
+      <!-- PIN Suzuki reservado -->
       <div class="sim-pin reserved" style="top:44%;left:78%" onclick="showDetail('suzuki')">
         <div class="pin-ico reserved-ico"><i class="fa-solid fa-motorcycle"></i></div>
         <div class="pin-lbl reserved-lbl">🟡 Suzuki GSX · Reservado</div>
       </div>
-
-      <!-- PIN: Automotora -->
+      <!-- PIN Automotora -->
       <div class="sim-pin" style="top:28%;left:68%" onclick="showDetail('automotora')">
         <div class="pin-ico orange"><i class="fa-solid fa-building"></i></div>
         <div class="pin-lbl">🏢 AutoPrime SaaS</div>
       </div>
-
-      <!-- PIN: Escrow Bóveda -->
+      <!-- PIN Escrow -->
       <div class="sim-pin" style="top:72%;left:76%" onclick="openSheet('escrow')">
-        <div class="pin-ico" style="background:linear-gradient(135deg,var(--purple),#6d28d9)">
-          <i class="fa-solid fa-vault"></i>
-        </div>
+        <div class="pin-ico" style="background:linear-gradient(135deg,var(--purple),#6d28d9)"><i class="fa-solid fa-vault"></i></div>
         <div class="pin-lbl">🔒 Bóveda Escrow</div>
       </div>
-
-      <!-- Cluster ejemplo -->
+      <!-- PIN Plata Hoy subasta -->
+      <div class="sim-pin" style="top:58%;left:28%" onclick="abrirPlataHoy()">
+        <div class="pin-ico" style="background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 0 20px rgba(34,197,94,.4)">💰</div>
+        <div class="pin-lbl" style="color:var(--green)">Plata Hoy · Subasta</div>
+      </div>
+      <!-- Cluster -->
       <div class="sim-pin" style="top:20%;left:25%" onclick="showToast('5 vehículos en esta zona. Haz zoom para verlos.')">
         <div class="pin-cluster">5</div>
         <div class="pin-lbl" style="color:var(--blue)">Cluster · Las Condes</div>
@@ -171,7 +152,7 @@
     <div class="loc-btn" onclick="showToast('🧭 Norte orientado')">🧭</div>
   </div>
 
-  <!-- Header flotante -->
+  <!-- Header -->
   <div class="float-hdr">
     <div class="menu-btn" onclick="openDrawer()"><i class="fa-solid fa-bars"></i></div>
     <div class="srch-wrap" onclick="openSheet('busqueda')">
@@ -179,20 +160,19 @@
       <input type="text" placeholder="Busca marca, modelo, zona o patente…" readonly>
       <i class="fa-solid fa-sliders" style="color:var(--purple)"></i>
     </div>
-    <div class="notif-btn" onclick="openSheet('notif')">
-      <i class="fa-solid fa-bell"></i><div class="ndot"></div>
-    </div>
+    <div class="notif-btn" onclick="openSheet('notif')"><i class="fa-solid fa-bell"></i><div class="ndot"></div></div>
   </div>
 
-  <!-- Chips filtro -->
+  <!-- Chips -->
   <div class="map-chips">
-    <div class="mchip on"  id="chip-all"      onclick="toggleChip('all')">🗺 Todos</div>
-    <div class="mchip"     id="chip-premium"  onclick="toggleChip('premium')">🏍 Premium</div>
-    <div class="mchip"     id="chip-escrow"   onclick="toggleChip('escrow')">🔒 Escrow</div>
-    <div class="mchip"     id="chip-reservado"onclick="toggleChip('reservado')">🟡 Reservados</div>
-    <div class="mchip"     id="chip-credito"  onclick="toggleChip('credito')">💳 Crédito</div>
-    <div class="mchip"     id="chip-ficha"    onclick="toggleChip('ficha')">📋 Ficha Full</div>
-    <div class="mchip"     id="chip-stock"    onclick="toggleChip('stock')">✅ En Stock</div>
+    <div class="mchip on" id="chip-all" onclick="toggleChip('all')">🗺 Todos</div>
+    <div class="mchip" id="chip-premium" onclick="toggleChip('premium')">🏍 Premium</div>
+    <div class="mchip" id="chip-escrow" onclick="toggleChip('escrow')">🔒 Escrow</div>
+    <div class="mchip" id="chip-reservado" onclick="toggleChip('reservado')">🟡 Reservados</div>
+    <div class="mchip" id="chip-credito" onclick="toggleChip('credito')">💳 Crédito</div>
+    <div class="mchip" id="chip-ficha" onclick="toggleChip('ficha')">📋 Ficha Full</div>
+    <div class="mchip" id="chip-stock" onclick="toggleChip('stock')">✅ En Stock</div>
+    <div class="mchip" id="chip-subasta" onclick="toggleChip('subasta');abrirPlataHoy()">💰 Subasta</div>
   </div>
 
   <!-- Counter -->
@@ -215,14 +195,14 @@
     <div class="dc-close" onclick="hideDetail()"><i class="fa-solid fa-xmark"></i></div>
     <div style="display:flex;gap:12px;align-items:flex-start">
       <div style="flex:1">
-        <div class="dc-name"  id="dc-name"></div>
+        <div class="dc-name" id="dc-name"></div>
         <div class="dc-price" id="dc-price"></div>
-        <div class="dc-meta"  id="dc-meta"></div>
+        <div class="dc-meta" id="dc-meta"></div>
         <div class="dc-status" id="dc-status"></div>
       </div>
       <div id="dc-ico" style="width:56px;height:56px;background:var(--surf2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0"></div>
     </div>
-    <div class="dc-tags"    id="dc-tags"></div>
+    <div class="dc-tags" id="dc-tags"></div>
     <div id="dc-actions"></div>
   </div>
 
@@ -230,18 +210,18 @@
   <div class="ticker">
     <div class="tick-in">
       <div class="ti"><div class="ti-d"></div>BMW S1000XR · $11.630.000</div>
+      <div class="ti"><div class="ti-d"></div>PLATA HOY · SUBASTA ACTIVA · COROLLA CROSS</div>
       <div class="ti"><div class="ti-d"></div>ESCROW ACTIVO · 3 TX HOY</div>
       <div class="ti"><div class="ti-d"></div>AUTOFACT OFICIAL · $7.000</div>
       <div class="ti"><div class="ti-d"></div>KYC IA · 24/7</div>
-      <div class="ti"><div class="ti-d"></div>COROLLA CROSS · SIN STOCK</div>
       <div class="ti"><div class="ti-d"></div>SUZUKI GSX · RESERVADO</div>
       <div class="ti"><div class="ti-d"></div>FEA SIN NOTARÍA</div>
       <div class="ti"><div class="ti-d"></div>AUTOPRIME · 12 PUBS ACTIVAS</div>
       <div class="ti"><div class="ti-d"></div>BMW S1000XR · $11.630.000</div>
+      <div class="ti"><div class="ti-d"></div>PLATA HOY · SUBASTA ACTIVA · COROLLA CROSS</div>
       <div class="ti"><div class="ti-d"></div>ESCROW ACTIVO · 3 TX HOY</div>
       <div class="ti"><div class="ti-d"></div>AUTOFACT OFICIAL · $7.000</div>
       <div class="ti"><div class="ti-d"></div>KYC IA · 24/7</div>
-      <div class="ti"><div class="ti-d"></div>COROLLA CROSS · SIN STOCK</div>
       <div class="ti"><div class="ti-d"></div>SUZUKI GSX · RESERVADO</div>
       <div class="ti"><div class="ti-d"></div>FEA SIN NOTARÍA</div>
       <div class="ti"><div class="ti-d"></div>AUTOPRIME · 12 PUBS ACTIVAS</div>
@@ -258,7 +238,6 @@
       <div class="bni-ico"><i class="fa-solid fa-magnifying-glass"></i></div>
       <div class="bni-lbl">Buscar</div>
     </div>
-    <!-- BOTÓN PLATA HOY -->
     <div class="bni-platahoy" onclick="abrirPlataHoy()">
       <div class="bni-platahoy-ico" id="platahoy-btn">
         💰
@@ -275,9 +254,9 @@
       <div class="bni-lbl">Perfil</div>
     </div>
   </div>
-</div><!-- /mapScreen -->
-  
-<!-- ===================== DRAWER ===================== -->
+</div>
+
+<!-- DRAWER -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <div class="drw-top">
@@ -288,31 +267,26 @@
     <div class="drw-av" id="drw-av">P</div>
     <div>
       <div class="drw-uname" id="drw-uname">Particular</div>
-      <div class="drw-usub"  id="drw-usub">KYC Verificado</div>
+      <div class="drw-usub" id="drw-usub">KYC Verificado</div>
     </div>
   </div>
   <div class="drw-items" id="drawerItems"></div>
   <div class="drw-footer">Motorplace v3.0 · Start-Up Chile · 2026</div>
 </div>
 
-<!-- ===================== SHEETS ===================== -->
-
-<!-- BÚSQUEDA -->
+<!-- SHEET: BUSQUEDA -->
 <div class="sheet" id="sheet-busqueda">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('busqueda')"><i class="fa-solid fa-arrow-left"></i></div>
     <div class="sheet-ttl">🔍 Buscar Vehículos</div>
   </div>
   <div class="sheet-body">
-    <!-- Consulta por patente -->
     <div class="sec-ttl">🔎 Consultar por Patente</div>
     <div class="patente-input-wrap">
       <input class="patente-inp" id="patente-inp" placeholder="ABCD12" maxlength="6">
       <button class="patente-btn" onclick="consultarPatente()"><i class="fa-solid fa-search"></i></button>
     </div>
     <div id="patente-result"></div>
-
-    <!-- Filtros -->
     <div class="sec-ttl">Filtros de búsqueda</div>
     <div class="card">
       <div class="inp-g"><div class="inp-lbl">Marca / Modelo</div><input class="inp" placeholder="ej: BMW, Toyota, Suzuki…"></div>
@@ -322,12 +296,9 @@
         <div class="inp-g"><div class="inp-lbl">Precio mín.</div><input class="inp" placeholder="$0"></div>
         <div class="inp-g"><div class="inp-lbl">Precio máx.</div><input class="inp" placeholder="$30M"></div>
       </div>
+      <div class="inp-g"><div class="inp-lbl">Zona / Comuna</div><input class="inp" placeholder="ej: Providencia, Las Condes…"></div>
       <div class="inp-g">
-        <div class="inp-lbl">Zona / Comuna</div>
-        <input class="inp" placeholder="ej: Providencia, Las Condes…">
-      </div>
-      <div class="inp-g">
-        <div class="inp-lbl">Tipo de informe disponible</div>
+        <div class="inp-lbl">Tipo de informe</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <div class="mchip on" style="font-size:10px;padding:6px 10px">Todos</div>
           <div class="mchip" style="font-size:10px;padding:6px 10px">✅ Básico gratis</div>
@@ -341,53 +312,37 @@
           <div class="mchip on" style="font-size:10px;padding:6px 10px">Todos</div>
           <div class="mchip" style="font-size:10px;padding:6px 10px">🟢 Disponible</div>
           <div class="mchip" style="font-size:10px;padding:6px 10px">🟡 Reservado</div>
+          <div class="mchip" style="font-size:10px;padding:6px 10px">💰 En Subasta</div>
           <div class="mchip" style="font-size:10px;padding:6px 10px">⬛ Sin Stock</div>
         </div>
       </div>
       <button class="btn btn-red" onclick="closeSheet('busqueda')">🔍 Aplicar Filtros</button>
     </div>
-
     <div class="sec-ttl">Resultados cerca de ti</div>
     <div class="v-card" onclick="showDetail('bmw');closeSheet('busqueda')">
       <div class="v-img">🏍️</div>
-      <div style="flex:1">
-        <div class="v-name">BMW S1000 XR · HP</div>
-        <div class="v-price">$11.630.000</div>
-        <div class="v-meta">2021 · 18.000 km · Providencia</div>
-        <div style="margin-top:5px"><span class="badge badge-g">🟢 Disponible</span> <span class="badge badge-b">FEA</span> <span class="badge badge-p">Autofact</span></div>
-      </div>
+      <div style="flex:1"><div class="v-name">BMW S1000 XR · HP</div><div class="v-price">$11.630.000</div><div class="v-meta">2021 · 18.000 km · Providencia</div><div style="margin-top:5px"><span class="badge badge-g">🟢 Disponible</span> <span class="badge badge-p">Autofact</span></div></div>
     </div>
     <div class="v-card" onclick="showDetail('mercedes');closeSheet('busqueda')">
       <div class="v-img">🚗</div>
-      <div style="flex:1">
-        <div class="v-name">Mercedes GLA 200 AMG</div>
-        <div class="v-price">$18.900.000</div>
-        <div class="v-meta">2022 · 32.000 km · Las Condes</div>
-        <div style="margin-top:5px"><span class="badge badge-g">🟢 Disponible</span> <span class="badge badge-g">Escrow</span></div>
-      </div>
+      <div style="flex:1"><div class="v-name">Mercedes GLA 200 AMG</div><div class="v-price">$18.900.000</div><div class="v-meta">2022 · 32.000 km · Las Condes</div><div style="margin-top:5px"><span class="badge badge-g">🟢 Disponible</span> <span class="badge badge-g">Escrow</span></div></div>
+    </div>
+    <div class="v-card" onclick="abrirPlataHoy();closeSheet('busqueda')" style="border-color:rgba(34,197,94,.3)">
+      <div class="v-img" style="background:rgba(34,197,94,.1)">💰</div>
+      <div style="flex:1"><div class="v-name">Toyota Corolla Cross</div><div class="v-price" style="color:var(--green)">Subasta activa</div><div class="v-meta">2020 · 45.000 km · Providencia</div><div style="margin-top:5px"><span class="badge badge-g">💰 Plata Hoy</span> <span class="badge badge-y">3h 24min</span></div></div>
     </div>
     <div class="v-card" onclick="showDetail('suzuki');closeSheet('busqueda')">
       <div class="v-img">🏍️</div>
-      <div style="flex:1">
-        <div class="v-name">Suzuki GSX-S750</div>
-        <div class="v-price">$5.900.000</div>
-        <div class="v-meta">2020 · 12.000 km · Vitacura</div>
-        <div style="margin-top:5px"><span class="badge badge-y">🟡 Reservado</span> <span class="badge badge-o">Crédito</span></div>
-      </div>
+      <div style="flex:1"><div class="v-name">Suzuki GSX-S750</div><div class="v-price">$5.900.000</div><div class="v-meta">2020 · 12.000 km · Vitacura</div><div style="margin-top:5px"><span class="badge badge-y">🟡 Reservado</span></div></div>
     </div>
     <div class="v-card unavail-card" onclick="showDetail('toyota');closeSheet('busqueda')">
       <div class="v-img" style="opacity:.4">🚙</div>
-      <div style="flex:1">
-        <div class="v-name" style="text-decoration:line-through;color:var(--gray)">Toyota Corolla Cross</div>
-        <div class="v-price" style="color:var(--gray2)">$14.500.000</div>
-        <div class="v-meta">2022 · 24.000 km · Ñuñoa</div>
-        <div style="margin-top:5px"><span class="badge badge-gr">⬛ Sin Stock</span></div>
-      </div>
+      <div style="flex:1"><div class="v-name" style="text-decoration:line-through;color:var(--gray)">Toyota Corolla 2022</div><div class="v-price" style="color:var(--gray2)">$14.500.000</div><div class="v-meta">2022 · 24.000 km · Ñuñoa</div><div style="margin-top:5px"><span class="badge badge-gr">⬛ Sin Stock</span></div></div>
     </div>
   </div>
 </div>
 
-<!-- PUBLICAR -->
+<!-- SHEET: PUBLICAR -->
 <div class="sheet" id="sheet-publicar">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('publicar')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -396,7 +351,7 @@
   <div class="sheet-body" id="pub-body"></div>
 </div>
 
-<!-- FICHA TÉCNICA -->
+<!-- SHEET: FICHA -->
 <div class="sheet" id="sheet-ficha">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('ficha')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -406,7 +361,7 @@
   <div class="sheet-body" id="ficha-body"></div>
 </div>
 
-<!-- VISITA -->
+<!-- SHEET: VISITA -->
 <div class="sheet" id="sheet-visita">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('visita')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -416,7 +371,7 @@
   <div class="sheet-body" id="visita-body"></div>
 </div>
 
-<!-- RESERVA -->
+<!-- SHEET: RESERVA -->
 <div class="sheet" id="sheet-reserva">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('reserva')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -426,7 +381,27 @@
   <div class="sheet-body" id="reserva-body"></div>
 </div>
 
-<!-- ESCROW -->
+<!-- SHEET: PLATA HOY PARTICULAR -->
+<div class="sheet" id="sheet-platahoy-particular">
+  <div class="sheet-bar">
+    <div class="sheet-back" onclick="closeSheet('platahoy-particular')"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="sheet-ttl">💰 Plata Hoy</div>
+    <span class="badge badge-g">Express</span>
+  </div>
+  <div class="sheet-body" id="platahoy-particular-body"></div>
+</div>
+
+<!-- SHEET: PLATA HOY AUTOMOTORA -->
+<div class="sheet" id="sheet-platahoy-automotora">
+  <div class="sheet-bar">
+    <div class="sheet-back" onclick="closeSheet('platahoy-automotora')"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="sheet-ttl">🚨 Subastas Express</div>
+    <span class="badge badge-y">En vivo</span>
+  </div>
+  <div class="sheet-body" id="platahoy-automotora-body"></div>
+</div>
+
+<!-- SHEET: ESCROW -->
 <div class="sheet" id="sheet-escrow">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('escrow')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -441,18 +416,18 @@
     </div>
     <div class="sec-ttl">Etapas del Escrow</div>
     <div class="card">
-      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">KYC Verificado</div><div class="e-sub">Identidad de comprador y vendedor confirmada · RUT + selfie IA</div></div></div>
-      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">Contrato FEA Firmado</div><div class="e-sub">Firma electrónica avanzada · Sin notaría · Valor legal pleno en Chile</div></div></div>
-      <div class="e-step"><div class="e-num e-pend">3</div><div><div class="e-ttl">Fondos en Bóveda</div><div class="e-sub">$11.630.000 CLP retenidos en cuenta custodia · Esperando inspección</div></div></div>
-      <div class="e-step"><div class="e-num e-wait">4</div><div><div class="e-ttl">Inspección Técnica</div><div class="e-sub">Inspector certificado Motorplace confirma estado del vehículo in situ</div></div></div>
-      <div class="e-step"><div class="e-num e-wait">5</div><div><div class="e-ttl">Liberación garantizada</div><div class="e-sub">Motorplace garantiza liberación en fecha exacta. Compensación por atraso automática.</div></div></div>
+      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">KYC Verificado</div><div class="e-sub">Identidad confirmada · RUT + selfie IA</div></div></div>
+      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">Contrato FEA Firmado</div><div class="e-sub">Firma electrónica avanzada · Sin notaría</div></div></div>
+      <div class="e-step"><div class="e-num e-pend">3</div><div><div class="e-ttl">Fondos en Bóveda</div><div class="e-sub">Retenidos en cuenta custodia · Esperando inspección</div></div></div>
+      <div class="e-step"><div class="e-num e-wait">4</div><div><div class="e-ttl">Inspección Técnica</div><div class="e-sub">Inspector certificado Motorplace confirma estado</div></div></div>
+      <div class="e-step"><div class="e-num e-wait">5</div><div><div class="e-ttl">Liberación garantizada</div><div class="e-sub">Transferencia al vendedor con fecha exacta garantizada</div></div></div>
     </div>
     <button class="btn btn-purple" onclick="openSheet('transferencia')">🔄 Ver Seguimiento End-to-End</button>
-    <button class="btn btn-blue">📍 Ver Inspector Asignado en Mapa</button>
+    <button class="btn btn-blue">📍 Ver Inspector Asignado</button>
   </div>
 </div>
 
-<!-- TRANSFERENCIA E2E -->
+<!-- SHEET: TRANSFERENCIA -->
 <div class="sheet" id="sheet-transferencia">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('transferencia')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -469,18 +444,18 @@
     <div class="card">
       <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">Acuerdo de precio</div><div class="ts-sub">Confirmado vía chat IA</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
       <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">KYC Verificado</div><div class="ts-sub">RUT + selfie IA · Ambas partes</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">Contrato FEA firmado</div><div class="ts-sub">Firma electrónica avanzada · Validez legal Chile</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-active">⏳</div><div><div class="ts-ttl">Fondos en Bóveda Escrow</div><div class="ts-sub">$11.630.000 retenidos · Esperando inspección</div><div><span class="ts-tag" style="background:rgba(59,130,246,.15);color:var(--blue)">En progreso</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">Contrato FEA firmado</div><div class="ts-sub">Firma electrónica avanzada</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-active">⏳</div><div><div class="ts-ttl">Fondos en Bóveda Escrow</div><div class="ts-sub">Retenidos · Esperando inspección</div><div><span class="ts-tag" style="background:rgba(59,130,246,.15);color:var(--blue)">En progreso</span></div></div></div>
       <div class="ts"><div class="ts-ico ts-wait">🔍</div><div><div class="ts-ttl">Inspección técnica</div><div class="ts-sub">Inspector Motorplace · Mañana 10:00 AM</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-wait">🏛️</div><div><div class="ts-ttl">Registro Civil</div><div class="ts-sub">Motorplace gestiona el cambio de titular digitalmente</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-wait">💸</div><div><div class="ts-ttl">Liberación garantizada</div><div class="ts-sub">Transferencia al vendedor con fecha exacta garantizada</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-wait">🏛️</div><div><div class="ts-ttl">Registro Civil</div><div class="ts-sub">Cambio de titular digital</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-wait">💸</div><div><div class="ts-ttl">Liberación garantizada</div><div class="ts-sub">Transferencia automática al vendedor</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
     </div>
     <button class="btn btn-blue">📍 Ver Inspector en Mapa</button>
     <button class="btn btn-ghost" onclick="openSheet('chat')">💬 Consultar Asesor IA</button>
   </div>
 </div>
 
-<!-- CÓMO FUNCIONA -->
+<!-- SHEET: COMO FUNCIONA -->
 <div class="sheet" id="sheet-como-funciona">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('como-funciona')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -492,36 +467,18 @@
       <div style="font-size:12px;color:var(--gray);margin-top:6px">Sin papel · Sin notaría · Sin Registro Civil físico · 100% digital</div>
     </div>
     <div class="card">
-      <div class="how-item">
-        <div class="how-ico" style="background:rgba(139,92,246,.15)">🔒</div>
-        <div><div class="how-ttl">Escrow — Bóveda de Pagos</div><div class="how-desc">El dinero nunca va directo al vendedor. Queda retenido en una cuenta custodia hasta que comprador y vendedor confirmen cada etapa. Liberación garantizada en fecha exacta.</div></div>
-      </div>
-      <div class="how-item">
-        <div class="how-ico" style="background:rgba(59,130,246,.15)">✍️</div>
-        <div><div class="how-ttl">FEA — Firma Electrónica Avanzada</div><div class="how-desc">Reemplaza la firma ante notaría. Plena validez legal en Chile. Se firma desde el celular en menos de 2 minutos. Queda registrada con fecha, hora e identidad.</div></div>
-      </div>
-      <div class="how-item">
-        <div class="how-ico" style="background:rgba(139,92,246,.15)">📋</div>
-        <div><div class="how-ttl">Autofact Oficial · $7.000</div><div class="how-desc">Reporte legal completo: prendas, embargos, prohibiciones, historial de propietarios. Resultado inmediato. Queda guardado en tu perfil.</div></div>
-      </div>
-      <div class="how-item">
-        <div class="how-ico" style="background:rgba(34,197,94,.15)">🔍</div>
-        <div><div class="how-ttl">Express · $500 (primera vez gratis)</div><div class="how-desc">Multas Registro Civil + historial de remates AACH/PatentesChile. Ideal para una primera verificación rápida antes de visitar.</div></div>
-      </div>
-      <div class="how-item">
-        <div class="how-ico" style="background:rgba(6,182,212,.15)">🔄</div>
-        <div><div class="how-ttl">Transferencia Online</div><div class="how-desc">Motorplace gestiona todo el papeleo. Sin ir al Registro Civil. Proceso 100% digital. Plazo: 3 a 5 días hábiles desde que se liberan los fondos.</div></div>
-      </div>
-      <div class="how-item" style="border:none">
-        <div class="how-ico" style="background:rgba(234,179,8,.15)">⏱</div>
-        <div><div class="how-ttl">¿Cuándo recibe el dinero el vendedor?</div><div class="how-desc">Motorplace emite un compromiso con fecha exacta de pago. El vendedor ve en tiempo real el estado de sus fondos. Si hay atraso, compensación automática.</div></div>
-      </div>
+      <div class="how-item"><div class="how-ico" style="background:rgba(34,197,94,.15)">💰</div><div><div class="how-ttl">Plata Hoy — Subasta Express</div><div class="how-desc">Vende tu auto hoy mismo. Publica, define tu precio mínimo y automotoras verificadas pujan en 6 o 12 horas. Dinero seguro en Escrow el mismo día.</div></div></div>
+      <div class="how-item"><div class="how-ico" style="background:rgba(139,92,246,.15)">🔒</div><div><div class="how-ttl">Escrow — Bóveda de Pagos</div><div class="how-desc">El dinero nunca va directo al vendedor. Queda retenido hasta confirmar cada etapa. Liberación garantizada con fecha exacta.</div></div></div>
+      <div class="how-item"><div class="how-ico" style="background:rgba(59,130,246,.15)">✍️</div><div><div class="how-ttl">FEA — Firma Electrónica</div><div class="how-desc">Reemplaza la firma ante notaría. Plena validez legal en Chile. Se firma desde el celular en 2 minutos.</div></div></div>
+      <div class="how-item"><div class="how-ico" style="background:rgba(139,92,246,.15)">📋</div><div><div class="how-ttl">Autofact Oficial · $7.000</div><div class="how-desc">Prendas, embargos, prohibiciones, historial de propietarios. Resultado inmediato.</div></div></div>
+      <div class="how-item"><div class="how-ico" style="background:rgba(6,182,212,.15)">🔄</div><div><div class="how-ttl">Transferencia Online</div><div class="how-desc">Sin ir al Registro Civil. 100% digital. 3 a 5 días hábiles.</div></div></div>
+      <div class="how-item" style="border:none"><div class="how-ico" style="background:rgba(234,179,8,.15)">⏱</div><div><div class="how-ttl">¿Cuándo recibe el dinero el vendedor?</div><div class="how-desc">Motorplace emite compromiso con fecha exacta. Si hay atraso, compensación automática.</div></div></div>
     </div>
     <button class="btn btn-red" onclick="closeSheet('como-funciona')">Empezar ahora</button>
   </div>
 </div>
 
-<!-- CRÉDITO -->
+<!-- SHEET: CREDITO -->
 <div class="sheet" id="sheet-credito">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('credito')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -549,7 +506,7 @@
   </div>
 </div>
 
-<!-- PLANES -->
+<!-- SHEET: PLANES -->
 <div class="sheet" id="sheet-planes">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('planes')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -560,7 +517,6 @@
       <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px">Para Automotoras</div>
       <div style="font-size:12px;color:var(--gray)">Sin contratos · Sin instalación · Todo desde el celular</div>
     </div>
-
     <div class="plan-card" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04)">
       <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px">🟢 PLAN GRATUITO</div>
       <div class="plan-price" style="color:var(--green)">$0</div>
@@ -569,27 +525,24 @@
         <div class="plan-feature">✅ Hasta 10 publicaciones</div>
         <div class="plan-feature">✅ Mapa georreferenciado</div>
         <div class="plan-feature">✅ 1 informe Express gratis por auto</div>
-        <div class="plan-feature">✅ Chat con compradores</div>
-        <div class="plan-feature">✅ Badge "Verificado Motorplace"</div>
+        <div class="plan-feature">✅ Acceso a Plata Hoy · Subastas Express</div>
+        <div class="plan-feature">✅ Badge Verificado Motorplace</div>
       </div>
       <button class="btn btn-green" style="margin-top:14px">Empezar Gratis</button>
     </div>
-
     <div class="plan-card popular" style="border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.05)">
       <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px">🔵 PLAN PREMIUM</div>
       <div class="plan-price" style="color:var(--blue)">$29.990</div>
       <div class="plan-period">mensual · 11 a 20 autos</div>
       <div style="margin-top:14px">
         <div class="plan-feature">✅ Todo el plan gratuito</div>
-        <div class="plan-feature">✅ Perfil personalizable con logo y colores</div>
-        <div class="plan-feature">✅ Estadísticas básicas</div>
+        <div class="plan-feature">✅ Perfil personalizable con logo</div>
+        <div class="plan-feature">✅ Alertas Plata Hoy prioritarias</div>
         <div class="plan-feature">✅ 2 informes Express gratis por auto</div>
-        <div class="plan-feature">✅ Prioridad en el mapa</div>
-        <div class="plan-feature">✅ Soporte prioritario</div>
+        <div class="plan-feature">✅ Estadísticas básicas</div>
       </div>
       <button class="btn btn-blue" style="margin-top:14px">Contratar Premium</button>
     </div>
-
     <div class="plan-card" style="border-color:rgba(139,92,246,.4);background:rgba(139,92,246,.05)">
       <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px">🟣 PLAN PRO</div>
       <div class="plan-price" style="color:var(--purple)">$79.990</div>
@@ -599,13 +552,11 @@
         <div class="plan-feature">✅ Dashboard analytics completo</div>
         <div class="plan-feature">✅ CRM de clientes integrado</div>
         <div class="plan-feature">✅ Carga masiva Excel/CSV</div>
-        <div class="plan-feature">✅ Autofact con descuento especial</div>
+        <div class="plan-feature">✅ Autofact con descuento</div>
         <div class="plan-feature">✅ Facturación electrónica</div>
-        <div class="plan-feature">✅ Soporte telefónico dedicado</div>
       </div>
       <button class="btn btn-purple" style="margin-top:14px">Contratar Pro</button>
     </div>
-
     <div class="plan-card" style="border-color:rgba(234,179,8,.4);background:rgba(234,179,8,.05)">
       <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:8px">⭐ ENTERPRISE</div>
       <div class="plan-price" style="color:var(--yellow)">A medida</div>
@@ -615,18 +566,16 @@
         <div class="plan-feature">✅ API propia para integrar tu sistema</div>
         <div class="plan-feature">✅ Manager dedicado Motorplace</div>
         <div class="plan-feature">✅ Transferencias masivas gestionadas</div>
-        <div class="plan-feature">✅ SLA garantizado de plataforma</div>
         <div class="plan-feature">✅ Tasas bancarias negociadas</div>
       </div>
       <button class="btn btn-yellow" style="margin-top:14px">Contactar Ventas</button>
     </div>
-
     <div class="card" style="background:rgba(232,0,29,.05);border-color:rgba(232,0,29,.2)">
       <div style="font-size:13px;font-weight:700;margin-bottom:8px">🛡 Incluido en TODOS los planes</div>
       <div style="font-size:12px;color:var(--gray);line-height:1.8">
         ✅ Informe básico PatentesChile por auto<br>
-        ✅ Badge "Verificado por Motorplace"<br>
-        ✅ Sello de confianza en mapa y ficha<br>
+        ✅ Badge Verificado por Motorplace<br>
+        ✅ Acceso a Plata Hoy · Subastas Express<br>
         ✅ KYC de compradores verificado<br>
         ✅ Bóveda Escrow disponible
       </div>
@@ -634,7 +583,7 @@
   </div>
 </div>
 
-<!-- CHAT IA -->
+<!-- SHEET: CHAT -->
 <div class="sheet" id="sheet-chat">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('chat')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -644,47 +593,49 @@
   <div class="sheet-body">
     <div class="card" style="background:rgba(232,0,29,.04);border-color:rgba(232,0,29,.15);font-size:12px;color:var(--gray);margin-bottom:16px">
       <strong style="color:var(--white)">🤖 ¿Para qué sirve el Asesor IA?</strong><br><br>
-      • Comparar vehículos similares en precio y km<br>
-      • Alertar si el precio está fuera del mercado<br>
-      • Explicar Escrow, FEA y transferencia E2E<br>
+      • Comparar vehículos y alertar si el precio no es de mercado<br>
+      • Explicar Escrow, FEA, Plata Hoy y transferencia E2E<br>
       • Simular crédito directamente en el chat<br>
-      • Consultar patente y verificar estado<br>
-      • Redactar descripción de tu auto automáticamente
+      • Consultar patente y verificar estado legal<br>
+      • Asesorar en subastas Express
     </div>
     <div class="chat-box" id="chatBox">
       <div class="cmsg sys">🔒 Chat encriptado · KYC activo · IA Motorplace</div>
-      <div class="cmsg ai">¡Hola! Soy el asesor IA de Motorplace. Puedo ayudarte a comprar, vender, verificar un auto o entender cualquier proceso. ¿En qué te ayudo?</div>
+      <div class="cmsg ai">¡Hola! Soy el asesor IA de Motorplace. Puedo ayudarte a comprar, vender, subastar o verificar un auto. ¿En qué te ayudo?</div>
     </div>
     <div class="chat-inp-wrap">
       <input class="chat-inp" id="chatInp" placeholder="Escribe tu pregunta…" onkeydown="if(event.key==='Enter')sendChat()">
       <button class="chat-send" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-      <div class="mchip" onclick="quickMsg('El BMW tiene multas?')"         style="font-size:11px;padding:6px 12px">🔎 Multas</div>
-      <div class="mchip" onclick="quickMsg('Acepta parte de pago?')"        style="font-size:11px;padding:6px 12px">🔄 Parte pago</div>
-      <div class="mchip" onclick="quickMsg('Simular crédito 48 meses')"     style="font-size:11px;padding:6px 12px">💳 Crédito</div>
-      <div class="mchip" onclick="quickMsg('Como funciona el Escrow?')"     style="font-size:11px;padding:6px 12px">🔒 Escrow</div>
-      <div class="mchip" onclick="quickMsg('Verificar patente ABCD12')"     style="font-size:11px;padding:6px 12px">📋 Patente</div>
+      <div class="mchip" onclick="quickMsg('Como funciona Plata Hoy?')" style="font-size:11px;padding:6px 12px">💰 Plata Hoy</div>
+      <div class="mchip" onclick="quickMsg('El BMW tiene multas?')" style="font-size:11px;padding:6px 12px">🔎 Multas</div>
+      <div class="mchip" onclick="quickMsg('Simular credito 48 meses')" style="font-size:11px;padding:6px 12px">💳 Crédito</div>
+      <div class="mchip" onclick="quickMsg('Como funciona el Escrow?')" style="font-size:11px;padding:6px 12px">🔒 Escrow</div>
       <div class="mchip" onclick="quickMsg('Cuanto tarda la transferencia')" style="font-size:11px;padding:6px 12px">⏱ Transferencia</div>
     </div>
   </div>
 </div>
 
-<!-- NOTIFICACIONES -->
+<!-- SHEET: NOTIF -->
 <div class="sheet" id="sheet-notif">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('notif')"><i class="fa-solid fa-arrow-left"></i></div>
     <div class="sheet-ttl">🔔 Notificaciones</div>
-    <span class="badge badge-r">4</span>
+    <span class="badge badge-r">5</span>
   </div>
   <div class="sheet-body">
     <div class="card" style="border-left:3px solid var(--green)">
+      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">💰 Nueva subasta Plata Hoy</div><div style="font-size:10px;color:var(--gray)">ahora</div></div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">Toyota Corolla Cross 2020 en Providencia. Precio mínimo $9.500.000. Quedan 3h 24min.</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green)">
       <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">✅ KYC aprobado</div><div style="font-size:10px;color:var(--gray)">5 min</div></div>
-      <div style="font-size:12px;color:var(--gray);margin-top:4px">Tu identidad fue verificada. Ya puedes usar Escrow y FEA.</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">Tu identidad fue verificada. Ya puedes usar Escrow, FEA y Plata Hoy.</div>
     </div>
     <div class="card" style="border-left:3px solid var(--yellow)">
       <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">🟡 Visita confirmada</div><div style="font-size:10px;color:var(--gray)">8 min</div></div>
-      <div style="font-size:12px;color:var(--gray);margin-top:4px">El vendedor del BMW S1000XR confirmó tu visita para mañana a las 10:00 AM. Dirección: Providencia 1234.</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">El vendedor del BMW S1000XR confirmó tu visita para mañana 10:00 AM.</div>
     </div>
     <div class="card" style="border-left:3px solid var(--purple)">
       <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">📋 Ficha Express completada</div><div style="font-size:10px;color:var(--gray)">15 min</div></div>
@@ -697,7 +648,7 @@
   </div>
 </div>
 
-<!-- PERFIL -->
+<!-- SHEET: PERFIL -->
 <div class="sheet" id="sheet-perfil">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('perfil')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -706,7 +657,7 @@
   <div class="sheet-body" id="perfil-body"></div>
 </div>
 
-<!-- CARGA MASIVA -->
+<!-- SHEET: CARGA MASIVA -->
 <div class="sheet" id="sheet-cargamasiva">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('cargamasiva')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -717,19 +668,19 @@
     <div style="border:2px dashed rgba(245,158,11,.3);background:rgba(245,158,11,.04);border-radius:14px;padding:24px;text-align:center;cursor:pointer;margin-bottom:16px">
       <div style="font-size:40px;margin-bottom:8px">📊</div>
       <div style="font-size:14px;font-weight:700;margin-bottom:4px">Subir Excel / CSV</div>
-      <div style="font-size:12px;color:var(--gray)">Formato: Marca, Modelo, Año, Km, Precio, Stock (true/false)</div>
+      <div style="font-size:12px;color:var(--gray)">Formato: Marca, Modelo, Año, Km, Precio, Stock</div>
       <button class="btn btn-orange" style="margin-top:14px;width:auto;padding:10px 22px;display:inline-block">Seleccionar Archivo</button>
     </div>
     <div class="sec-ttl">Stock actual (12 unidades)</div>
     <div class="stock-row"><div class="stock-ico">🏍️</div><div style="flex:1"><div style="font-size:13px;font-weight:700">BMW S1000XR 2021</div><div style="font-size:11px;color:var(--gray)">$11.630.000</div></div><span class="badge badge-g">🟢 Online</span></div>
     <div class="stock-row"><div class="stock-ico">🚗</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Mercedes GLA 200 2022</div><div style="font-size:11px;color:var(--gray)">$18.900.000</div></div><span class="badge badge-g">🟢 Online</span></div>
-    <div class="stock-row" style="opacity:.5"><div class="stock-ico" style="filter:grayscale(1)">🚙</div><div style="flex:1"><div style="font-size:13px;font-weight:700;text-decoration:line-through;color:var(--gray)">Toyota Corolla Cross</div><div style="font-size:11px;color:var(--gray2)">$14.500.000</div></div><span class="badge badge-gr">⬛ Off</span></div>
+    <div class="stock-row"><div class="stock-ico" style="background:rgba(34,197,94,.1)">💰</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Toyota Corolla Cross 2020</div><div style="font-size:11px;color:var(--green)">Subasta activa · 3h restantes</div></div><span class="badge badge-g">💰 Plata Hoy</span></div>
     <div class="stock-row"><div class="stock-ico">🏍️</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Suzuki GSX-S750 2020</div><div style="font-size:11px;color:var(--gray)">$5.900.000</div></div><span class="badge badge-y">🟡 Reservado</span></div>
     <button class="btn btn-orange" style="margin-top:8px">+ Agregar Vehículo Manual</button>
   </div>
 </div>
 
-<!-- DASHBOARD ANALYTICS -->
+<!-- SHEET: DASHBOARD -->
 <div class="sheet" id="sheet-dashboard">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('dashboard')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -741,79 +692,37 @@
       <div class="card" style="text-align:center;padding:14px">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--green)">4.821</div>
         <div style="font-size:11px;color:var(--gray)">Visitas este mes</div>
-        <div style="font-size:10px;color:var(--green)">▲ 23% vs mes anterior</div>
+        <div style="font-size:10px;color:var(--green)">▲ 23%</div>
       </div>
       <div class="card" style="text-align:center;padding:14px">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--blue)">198</div>
-        <div style="font-size:11px;color:var(--gray)">Contactos recibidos</div>
-        <div style="font-size:10px;color:var(--blue)">▲ 15% vs mes anterior</div>
+        <div style="font-size:11px;color:var(--gray)">Contactos</div>
+        <div style="font-size:10px;color:var(--blue)">▲ 15%</div>
       </div>
       <div class="card" style="text-align:center;padding:14px">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--orange)">8</div>
-        <div style="font-size:11px;color:var(--gray)">Ventas concretadas</div>
-        <div style="font-size:10px;color:var(--orange)">▲ 33% vs mes anterior</div>
+        <div style="font-size:11px;color:var(--gray)">Ventas</div>
+        <div style="font-size:10px;color:var(--orange)">▲ 33%</div>
       </div>
       <div class="card" style="text-align:center;padding:14px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--red2)">4.1%</div>
-        <div style="font-size:11px;color:var(--gray)">Tasa conversión</div>
-        <div style="font-size:10px;color:var(--red2)">Industria: 2.3%</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--green)">2</div>
+        <div style="font-size:11px;color:var(--gray)">Plata Hoy</div>
+        <div style="font-size:10px;color:var(--green)">Adjudicados</div>
       </div>
     </div>
-
-    <div class="sec-ttl">Rendimiento por modelo</div>
-    <div class="card">
-      <div style="margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>BMW S1000XR</span><span style="color:var(--green)">847 visitas</span></div>
-        <div class="analytics-bar"><div class="analytics-fill" style="width:95%"></div></div>
-      </div>
-      <div style="margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Mercedes GLA 200</span><span style="color:var(--green)">623 visitas</span></div>
-        <div class="analytics-bar"><div class="analytics-fill" style="width:70%"></div></div>
-      </div>
-      <div style="margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Suzuki GSX-S750</span><span style="color:var(--orange)">412 visitas</span></div>
-        <div class="analytics-bar"><div class="analytics-fill" style="width:48%;background:linear-gradient(90deg,var(--orange),#d97706)"></div></div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Toyota Corolla Cross</span><span style="color:var(--gray)">Sin stock</span></div>
-        <div class="analytics-bar"><div class="analytics-fill" style="width:15%;background:var(--gray3)"></div></div>
-      </div>
-    </div>
-
     <div class="sec-ttl">Trámites rápidos</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">💳 Pagar Multas</button>
       <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">📄 Permiso Circulación</button>
       <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">📋 Autofact Masivo</button>
       <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">🔄 Transferencia</button>
-      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">🔧 Rev. Técnica</button>
+      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">💰 Plata Hoy</button>
       <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">🧾 Facturación</button>
     </div>
   </div>
 </div>
 
-<!-- PLATA HOY — PARTICULAR -->
-<div class="sheet" id="sheet-platahoy-particular">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('platahoy-particular')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">💰 Plata Hoy</div>
-    <span class="badge badge-g">Express</span>
-  </div>
-  <div class="sheet-body" id="platahoy-particular-body"></div>
-</div>
-
-<!-- PLATA HOY — AUTOMOTORA -->
-<div class="sheet" id="sheet-platahoy-automotora">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('platahoy-automotora')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">🚨 Subastas Express</div>
-    <span class="badge badge-y">En vivo</span>
-  </div>
-  <div class="sheet-body" id="platahoy-automotora-body"></div>
-</div>
-  
 </div><!-- /app -->
-
 <script src="app.js"></script>
 </body>
 </html>
