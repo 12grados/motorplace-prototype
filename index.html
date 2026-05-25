@@ -258,7 +258,14 @@
       <div class="bni-ico"><i class="fa-solid fa-magnifying-glass"></i></div>
       <div class="bni-lbl">Buscar</div>
     </div>
-    <div class="bni-center" onclick="openSheet('publicar')"><i class="fa-solid fa-plus"></i></div>
+    <!-- BOTÓN PLATA HOY -->
+    <div class="bni-platahoy" onclick="abrirPlataHoy()">
+      <div class="bni-platahoy-ico" id="platahoy-btn">
+        💰
+        <div class="alerta-dot" id="platahoy-dot"></div>
+      </div>
+      <div class="bni-platahoy-lbl">Plata Hoy</div>
+    </div>
     <div class="bni" id="bni-chat" onclick="navTo('chat');openSheet('chat')">
       <div class="bni-ico"><i class="fa-solid fa-robot"></i></div>
       <div class="bni-lbl">IA Chat</div>
@@ -269,7 +276,7 @@
     </div>
   </div>
 </div><!-- /mapScreen -->
-
+  
 <!-- ===================== DRAWER ===================== -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
@@ -785,6 +792,26 @@
   </div>
 </div>
 
+<!-- PLATA HOY — PARTICULAR -->
+<div class="sheet" id="sheet-platahoy-particular">
+  <div class="sheet-bar">
+    <div class="sheet-back" onclick="closeSheet('platahoy-particular')"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="sheet-ttl">💰 Plata Hoy</div>
+    <span class="badge badge-g">Express</span>
+  </div>
+  <div class="sheet-body" id="platahoy-particular-body"></div>
+</div>
+
+<!-- PLATA HOY — AUTOMOTORA -->
+<div class="sheet" id="sheet-platahoy-automotora">
+  <div class="sheet-bar">
+    <div class="sheet-back" onclick="closeSheet('platahoy-automotora')"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="sheet-ttl">🚨 Subastas Express</div>
+    <span class="badge badge-y">En vivo</span>
+  </div>
+  <div class="sheet-body" id="platahoy-automotora-body"></div>
+</div>
+  
 </div><!-- /app -->
 
 <script src="app.js"></script>
