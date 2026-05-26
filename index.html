@@ -1,15 +1,292 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Motorplace v3.0 — Start-Up Chile CORFO</title>
+<title>MotorPlace - Ecosistema Final</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motorplace v2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="styles.css">
+<style>
+:root{
+  --bg:#080c16;--bg2:#0f1424;--surf:#171e31;--surf2:#222b45;
+  --red:#e8001d;--red2:#ff334b;--green:#22c55e;--blue:#2563eb;
+  --cyan:#06b6d4;--orange:#f59e0b;--purple:#a855f7;--white:#f8fafc;
+  --gray:#94a3b8;--border:rgba(255,255,255,.08);
+  --bg:#0a0f1e;--bg2:#111827;--surf:#1a2235;--surf2:#243050;
+  --red:#e8001d;--red2:#ff2d47;--redg:rgba(232,0,29,.2);
+  --green:#22c55e;--blue:#3b82f6;--orange:#f59e0b;--purple:#8b5cf6;--cyan:#06b6d4;
+  --white:#f1f5f9;--gray:#94a3b8;--gray2:#475569;--border:rgba(255,255,255,.07);
+  --font:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#000;font-family:'Inter',sans-serif;height:100vh;overflow:hidden;display:flex;justify-content:center}
+#app{width:100%;max-width:440px;height:100vh;background:var(--bg);position:relative;border:1px solid var(--border)}
+
+.screen{position:absolute;inset:0;display:none;flex-direction:column;z-index:10}
+.screen.active{display:flex}
+.hdr{height:60px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between}
+.hdr-logo{font-family:'Bebas Neue';font-size:26px;color:var(--white)}
+
+/* Mapa con look urbano */
+.map-container{flex:1;position:relative;background-color:#0d1325;
+  background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 50px 50px;}
+
+.map-pin{position:absolute;transform:translate(-50%, -50%);cursor:pointer;display:flex;flex-direction:column;align-items:center;z-index:20}
+.pin-ball{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,0.6)}
+.standard{background:var(--blue);border-color:var(--blue)}
+.premium{background:var(--green);border-color:#fff}
+.dealer{background:var(--purple);border-color:var(--orange)}
+.unavailable{background:#334155!important;border-color:#475569!important;opacity:0.6}
+
+.slide-card{position:absolute;bottom:68px;left:12px;right:12px;background:var(--surf);border:1px solid var(--border);border-radius:20px;padding:16px;transform:translateY(150%);transition:transform 0.3s;z-index:90}
+.slide-card.open{transform:translateY(0)}
+
+.btn{width:100%;padding:12px;border:none;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;margin-top:6px}
+.btn-red{background:var(--red);color:#fff}.btn-green{background:var(--green);color:#000}.btn-purple{background:var(--purple);color:#fff}
+.bnav{height:64px;background:var(--bg2);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center}
+.bnav-item{display:flex;flex-direction:column;align-items:center;color:var(--gray);font-size:10px;text-transform:uppercase;cursor:pointer}
+body{background:#000;font-family:var(--font);overflow:hidden;height:100vh}
+#app{width:100%;max-width:480px;height:100vh;margin:0 auto;position:relative;overflow:hidden;background:var(--bg);box-shadow:0 0 40px rgba(232,0,29,.15)}
+
+/* SPLASH */
+#splash{position:absolute;inset:0;z-index:950;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(232,0,29,.2),transparent 70%),var(--bg);transition:opacity .5s}
+.sp-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,0,29,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,0,29,.04) 1px,transparent 1px);background-size:40px 40px}
+.sp-logo{width:90px;height:90px;background:linear-gradient(135deg,var(--red),#ff4d6d);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:20px;box-shadow:0 0 60px var(--redg);position:relative;z-index:2;animation:popIn .7s cubic-bezier(.16,1,.3,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.sp-word{font-family:'Bebas Neue';font-size:52px;letter-spacing:5px;color:var(--white);position:relative;z-index:2}
+.sp-word em{color:var(--red);font-style:normal}
+.sp-tag{font-size:11px;color:var(--gray);letter-spacing:3px;text-transform:uppercase;margin:6px 0 40px;position:relative;z-index:2}
+.sp-bar{width:180px;height:2px;background:var(--surf2);border-radius:2px;overflow:hidden;position:relative;z-index:2}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--red),#ff4d6d);animation:spload 1.8s ease forwards}
+@keyframes spload{from{width:0}to{width:100%}}
+
+/* LOGIN */
+#login{position:absolute;inset:0;z-index:800;display:none;overflow-y:auto;background:var(--bg)}
+.login-hero{height:180px;background:linear-gradient(145deg,#1a0006,#0a0a0a);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:24px;color:var(--white)}
+.login-hero::after{content:'🏎️';position:absolute;font-size:120px;bottom:-12px;right:-16px;opacity:.07;transform:scaleX(-1)}
+.login-body{padding:24px 20px 100px}
+.divrow{display:flex;align-items:center;gap:10px;color:var(--gray2);font-size:12px;margin:14px 0}
+.divrow::before,.divrow::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* MAP */
+#mapScreen{position:absolute;inset:0;z-index:1;display:none}
+.map-wrap{position:absolute;inset:0;bottom:72px;overflow:hidden}
+.map-bg{position:absolute;inset:0;background:#0a0e1a;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
+  background-size:80px 80px,80px 80px,16px 16px,16px 16px}
+.road-h{position:absolute;left:0;right:0;background:rgba(255,255,255,.06)}
+.road-v{position:absolute;top:0;bottom:0;background:rgba(255,255,255,.06)}
+.road-main-h{position:absolute;left:0;right:0;height:3px;background:rgba(255,255,255,.09)}
+.road-main-v{position:absolute;top:0;bottom:0;width:3px;background:rgba(255,255,255,.09)}
+.zone-lbl{position:absolute;font-size:9px;font-weight:700;color:rgba(255,255,255,.06);letter-spacing:2px;text-transform:uppercase}
+
+/* PINS */
+.sim-pin{position:absolute;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-100%);transition:transform .2s cubic-bezier(.175,.885,.32,1.275)}
+.sim-pin:hover{transform:translate(-50%,-110%) scale(1.1)}
+.sim-pin.unavailable{opacity:.5;filter:grayscale(.8)}
+.pin-ico{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.6);border:2.5px solid rgba(255,255,255,.2)}
+.pin-ico.premium{background:linear-gradient(135deg,var(--red),#b91c1c);box-shadow:0 0 22px var(--redg)}
+.pin-ico.verde{background:linear-gradient(135deg,var(--green),#15803d)}
+.pin-ico.azul{background:linear-gradient(135deg,var(--blue),#1d4ed8)}
+.pin-ico.orange{background:linear-gradient(135deg,var(--orange),#d97706)}
+.pin-ico.unavail{background:#334155;box-shadow:none}
+.pin-lbl{background:rgba(11,16,31,.92);padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;color:var(--white);margin-top:5px;border:1px solid var(--border);white-space:nowrap}
+.pin-lbl.unavail-lbl{color:var(--gray);text-decoration:line-through}
+@keyframes pulse-ring{0%{transform:translate(-50%,-50%) scale(.6);opacity:.8}100%{transform:translate(-50%,-50%) scale(2.5);opacity:0}}
+.pulse{position:absolute;border-radius:50%;border:2px solid;animation:pulse-ring 2s ease-out infinite}
+
+/* FLOAT UI */
+.float-hdr{position:absolute;top:14px;left:14px;right:14px;z-index:50;display:flex;gap:10px;align-items:center}
+.menu-btn{width:48px;height:48px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:19px;color:var(--white);backdrop-filter:blur(12px)}
+.srch-wrap{flex:1;height:48px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;gap:10px;padding:0 14px;backdrop-filter:blur(12px);cursor:pointer}
+.srch-wrap input{background:none;border:none;outline:none;color:var(--white);font-size:14px;font-family:var(--font);flex:1;pointer-events:none}
+.notif-btn{width:48px;height:48px;background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;backdrop-filter:blur(12px);color:var(--white)}
+.ndot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--bg)}
+.map-chips{position:absolute;top:76px;left:0;right:0;z-index:50;display:flex;gap:8px;overflow-x:auto;padding:0 14px;scrollbar-width:none}
+.map-chips::-webkit-scrollbar{display:none}
+.mchip{background:rgba(17,24,39,.92);border:1px solid var(--border);border-radius:20px;padding:8px 14px;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;transition:all .2s;backdrop-filter:blur(12px);color:var(--white)}
+.mchip.on{background:var(--red);border-color:var(--red)}
+.map-counter{position:absolute;top:128px;right:14px;z-index:50;background:rgba(17,24,39,.92);border:1px solid var(--border);border-radius:14px;padding:10px 14px;text-align:center;backdrop-filter:blur(12px)}
+.mc-n{font-size:22px;font-weight:900;font-family:'Bebas Neue';color:var(--green)}
+.mc-l{font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+.radius-ctrl{position:absolute;bottom:198px;left:14px;right:14px;z-index:50;background:rgba(17,24,39,.94);border:1px solid var(--border);border-radius:16px;padding:12px 14px;backdrop-filter:blur(12px)}
+.r-slider{width:100%;-webkit-appearance:none;height:4px;background:var(--surf2);border-radius:2px;outline:none;cursor:pointer}
+.r-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--red);border:3px solid #fff}
+
+/* DETAIL CARD */
+.detail-card{position:absolute;bottom:76px;left:14px;right:14px;z-index:50;background:linear-gradient(to bottom,var(--surf),#131a29);border:1px solid var(--border);border-radius:22px;padding:16px;box-shadow:0 -10px 35px rgba(0,0,0,.6);transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s;color:var(--white)}
+.detail-card.hidden{transform:translateY(250px);opacity:0;pointer-events:none}
+.dc-name{font-family:'Bebas Neue';font-size:24px;letter-spacing:1px}
+.dc-price{font-family:'Bebas Neue';font-size:28px;color:var(--red2)}
+.dc-meta{font-size:11px;color:var(--gray);margin-top:2px}
+.dc-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.dtag{padding:4px 9px;border-radius:8px;font-size:10px;font-weight:700}
+.dtag-g{background:rgba(34,197,94,.15);color:var(--green)}
+.dtag-b{background:rgba(59,130,246,.15);color:var(--blue)}
+.dtag-cy{background:rgba(6,182,212,.15);color:var(--cyan)}
+.dtag-o{background:rgba(245,158,11,.15);color:var(--orange)}
+.dtag-p{background:rgba(139,92,246,.15);color:var(--purple)}
+.dtag-gr{background:rgba(51,65,85,.4);color:var(--gray)}
+.dc-btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.dcbtn{flex:1;min-width:70px;padding:11px 6px;border:none;border-radius:12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px;color:#fff}
+.dcbtn-red{background:linear-gradient(135deg,var(--red),#b91c1c)}
+.dcbtn-out{background:var(--surf2);color:var(--white);border:1px solid var(--border)}
+.dcbtn-g{background:linear-gradient(135deg,var(--green),#15803d)}
+.dcbtn-p{background:linear-gradient(135deg,var(--purple),#6d28d9)}
+.dcbtn-cy{background:linear-gradient(135deg,var(--cyan),#0891b2)}
+.dc-close{position:absolute;top:12px;right:12px;width:28px;height:28px;background:var(--surf2);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--gray)}
+.unavail-msg{background:rgba(51,65,85,.3);border:1px solid rgba(51,65,85,.5);border-radius:12px;padding:12px;text-align:center;color:var(--gray);font-size:13px;font-weight:600;margin-top:8px}
+
+/* TICKER */
+.ticker{position:absolute;bottom:72px;left:0;right:0;z-index:55;height:26px;background:rgba(232,0,29,.06);border-top:1px solid rgba(232,0,29,.1);overflow:hidden;display:flex;align-items:center}
+.tick-in{display:flex;animation:tick 32s linear infinite;width:max-content}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ti{display:flex;align-items:center;gap:5px;padding:0 16px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.ti-d{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0}
+
+/* BOTTOM NAV */
+.bnav{position:absolute;bottom:0;left:0;right:0;z-index:60;height:72px;background:rgba(10,15,30,.97);border-top:1px solid var(--border);backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:space-around;padding-bottom:6px}
+.bni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:12px;transition:all .15s}
+.bni-ico{font-size:19px;opacity:.4;color:var(--white);transition:all .2s}
+.bni-lbl{font-size:9px;font-weight:600;color:var(--gray);letter-spacing:.4px;text-transform:uppercase}
+.bni.on .bni-ico{opacity:1;color:var(--red2)}
+.bni.on .bni-lbl{color:var(--red2)}
+.bni-center{width:54px;height:54px;margin-top:-18px;background:linear-gradient(135deg,var(--red),#b91c1c);border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 22px var(--redg);font-size:24px;color:#fff}
+
+/* DRAWER */
+.drawer-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(5px);z-index:200;display:none}
+.drawer-overlay.on{display:block}
+.drawer{position:absolute;top:0;bottom:0;left:0;width:300px;background:var(--bg2);border-right:1px solid var(--border);z-index:300;transform:translateX(-100%);transition:transform .32s cubic-bezier(.16,1,.3,1);box-shadow:20px 0 60px rgba(0,0,0,.7);display:flex;flex-direction:column;color:var(--white)}
+.drawer.on{transform:translateX(0)}
+.drw-top{padding:24px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(232,0,29,.08),transparent)}
+.drw-logo{font-family:'Bebas Neue';font-size:28px;letter-spacing:2px}
+.drw-logo em{color:var(--red);font-style:normal}
+.drw-close{width:36px;height:36px;background:var(--surf);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--gray)}
+.drw-user{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.drw-av{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex-shrink:0}
+.drw-uname{font-weight:700;font-size:15px}
+.drw-usub{font-size:11px;color:var(--green);margin-top:2px}
+.drw-items{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:2px;scrollbar-width:none}
+.drw-items::-webkit-scrollbar{display:none}
+.drw-sep{font-size:9px;font-weight:700;color:var(--gray2);letter-spacing:2px;text-transform:uppercase;padding:10px 10px 6px}
+.di{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;color:var(--white);cursor:pointer;font-size:14px;font-weight:500;transition:all .15s}
+.di.on,.di:active{background:rgba(232,0,29,.08);color:var(--red2)}
+.di-ico{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.di-lbl{flex:1}
+.di-sub{font-size:11px;color:var(--gray);margin-top:1px}
+.di-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:7px;background:rgba(34,197,94,.15);color:var(--green)}
+.di-badge-o{font-size:10px;font-weight:700;padding:3px 8px;border-radius:7px;background:rgba(245,158,11,.15);color:var(--orange)}
+.drw-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--gray2);text-align:center}
+
+/* SHEETS */
+.sheet{position:absolute;inset:0;z-index:400;background:var(--bg);transform:translateY(100%);transition:transform .35s cubic-bezier(.16,1,.3,1);overflow-y:auto;scrollbar-width:none;color:var(--white);display:none}
+.sheet::-webkit-scrollbar{display:none}
+.sheet.on{transform:translateY(0);display:block}
+.sheet-bar{display:flex;align-items:center;gap:12px;padding:16px;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:5}
+.sheet-back{width:40px;height:40px;background:var(--surf);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--gray);flex-shrink:0}
+.sheet-ttl{font-size:16px;font-weight:800;flex:1}
+.sheet-body{padding:16px 16px 40px}
+
+/* COMMON */
+.card{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
+.inp-g{margin-bottom:14px}
+.inp-lbl{font-size:10px;font-weight:700;color:var(--gray);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.inp{background:var(--surf2);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--white);font-size:14px;outline:none;width:100%;font-family:var(--font)}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s;text-align:center;color:#fff;margin-bottom:10px}
+.btn-red{background:linear-gradient(135deg,var(--red),#c0001a)}
+.btn-ghost{background:var(--surf2);color:var(--white);border:1px solid var(--border)}
+.btn-green{background:linear-gradient(135deg,var(--green),#16a34a)}
+.btn-blue{background:linear-gradient(135deg,var(--blue),#1d4ed8)}
+.btn-purple{background:linear-gradient(135deg,var(--purple),#6d28d9)}
+.btn-orange{background:linear-gradient(135deg,var(--orange),#d97706)}
+.badge{padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;display:inline-block}
+.badge-g{background:rgba(34,197,94,.15);color:var(--green)}
+.badge-b{background:rgba(59,130,246,.15);color:var(--blue)}
+.badge-o{background:rgba(245,158,11,.15);color:var(--orange)}
+.badge-r{background:rgba(232,0,29,.15);color:var(--red2)}
+.badge-p{background:rgba(139,92,246,.15);color:var(--purple)}
+.badge-gr{background:rgba(51,65,85,.4);color:var(--gray)}
+.sec-ttl{font-size:17px;font-weight:800;margin-bottom:12px;font-family:'Bebas Neue';letter-spacing:1px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.stat-row:last-child{border:none}
+.stat-val{font-weight:800;font-family:'Bebas Neue';font-size:18px}
+.v-card{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:12px;display:flex;gap:12px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.v-card:hover{border-color:rgba(232,0,29,.3)}
+.v-card.unavail-card{opacity:.5;filter:grayscale(.7)}
+.v-img{width:64px;height:64px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
+.v-name{font-size:14px;font-weight:700}
+.v-price{font-family:'Bebas Neue';font-size:18px;color:var(--red2)}
+.v-meta{font-size:11px;color:var(--gray)}
+
+/* CHAT */
+.chat-box{background:rgba(0,0,0,.3);border-radius:12px;border:1px solid var(--border);height:220px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;scrollbar-width:none}
+.chat-box::-webkit-scrollbar{display:none}
+.cmsg{max-width:85%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.4}
+.cmsg.me{background:var(--red);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.cmsg.ai{background:var(--surf2);color:var(--white);align-self:flex-start;border-bottom-left-radius:4px}
+.cmsg.sys{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);align-self:center;font-size:11px;font-weight:600;border-radius:10px;text-align:center;width:100%}
+.chat-inp-wrap{display:flex;gap:8px;margin-top:8px}
+.chat-inp{flex:1;background:var(--surf2);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;color:var(--white);font-size:13px;outline:none;font-family:var(--font)}
+.chat-send{width:42px;height:42px;background:var(--red);border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:15px;flex-shrink:0}
+
+/* ESCROW */
+.e-step{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
+.e-step:last-child{border:none}
+.e-num{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.e-done{background:rgba(34,197,94,.15);color:var(--green)}
+.e-pend{background:rgba(59,130,246,.15);color:var(--blue)}
+.e-wait{background:var(--surf2);color:var(--gray)}
+.e-ttl{font-size:13px;font-weight:700;margin-bottom:3px}
+.e-sub{font-size:11px;color:var(--gray);line-height:1.5}
+
+/* FICHA */
+.f-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px}
+.f-row:last-child{border:none}
+.f-val{font-weight:700;color:var(--white)}
+.scan-btn{width:100%;padding:13px;border:none;border-radius:13px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;margin-bottom:10px}
+.scan-express{background:linear-gradient(135deg,var(--green),#16a34a)}
+.scan-autofact{background:linear-gradient(135deg,var(--purple),#6d28d9)}
+.scan-res{border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:12px;line-height:1.8;border:1px solid}
+.res-ok{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.2);color:var(--green)}
+.res-full{background:rgba(139,92,246,.07);border-color:rgba(139,92,246,.2);color:var(--purple)}
+
+/* TRANSFERENCIA */
+.ts{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+.ts:last-child{border:none}
+.ts-ico{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ts-done{background:rgba(34,197,94,.15)}
+.ts-active{background:rgba(59,130,246,.15)}
+.ts-wait{background:var(--surf2)}
+.ts-ttl{font-size:13px;font-weight:700;margin-bottom:2px}
+.ts-sub{font-size:11px;color:var(--gray)}
+.ts-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;margin-top:4px}
+
+/* FOTOS */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.photo-slot{aspect-ratio:1;border-radius:12px;background:var(--surf2);border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:var(--gray2);transition:all .2s;position:relative;overflow:hidden}
+.photo-slot.filled{border-style:solid;border-color:var(--green)}
+.photo-slot.add-slot{border-color:rgba(232,0,29,.3);color:var(--red2)}
+
+/* STOCK */
+.stock-row{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.stock-ico{width:36px;height:36px;border-radius:10px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+
+/* CREDITO */
+.conv-card{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);border-radius:12px;padding:12px;margin-bottom:10px;font-size:12px}
+</style>
 </head>
 <body>
+
 <div id="app">
+  <div class="screen active" id="scrLogin">
+    <div class="hdr" style="justify-content:center"><div class="hdr-logo">MOTOR<em>PLACE</em></div></div>
+    <div style="padding:40px;text-align:center">
+      <h2 style="color:#fff;margin-bottom:20px">Selecciona tu Perfil</h2>
+      <button class="btn btn-blue" onclick="setRole('particular')">Particular</button>
+      <button class="btn btn-purple" onclick="setRole('automotora')">Automotora</button>
 
 <!-- SPLASH -->
 <div id="splash">
@@ -21,104 +298,60 @@
   <div class="sp-bar"><div class="sp-fill"></div></div>
 </div>
 
-<!-- ONBOARDING -->
-<div id="onboarding">
-  <div style="padding:16px;display:flex;justify-content:flex-end">
-    <button onclick="obSkip()" style="background:none;border:none;color:var(--gray);font-size:13px;cursor:pointer;font-family:var(--font)">Saltar →</button>
-  </div>
-  <div class="ob-slides" id="ob-slides-wrap"></div>
-  <div class="ob-dots" id="ob-dots"></div>
-  <div class="ob-bottom">
-    <button class="btn btn-red" id="ob-next-btn" onclick="obNext()">Siguiente →</button>
-  </div>
-</div>
-
 <!-- LOGIN -->
 <div id="login">
   <div class="login-hero">
-    <div class="login-hero-content">
-      <div class="login-logo">MOTOR<em>PLACE</em></div>
-      <div class="login-sub">v3.0 · Start-Up Chile CORFO</div>
+    <div style="position:relative;z-index:2">
+      <div style="font-family:'Bebas Neue';font-size:40px;letter-spacing:3px">MOTOR<em style="color:var(--red)">PLACE</em></div>
+      <div style="font-size:11px;color:var(--gray);letter-spacing:3px;text-transform:uppercase">v2.0 · Start-Up Chile CORFO</div>
     </div>
   </div>
   <div class="login-body">
-    <div class="login-tabs">
-      <div class="login-tab on" id="tab-login" onclick="switchLoginTab('login')">Ingresar</div>
-      <div class="login-tab" id="tab-register" onclick="switchLoginTab('register')">Registrarse</div>
-    </div>
-    <div id="login-form">
-      <h2 style="font-size:22px;font-weight:900;margin-bottom:4px">Bienvenido 👋</h2>
-      <p style="font-size:13px;color:var(--gray);margin-bottom:20px">Selecciona tu rol para continuar.</p>
-      <button class="btn btn-red" onclick="doLogin('particular')">🚗 Ingresar como Particular</button>
-      <button class="btn btn-orange" onclick="doLogin('automotora')">🏢 Ingresar como Automotora (SaaS B2B)</button>
-      <div class="divrow">o continuar con</div>
-      <button class="btn btn-ghost" onclick="doLogin('particular')">🌐 Google Auth (Simulado)</button>
-      <p style="font-size:11px;color:var(--gray2);text-align:center;margin-top:12px">Demo interactivo · Validación de negocio Motorplace</p>
-    </div>
-    <div id="register-form" style="display:none">
-      <h2 style="font-size:22px;font-weight:900;margin-bottom:4px">Crear cuenta 🚀</h2>
-      <p style="font-size:13px;color:var(--gray);margin-bottom:20px">Es gratis. Solo toma 2 minutos.</p>
-      <div class="inp-g"><div class="inp-lbl">Nombre completo</div><input class="inp" placeholder="ej: Juan Pérez"></div>
-      <div class="inp-g"><div class="inp-lbl">RUT</div><input class="inp" placeholder="12.345.678-9"></div>
-      <div class="inp-g"><div class="inp-lbl">Email</div><input class="inp" type="email" placeholder="correo@ejemplo.com"></div>
-      <div class="inp-g"><div class="inp-lbl">Teléfono</div><input class="inp" placeholder="+56 9 1234 5678"></div>
-      <div class="inp-g"><div class="inp-lbl">Contraseña</div><input class="inp" type="password" placeholder="Mínimo 8 caracteres"></div>
-      <div class="inp-g">
-        <div class="inp-lbl">Tipo de cuenta</div>
-        <div style="display:flex;gap:8px">
-          <div class="mchip on" style="flex:1;text-align:center">🚗 Particular</div>
-          <div class="mchip" style="flex:1;text-align:center">🏢 Automotora</div>
-        </div>
-      </div>
-      <button class="btn btn-red" onclick="doLogin('particular')">✅ Crear cuenta y verificar KYC</button>
-    </div>
+    <h2 style="font-size:24px;font-weight:900;margin-bottom:4px">Bienvenido 👋</h2>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:22px">Selecciona tu rol para continuar.</p>
+    <button class="btn btn-red" style="margin-bottom:10px" onclick="doLogin('particular')">🚗  Ingresar como Particular</button>
+    <button class="btn btn-orange" style="margin-bottom:10px" onclick="doLogin('automotora')">🏢  Ingresar como Automotora (SaaS B2B)</button>
+    <div class="divrow">o continuar con</div>
+    <button class="btn btn-ghost" onclick="doLogin('particular')">🌐  Google Auth (Simulado)</button>
+    <p style="font-size:11px;color:var(--gray2);text-align:center;margin-top:16px">Demo interactivo · Validación de negocio Motorplace</p>
   </div>
 </div>
 
 <!-- MAP SCREEN -->
 <div id="mapScreen">
-  <div class="map-wrap" id="mapWrap">
-    <div id="mapCanvas" style="position:absolute;width:300%;height:300%;top:-100%;left:-100%;transform-origin:center center;will-change:transform">
-      <div style="position:absolute;inset:0;background:#0a0e1a;
-        background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
-        background-size:80px 80px,80px 80px,16px 16px,16px 16px"></div>
-      <div class="road-main" style="position:absolute;top:50%;left:0;right:0;height:4px;transform:translateY(-50%)"></div>
-      <div class="road-main" style="position:absolute;left:50%;top:0;bottom:0;width:4px;transform:translateX(-50%)"></div>
-      <div class="road-h" style="top:33%;height:2px"></div>
-      <div class="road-h" style="top:66%;height:2px"></div>
-      <div class="road-h" style="top:20%;height:1.5px"></div>
-      <div class="road-h" style="top:80%;height:1.5px"></div>
-      <div class="road-v" style="left:33%;width:2px"></div>
-      <div class="road-v" style="left:66%;width:2px"></div>
-      <div class="road-v" style="left:20%;width:1.5px"></div>
-      <div class="road-v" style="left:80%;width:1.5px"></div>
-      <div class="zone-lbl" style="top:25%;left:55%">PROVIDENCIA</div>
-      <div class="zone-lbl" style="top:55%;left:18%">LAS CONDES</div>
-      <div class="zone-lbl" style="top:70%;left:58%">ÑUÑOA</div>
-      <div class="zone-lbl" style="top:30%;left:72%">VITACURA</div>
-      <div class="zone-lbl" style="top:15%;left:30%">RECOLETA</div>
-      <div class="zone-lbl" style="top:80%;left:35%">MACUL</div>
-      <div class="pulse" style="top:39%;left:32%;width:60px;height:60px;border-color:rgba(232,0,29,.4);animation-delay:0s"></div>
-      <div class="pulse" style="top:39%;left:32%;width:60px;height:60px;border-color:rgba(232,0,29,.2);animation-delay:.7s"></div>
-      <!-- PIN BMW -->
-      <div class="sim-pin" style="top:39%;left:32%" onclick="showDetail('bmw')">
+  <div class="map-wrap">
+    <div class="map-bg">
+      <div class="road-main-h" style="top:45%"></div>
+      <div class="road-main-v" style="left:50%"></div>
+      <div class="road-h" style="top:28%;height:1.5px"></div>
+      <div class="road-h" style="top:62%;height:1.5px"></div>
+      <div class="road-h" style="top:78%;height:1.5px"></div>
+      <div class="road-v" style="left:25%;width:1.5px"></div>
+      <div class="road-v" style="left:72%;width:1.5px"></div>
+      <div class="road-v" style="left:38%;width:1.5px"></div>
+      <div class="zone-lbl" style="top:18%;left:54%">PROVIDENCIA</div>
+      <div class="zone-lbl" style="top:52%;left:16%">LAS CONDES</div>
+      <div class="zone-lbl" style="top:68%;left:55%">ÑUÑOA</div>
+      <div class="zone-lbl" style="top:30%;left:74%">VITACURA</div>
+
+      <!-- Pulse BMW -->
+      <div class="pulse" style="top:36%;left:30%;width:60px;height:60px;border-color:rgba(232,0,29,.4);animation-delay:0s"></div>
+      <div class="pulse" style="top:36%;left:30%;width:60px;height:60px;border-color:rgba(232,0,29,.2);animation-delay:.7s"></div>
+
+      <!-- PIN BMW (disponible) -->
+      <div class="sim-pin" style="top:36%;left:30%" onclick="showDetail('bmw')">
         <div class="pin-ico premium"><i class="fa-solid fa-motorcycle"></i></div>
         <div class="pin-lbl">BMW S1000XR · $11.6M</div>
       </div>
-      <!-- PIN Mercedes -->
-      <div class="sim-pin" style="top:52%;left:62%" onclick="showDetail('mercedes')">
+      <!-- PIN Mercedes (disponible) -->
+      <div class="sim-pin" style="top:50%;left:60%" onclick="showDetail('mercedes')">
         <div class="pin-ico verde"><i class="fa-solid fa-car"></i></div>
         <div class="pin-lbl">Mercedes GLA · $18.9M</div>
       </div>
-      <!-- PIN Toyota sin stock -->
-      <div class="sim-pin unavailable" style="top:65%;left:42%" onclick="showDetail('toyota')">
+      <!-- PIN Toyota (sin stock) -->
+      <div class="sim-pin unavailable" style="top:63%;left:40%" onclick="showDetail('toyota')">
         <div class="pin-ico unavail">❌</div>
         <div class="pin-lbl unavail-lbl">Corolla Cross · Sin Stock</div>
-      </div>
-      <!-- PIN Suzuki reservado -->
-      <div class="sim-pin reserved" style="top:44%;left:78%" onclick="showDetail('suzuki')">
-        <div class="pin-ico reserved-ico"><i class="fa-solid fa-motorcycle"></i></div>
-        <div class="pin-lbl reserved-lbl">🟡 Suzuki GSX · Reservado</div>
       </div>
       <!-- PIN Automotora -->
       <div class="sim-pin" style="top:28%;left:68%" onclick="showDetail('automotora')">
@@ -126,62 +359,46 @@
         <div class="pin-lbl">🏢 AutoPrime SaaS</div>
       </div>
       <!-- PIN Escrow -->
-      <div class="sim-pin" style="top:72%;left:76%" onclick="openSheet('escrow')">
+      <div class="sim-pin" style="top:70%;left:74%" onclick="openSheet('escrow')">
         <div class="pin-ico" style="background:linear-gradient(135deg,var(--purple),#6d28d9)"><i class="fa-solid fa-vault"></i></div>
         <div class="pin-lbl">🔒 Bóveda Escrow</div>
       </div>
-      <!-- PIN Plata Hoy subasta -->
-      <div class="sim-pin" style="top:58%;left:28%" onclick="abrirPlataHoy()">
-        <div class="pin-ico" style="background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 0 20px rgba(34,197,94,.4)">💰</div>
-        <div class="pin-lbl" style="color:var(--green)">Plata Hoy · Subasta</div>
-      </div>
-      <!-- Cluster -->
-      <div class="sim-pin" style="top:20%;left:25%" onclick="showToast('5 vehículos en esta zona. Haz zoom para verlos.')">
-        <div class="pin-cluster">5</div>
-        <div class="pin-lbl" style="color:var(--blue)">Cluster · Las Condes</div>
+      <!-- PIN Suzuki (disponible) -->
+      <div class="sim-pin" style="top:42%;left:78%" onclick="showDetail('suzuki')">
+        <div class="pin-ico azul"><i class="fa-solid fa-motorcycle"></i></div>
+        <div class="pin-lbl">Suzuki GSX · $5.9M</div>
       </div>
     </div>
   </div>
 
-  <!-- Zoom controls -->
-  <div class="zoom-controls">
-    <div class="zoom-btn" onclick="zoomIn()">＋</div>
-    <div style="background:rgba(17,24,39,.92);border:1px solid var(--border);border-radius:10px;padding:4px 8px;font-size:10px;font-weight:700;color:var(--gray);text-align:center" id="zoom-label">100%</div>
-    <div class="zoom-btn" onclick="zoomOut()">－</div>
-    <div class="loc-btn" onclick="goToMyLocation()">📍</div>
-    <div class="loc-btn" onclick="showToast('🧭 Norte orientado')">🧭</div>
-  </div>
-
-  <!-- Header -->
+  <!-- HEADER -->
   <div class="float-hdr">
     <div class="menu-btn" onclick="openDrawer()"><i class="fa-solid fa-bars"></i></div>
     <div class="srch-wrap" onclick="openSheet('busqueda')">
       <i class="fa-solid fa-magnifying-glass" style="color:var(--gray2)"></i>
-      <input type="text" placeholder="Busca marca, modelo, zona o patente…" readonly>
+      <input type="text" placeholder="Busca marca, modelo o zona…" readonly>
       <i class="fa-solid fa-sliders" style="color:var(--purple)"></i>
     </div>
     <div class="notif-btn" onclick="openSheet('notif')"><i class="fa-solid fa-bell"></i><div class="ndot"></div></div>
   </div>
 
-  <!-- Chips -->
+  <!-- CHIPS -->
   <div class="map-chips">
     <div class="mchip on" id="chip-all" onclick="toggleChip('all')">🗺 Todos</div>
     <div class="mchip" id="chip-premium" onclick="toggleChip('premium')">🏍 Premium</div>
     <div class="mchip" id="chip-escrow" onclick="toggleChip('escrow')">🔒 Escrow</div>
-    <div class="mchip" id="chip-reservado" onclick="toggleChip('reservado')">🟡 Reservados</div>
     <div class="mchip" id="chip-credito" onclick="toggleChip('credito')">💳 Crédito</div>
     <div class="mchip" id="chip-ficha" onclick="toggleChip('ficha')">📋 Ficha Full</div>
     <div class="mchip" id="chip-stock" onclick="toggleChip('stock')">✅ En Stock</div>
-    <div class="mchip" id="chip-subasta" onclick="toggleChip('subasta');abrirPlataHoy()">💰 Subasta</div>
   </div>
 
-  <!-- Counter -->
+  <!-- COUNTER -->
   <div class="map-counter">
     <div class="mc-n" id="mapCount">18</div>
     <div class="mc-l" id="mapCountLabel">Cercanos</div>
   </div>
 
-  <!-- Radius -->
+  <!-- RADIUS -->
   <div class="radius-ctrl">
     <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray);margin-bottom:6px">
       <span>🎯 Geofencing activo</span>
@@ -190,7 +407,7 @@
     <input type="range" class="r-slider" min="2" max="30" value="8" oninput="setRadius(this.value)">
   </div>
 
-  <!-- Detail card -->
+  <!-- DETAIL CARD -->
   <div class="detail-card hidden" id="detailCard">
     <div class="dc-close" onclick="hideDetail()"><i class="fa-solid fa-xmark"></i></div>
     <div style="display:flex;gap:12px;align-items:flex-start">
@@ -198,7 +415,6 @@
         <div class="dc-name" id="dc-name"></div>
         <div class="dc-price" id="dc-price"></div>
         <div class="dc-meta" id="dc-meta"></div>
-        <div class="dc-status" id="dc-status"></div>
       </div>
       <div id="dc-ico" style="width:56px;height:56px;background:var(--surf2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0"></div>
     </div>
@@ -206,29 +422,27 @@
     <div id="dc-actions"></div>
   </div>
 
-  <!-- Ticker -->
+  <!-- TICKER -->
   <div class="ticker">
     <div class="tick-in">
       <div class="ti"><div class="ti-d"></div>BMW S1000XR · $11.630.000</div>
-      <div class="ti"><div class="ti-d"></div>PLATA HOY · SUBASTA ACTIVA · COROLLA CROSS</div>
       <div class="ti"><div class="ti-d"></div>ESCROW ACTIVO · 3 TX HOY</div>
       <div class="ti"><div class="ti-d"></div>AUTOFACT OFICIAL · $7.000</div>
       <div class="ti"><div class="ti-d"></div>KYC IA · 24/7</div>
-      <div class="ti"><div class="ti-d"></div>SUZUKI GSX · RESERVADO</div>
+      <div class="ti"><div class="ti-d"></div>COROLLA CROSS · SIN STOCK</div>
       <div class="ti"><div class="ti-d"></div>FEA SIN NOTARÍA</div>
       <div class="ti"><div class="ti-d"></div>AUTOPRIME · 12 PUBS ACTIVAS</div>
       <div class="ti"><div class="ti-d"></div>BMW S1000XR · $11.630.000</div>
-      <div class="ti"><div class="ti-d"></div>PLATA HOY · SUBASTA ACTIVA · COROLLA CROSS</div>
       <div class="ti"><div class="ti-d"></div>ESCROW ACTIVO · 3 TX HOY</div>
       <div class="ti"><div class="ti-d"></div>AUTOFACT OFICIAL · $7.000</div>
       <div class="ti"><div class="ti-d"></div>KYC IA · 24/7</div>
-      <div class="ti"><div class="ti-d"></div>SUZUKI GSX · RESERVADO</div>
+      <div class="ti"><div class="ti-d"></div>COROLLA CROSS · SIN STOCK</div>
       <div class="ti"><div class="ti-d"></div>FEA SIN NOTARÍA</div>
       <div class="ti"><div class="ti-d"></div>AUTOPRIME · 12 PUBS ACTIVAS</div>
     </div>
   </div>
 
-  <!-- Bottom nav -->
+  <!-- BOTTOM NAV -->
   <div class="bnav">
     <div class="bni on" id="bni-mapa" onclick="navTo('mapa')">
       <div class="bni-ico"><i class="fa-solid fa-map-location-dot"></i></div>
@@ -238,13 +452,7 @@
       <div class="bni-ico"><i class="fa-solid fa-magnifying-glass"></i></div>
       <div class="bni-lbl">Buscar</div>
     </div>
-    <div class="bni-platahoy" onclick="abrirPlataHoy()">
-      <div class="bni-platahoy-ico" id="platahoy-btn">
-        💰
-        <div class="alerta-dot" id="platahoy-dot"></div>
-      </div>
-      <div class="bni-platahoy-lbl">Plata Hoy</div>
-    </div>
+    <div class="bni-center" onclick="openSheet('publicar')"><i class="fa-solid fa-plus"></i></div>
     <div class="bni" id="bni-chat" onclick="navTo('chat');openSheet('chat')">
       <div class="bni-ico"><i class="fa-solid fa-robot"></i></div>
       <div class="bni-lbl">IA Chat</div>
@@ -267,81 +475,58 @@
     <div class="drw-av" id="drw-av">P</div>
     <div>
       <div class="drw-uname" id="drw-uname">Particular</div>
-      <div class="drw-usub" id="drw-usub">KYC Verificado</div>
+      <div class="drw-usub" id="drw-usub">✓ KYC Verificado</div>
     </div>
   </div>
   <div class="drw-items" id="drawerItems"></div>
-  <div class="drw-footer">Motorplace v3.0 · Start-Up Chile · 2026</div>
+  <div class="drw-footer">Motorplace v2.0 · Start-Up Chile · 2026</div>
 </div>
 
-<!-- SHEET: BUSQUEDA -->
+<!-- SHEET: BÚSQUEDA -->
 <div class="sheet" id="sheet-busqueda">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('busqueda')"><i class="fa-solid fa-arrow-left"></i></div>
     <div class="sheet-ttl">🔍 Buscar Vehículos</div>
   </div>
   <div class="sheet-body">
-    <div class="sec-ttl">🔎 Consultar por Patente</div>
-    <div class="patente-input-wrap">
-      <input class="patente-inp" id="patente-inp" placeholder="ABCD12" maxlength="6">
-      <button class="patente-btn" onclick="consultarPatente()"><i class="fa-solid fa-search"></i></button>
-    </div>
-    <div id="patente-result"></div>
-    <div class="sec-ttl">Filtros de búsqueda</div>
     <div class="card">
-      <div class="inp-g"><div class="inp-lbl">Marca / Modelo</div><input class="inp" placeholder="ej: BMW, Toyota, Suzuki…"></div>
-      <div class="inp-row">
+      <div class="inp-g"><div class="inp-lbl">Marca / Modelo</div><input class="inp" placeholder="ej: BMW, Toyota…"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="inp-g"><div class="inp-lbl">Año desde</div><input class="inp" placeholder="2018"></div>
         <div class="inp-g"><div class="inp-lbl">Año hasta</div><input class="inp" placeholder="2026"></div>
         <div class="inp-g"><div class="inp-lbl">Precio mín.</div><input class="inp" placeholder="$0"></div>
         <div class="inp-g"><div class="inp-lbl">Precio máx.</div><input class="inp" placeholder="$30M"></div>
-      </div>
-      <div class="inp-g"><div class="inp-lbl">Zona / Comuna</div><input class="inp" placeholder="ej: Providencia, Las Condes…"></div>
-      <div class="inp-g">
-        <div class="inp-lbl">Tipo de informe</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <div class="mchip on" style="font-size:10px;padding:6px 10px">Todos</div>
-          <div class="mchip" style="font-size:10px;padding:6px 10px">✅ Básico gratis</div>
-          <div class="mchip" style="font-size:10px;padding:6px 10px">🟡 Express $500</div>
-          <div class="mchip" style="font-size:10px;padding:6px 10px">🟣 Autofact $7k</div>
-        </div>
-      </div>
-      <div class="inp-g">
-        <div class="inp-lbl">Disponibilidad</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <div class="mchip on" style="font-size:10px;padding:6px 10px">Todos</div>
-          <div class="mchip" style="font-size:10px;padding:6px 10px">🟢 Disponible</div>
-          <div class="mchip" style="font-size:10px;padding:6px 10px">🟡 Reservado</div>
-          <div class="mchip" style="font-size:10px;padding:6px 10px">💰 En Subasta</div>
-          <div class="mchip" style="font-size:10px;padding:6px 10px">⬛ Sin Stock</div>
-        </div>
       </div>
       <button class="btn btn-red" onclick="closeSheet('busqueda')">🔍 Aplicar Filtros</button>
     </div>
     <div class="sec-ttl">Resultados cerca de ti</div>
     <div class="v-card" onclick="showDetail('bmw');closeSheet('busqueda')">
       <div class="v-img">🏍️</div>
-      <div style="flex:1"><div class="v-name">BMW S1000 XR · HP</div><div class="v-price">$11.630.000</div><div class="v-meta">2021 · 18.000 km · Providencia</div><div style="margin-top:5px"><span class="badge badge-g">🟢 Disponible</span> <span class="badge badge-p">Autofact</span></div></div>
+      <div style="flex:1"><div class="v-name">BMW S1000 XR · HP</div><div class="v-price">$11.630.000</div><div class="v-meta">2021 · 18.000 km · Providencia</div><div style="margin-top:5px"><span class="badge badge-g">KYC ✓</span> <span class="badge badge-b">FEA</span> <span class="badge badge-g">Stock ✓</span></div></div>
     </div>
     <div class="v-card" onclick="showDetail('mercedes');closeSheet('busqueda')">
       <div class="v-img">🚗</div>
-      <div style="flex:1"><div class="v-name">Mercedes GLA 200 AMG</div><div class="v-price">$18.900.000</div><div class="v-meta">2022 · 32.000 km · Las Condes</div><div style="margin-top:5px"><span class="badge badge-g">🟢 Disponible</span> <span class="badge badge-g">Escrow</span></div></div>
-    </div>
-    <div class="v-card" onclick="abrirPlataHoy();closeSheet('busqueda')" style="border-color:rgba(34,197,94,.3)">
-      <div class="v-img" style="background:rgba(34,197,94,.1)">💰</div>
-      <div style="flex:1"><div class="v-name">Toyota Corolla Cross</div><div class="v-price" style="color:var(--green)">Subasta activa</div><div class="v-meta">2020 · 45.000 km · Providencia</div><div style="margin-top:5px"><span class="badge badge-g">💰 Plata Hoy</span> <span class="badge badge-y">3h 24min</span></div></div>
-    </div>
-    <div class="v-card" onclick="showDetail('suzuki');closeSheet('busqueda')">
-      <div class="v-img">🏍️</div>
-      <div style="flex:1"><div class="v-name">Suzuki GSX-S750</div><div class="v-price">$5.900.000</div><div class="v-meta">2020 · 12.000 km · Vitacura</div><div style="margin-top:5px"><span class="badge badge-y">🟡 Reservado</span></div></div>
+      <div style="flex:1"><div class="v-name">Mercedes GLA 200 AMG</div><div class="v-price">$18.900.000</div><div class="v-meta">2022 · 32.000 km · Las Condes</div><div style="margin-top:5px"><span class="badge badge-g">Escrow ✓</span> <span class="badge badge-g">Stock ✓</span></div></div>
     </div>
     <div class="v-card unavail-card" onclick="showDetail('toyota');closeSheet('busqueda')">
       <div class="v-img" style="opacity:.4">🚙</div>
-      <div style="flex:1"><div class="v-name" style="text-decoration:line-through;color:var(--gray)">Toyota Corolla 2022</div><div class="v-price" style="color:var(--gray2)">$14.500.000</div><div class="v-meta">2022 · 24.000 km · Ñuñoa</div><div style="margin-top:5px"><span class="badge badge-gr">⬛ Sin Stock</span></div></div>
+      <div style="flex:1"><div class="v-name" style="text-decoration:line-through;color:var(--gray)">Toyota Corolla Cross</div><div class="v-price" style="color:var(--gray2)">$14.500.000</div><div class="v-meta">2022 · 24.000 km · Ñuñoa</div><div style="margin-top:5px"><span class="badge badge-gr">❌ Sin Stock</span></div></div>
+    </div>
+    <div class="v-card" onclick="showDetail('suzuki');closeSheet('busqueda')">
+      <div class="v-img">🏍️</div>
+      <div style="flex:1"><div class="v-name">Suzuki GSX-S750</div><div class="v-price">$5.900.000</div><div class="v-meta">2020 · 12.000 km · Vitacura</div><div style="margin-top:5px"><span class="badge badge-g">Stock ✓</span> <span class="badge badge-o">Crédito</span></div></div>
     </div>
   </div>
 </div>
 
+  <div class="screen" id="scrMap">
+    <div class="hdr"><div class="hdr-logo">MOTOR<em>PLACE</em></div><div id="roleIndicator" style="color:var(--gray);font-size:10px"></div></div>
+    <div class="map-container"><div id="pinsWrapper"></div></div>
+    <div class="slide-card" id="detailCard">
+      <h3 id="lblTitle" style="color:#fff"></h3>
+      <p id="lblPrice" style="color:var(--red2);font-size:20px;font-weight:bold"></p>
+      <div id="boxActions"></div>
+      <button class="btn btn-red" onclick="closeDetail()">Cerrar</button>
 <!-- SHEET: PUBLICAR -->
 <div class="sheet" id="sheet-publicar">
   <div class="sheet-bar">
@@ -351,54 +536,43 @@
   <div class="sheet-body" id="pub-body"></div>
 </div>
 
-<!-- SHEET: FICHA -->
+<!-- SHEET: FICHA TÉCNICA -->
 <div class="sheet" id="sheet-ficha">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('ficha')"><i class="fa-solid fa-arrow-left"></i></div>
     <div class="sheet-ttl" id="ficha-title">📋 Ficha Técnica</div>
-    <span class="badge badge-g">Verificada</span>
+    <span class="badge badge-b">Verificada</span>
   </div>
   <div class="sheet-body" id="ficha-body"></div>
 </div>
 
-<!-- SHEET: VISITA -->
-<div class="sheet" id="sheet-visita">
+<!-- SHEET: TRANSFERENCIA E2E -->
+<div class="sheet" id="sheet-transferencia">
   <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('visita')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">📅 Solicitar Visita</div>
-    <span class="badge badge-b">En vivo</span>
+    <div class="sheet-back" onclick="closeSheet('transferencia')"><i class="fa-solid fa-arrow-left"></i></div>
+    <div class="sheet-ttl">🔄 Seguimiento End-to-End</div>
+    <span class="badge badge-b">En curso</span>
   </div>
-  <div class="sheet-body" id="visita-body"></div>
-</div>
-
-<!-- SHEET: RESERVA -->
-<div class="sheet" id="sheet-reserva">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('reserva')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">🔒 Reservar Vehículo</div>
-    <span class="badge badge-y">Escrow</span>
+  <div class="sheet-body">
+    <div class="card" style="background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.2);text-align:center;padding:20px">
+      <div style="font-size:40px;margin-bottom:8px">🔄</div>
+      <div style="font-family:'Bebas Neue';font-size:20px;letter-spacing:1px">Transferencia End-to-End</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">Motorplace gestiona todo hasta el cambio de titular en el Registro Civil</div>
+    </div>
+    <div class="sec-ttl">Estado del proceso</div>
+    <div class="card">
+      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">Acuerdo de precio</div><div class="ts-sub">Ambas partes confirmaron precio y condiciones</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">KYC Verificado</div><div class="ts-sub">RUT + selfie IA validados para comprador y vendedor</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">Contrato FEA firmado</div><div class="ts-sub">Firma electrónica avanzada · Validez legal plena en Chile</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-active">⏳</div><div><div class="ts-ttl">Fondos en Bóveda Escrow</div><div class="ts-sub">$11.630.000 retenidos · Esperando inspección técnica</div><div><span class="ts-tag" style="background:rgba(59,130,246,.15);color:var(--blue)">En progreso</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-wait">🔍</div><div><div class="ts-ttl">Inspección técnica</div><div class="ts-sub">Inspector Motorplace certificado · Mañana 10:00 AM</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-wait">🏛️</div><div><div class="ts-ttl">Registro Civil</div><div class="ts-sub">Motorplace gestiona el cambio de titular</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
+      <div class="ts"><div class="ts-ico ts-wait">💸</div><div><div class="ts-ttl">Liberación de fondos</div><div class="ts-sub">Transferencia automática al vendedor al confirmar titular</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
+    </div>
+    <div class="bnav" id="mainNav"></div>
+    <button class="btn btn-blue">📍 Ver Inspector en Mapa</button>
+    <button class="btn btn-ghost" onclick="openSheet('chat')">💬 Consultar Asesor IA</button>
   </div>
-  <div class="sheet-body" id="reserva-body"></div>
-</div>
-
-<!-- SHEET: PLATA HOY PARTICULAR -->
-<div class="sheet" id="sheet-platahoy-particular">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('platahoy-particular')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">💰 Plata Hoy</div>
-    <span class="badge badge-g">Express</span>
-  </div>
-  <div class="sheet-body" id="platahoy-particular-body"></div>
-</div>
-
-<!-- SHEET: PLATA HOY AUTOMOTORA -->
-<div class="sheet" id="sheet-platahoy-automotora">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('platahoy-automotora')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">🚨 Subastas Express</div>
-    <span class="badge badge-y">En vivo</span>
-  </div>
-  <div class="sheet-body" id="platahoy-automotora-body"></div>
 </div>
 
 <!-- SHEET: ESCROW -->
@@ -409,76 +583,25 @@
     <span class="badge badge-g">Activo</span>
   </div>
   <div class="sheet-body">
-    <div class="card" style="background:rgba(139,92,246,.06);border-color:rgba(139,92,246,.2);text-align:center;padding:24px">
+    <div class="card" style="background:rgba(139,92,246,.06);border-color:rgba(139,92,246,.2);text-align:center;padding:20px">
       <div style="font-size:48px;margin-bottom:8px">🏛️</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px">Bóveda de Pagos Segura</div>
-      <div style="font-size:12px;color:var(--gray);margin-top:6px">El dinero nunca va directo al vendedor. Queda retenido hasta confirmar cada etapa.</div>
+      <div style="font-family:'Bebas Neue';font-size:22px;letter-spacing:1px">Compra 100% Segura</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">Los fondos quedan retenidos hasta confirmar cada etapa</div>
     </div>
     <div class="sec-ttl">Etapas del Escrow</div>
     <div class="card">
-      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">KYC Verificado</div><div class="e-sub">Identidad confirmada · RUT + selfie IA</div></div></div>
-      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">Contrato FEA Firmado</div><div class="e-sub">Firma electrónica avanzada · Sin notaría</div></div></div>
-      <div class="e-step"><div class="e-num e-pend">3</div><div><div class="e-ttl">Fondos en Bóveda</div><div class="e-sub">Retenidos en cuenta custodia · Esperando inspección</div></div></div>
-      <div class="e-step"><div class="e-num e-wait">4</div><div><div class="e-ttl">Inspección Técnica</div><div class="e-sub">Inspector certificado Motorplace confirma estado</div></div></div>
-      <div class="e-step"><div class="e-num e-wait">5</div><div><div class="e-ttl">Liberación garantizada</div><div class="e-sub">Transferencia al vendedor con fecha exacta garantizada</div></div></div>
+      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">KYC Verificado</div><div class="e-sub">Identidad de comprador y vendedor confirmada vía RUT + selfie IA</div></div></div>
+      <div class="e-step"><div class="e-num e-done"><i class="fa-solid fa-check"></i></div><div><div class="e-ttl">Contrato FEA Firmado</div><div class="e-sub">Firma electrónica avanzada · Sin notaría · Valor legal en Chile</div></div></div>
+      <div class="e-step"><div class="e-num e-pend">3</div><div><div class="e-ttl">Fondos en Bóveda</div><div class="e-sub">$11.630.000 CLP retenidos · Esperando inspección</div></div></div>
+      <div class="e-step"><div class="e-num e-wait">4</div><div><div class="e-ttl">Inspección Técnica</div><div class="e-sub">Inspector certificado confirma estado del vehículo in situ</div></div></div>
+      <div class="e-step"><div class="e-num e-wait">5</div><div><div class="e-ttl">Liberación de fondos</div><div class="e-sub">Transferencia al vendedor + cambio de titular End-to-End</div></div></div>
     </div>
     <button class="btn btn-purple" onclick="openSheet('transferencia')">🔄 Ver Seguimiento End-to-End</button>
     <button class="btn btn-blue">📍 Ver Inspector Asignado</button>
   </div>
 </div>
 
-<!-- SHEET: TRANSFERENCIA -->
-<div class="sheet" id="sheet-transferencia">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('transferencia')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">🔄 Seguimiento End-to-End</div>
-    <span class="badge badge-b">En curso</span>
-  </div>
-  <div class="sheet-body">
-    <div class="card" style="background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.2);text-align:center;padding:20px">
-      <div style="font-size:40px;margin-bottom:8px">🔄</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px">Transferencia End-to-End</div>
-      <div style="font-size:12px;color:var(--gray);margin-top:4px">Motorplace gestiona todo hasta el cambio de titular en el Registro Civil</div>
-    </div>
-    <div class="sec-ttl">Estado del proceso</div>
-    <div class="card">
-      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">Acuerdo de precio</div><div class="ts-sub">Confirmado vía chat IA</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">KYC Verificado</div><div class="ts-sub">RUT + selfie IA · Ambas partes</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-done">✅</div><div><div class="ts-ttl">Contrato FEA firmado</div><div class="ts-sub">Firma electrónica avanzada</div><div><span class="ts-tag" style="background:rgba(34,197,94,.15);color:var(--green)">Completado</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-active">⏳</div><div><div class="ts-ttl">Fondos en Bóveda Escrow</div><div class="ts-sub">Retenidos · Esperando inspección</div><div><span class="ts-tag" style="background:rgba(59,130,246,.15);color:var(--blue)">En progreso</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-wait">🔍</div><div><div class="ts-ttl">Inspección técnica</div><div class="ts-sub">Inspector Motorplace · Mañana 10:00 AM</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-wait">🏛️</div><div><div class="ts-ttl">Registro Civil</div><div class="ts-sub">Cambio de titular digital</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
-      <div class="ts"><div class="ts-ico ts-wait">💸</div><div><div class="ts-ttl">Liberación garantizada</div><div class="ts-sub">Transferencia automática al vendedor</div><div><span class="ts-tag" style="background:rgba(255,255,255,.06);color:var(--gray)">Pendiente</span></div></div></div>
-    </div>
-    <button class="btn btn-blue">📍 Ver Inspector en Mapa</button>
-    <button class="btn btn-ghost" onclick="openSheet('chat')">💬 Consultar Asesor IA</button>
-  </div>
-</div>
-
-<!-- SHEET: COMO FUNCIONA -->
-<div class="sheet" id="sheet-como-funciona">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('como-funciona')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">❓ Cómo Funciona</div>
-  </div>
-  <div class="sheet-body">
-    <div class="card" style="background:rgba(232,0,29,.05);border-color:rgba(232,0,29,.2);text-align:center;padding:20px;margin-bottom:20px">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px">Motorplace lo hace todo por ti</div>
-      <div style="font-size:12px;color:var(--gray);margin-top:6px">Sin papel · Sin notaría · Sin Registro Civil físico · 100% digital</div>
-    </div>
-    <div class="card">
-      <div class="how-item"><div class="how-ico" style="background:rgba(34,197,94,.15)">💰</div><div><div class="how-ttl">Plata Hoy — Subasta Express</div><div class="how-desc">Vende tu auto hoy mismo. Publica, define tu precio mínimo y automotoras verificadas pujan en 6 o 12 horas. Dinero seguro en Escrow el mismo día.</div></div></div>
-      <div class="how-item"><div class="how-ico" style="background:rgba(139,92,246,.15)">🔒</div><div><div class="how-ttl">Escrow — Bóveda de Pagos</div><div class="how-desc">El dinero nunca va directo al vendedor. Queda retenido hasta confirmar cada etapa. Liberación garantizada con fecha exacta.</div></div></div>
-      <div class="how-item"><div class="how-ico" style="background:rgba(59,130,246,.15)">✍️</div><div><div class="how-ttl">FEA — Firma Electrónica</div><div class="how-desc">Reemplaza la firma ante notaría. Plena validez legal en Chile. Se firma desde el celular en 2 minutos.</div></div></div>
-      <div class="how-item"><div class="how-ico" style="background:rgba(139,92,246,.15)">📋</div><div><div class="how-ttl">Autofact Oficial · $7.000</div><div class="how-desc">Prendas, embargos, prohibiciones, historial de propietarios. Resultado inmediato.</div></div></div>
-      <div class="how-item"><div class="how-ico" style="background:rgba(6,182,212,.15)">🔄</div><div><div class="how-ttl">Transferencia Online</div><div class="how-desc">Sin ir al Registro Civil. 100% digital. 3 a 5 días hábiles.</div></div></div>
-      <div class="how-item" style="border:none"><div class="how-ico" style="background:rgba(234,179,8,.15)">⏱</div><div><div class="how-ttl">¿Cuándo recibe el dinero el vendedor?</div><div class="how-desc">Motorplace emite compromiso con fecha exacta. Si hay atraso, compensación automática.</div></div></div>
-    </div>
-    <button class="btn btn-red" onclick="closeSheet('como-funciona')">Empezar ahora</button>
-  </div>
-</div>
-
-<!-- SHEET: CREDITO -->
+<!-- SHEET: CRÉDITO -->
 <div class="sheet" id="sheet-credito">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('credito')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -487,7 +610,7 @@
   <div class="sheet-body">
     <div class="card">
       <div class="inp-g"><div class="inp-lbl">Precio del vehículo (CLP)</div><input class="inp" id="cr-precio" value="11630000" oninput="calcCredito()"></div>
-      <div class="inp-row">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="inp-g"><div class="inp-lbl">Pie (%)</div><input class="inp" id="cr-pie" value="20" oninput="calcCredito()"></div>
         <div class="inp-g"><div class="inp-lbl">Plazo (meses)</div><input class="inp" id="cr-plazo" value="48" oninput="calcCredito()"></div>
       </div>
@@ -506,84 +629,7 @@
   </div>
 </div>
 
-<!-- SHEET: PLANES -->
-<div class="sheet" id="sheet-planes">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('planes')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">⭐ Planes y Precios</div>
-  </div>
-  <div class="sheet-body">
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px">Para Automotoras</div>
-      <div style="font-size:12px;color:var(--gray)">Sin contratos · Sin instalación · Todo desde el celular</div>
-    </div>
-    <div class="plan-card" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04)">
-      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px">🟢 PLAN GRATUITO</div>
-      <div class="plan-price" style="color:var(--green)">$0</div>
-      <div class="plan-period">Para siempre · 1 a 10 autos</div>
-      <div style="margin-top:14px">
-        <div class="plan-feature">✅ Hasta 10 publicaciones</div>
-        <div class="plan-feature">✅ Mapa georreferenciado</div>
-        <div class="plan-feature">✅ 1 informe Express gratis por auto</div>
-        <div class="plan-feature">✅ Acceso a Plata Hoy · Subastas Express</div>
-        <div class="plan-feature">✅ Badge Verificado Motorplace</div>
-      </div>
-      <button class="btn btn-green" style="margin-top:14px">Empezar Gratis</button>
-    </div>
-    <div class="plan-card popular" style="border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.05)">
-      <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px">🔵 PLAN PREMIUM</div>
-      <div class="plan-price" style="color:var(--blue)">$29.990</div>
-      <div class="plan-period">mensual · 11 a 20 autos</div>
-      <div style="margin-top:14px">
-        <div class="plan-feature">✅ Todo el plan gratuito</div>
-        <div class="plan-feature">✅ Perfil personalizable con logo</div>
-        <div class="plan-feature">✅ Alertas Plata Hoy prioritarias</div>
-        <div class="plan-feature">✅ 2 informes Express gratis por auto</div>
-        <div class="plan-feature">✅ Estadísticas básicas</div>
-      </div>
-      <button class="btn btn-blue" style="margin-top:14px">Contratar Premium</button>
-    </div>
-    <div class="plan-card" style="border-color:rgba(139,92,246,.4);background:rgba(139,92,246,.05)">
-      <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px">🟣 PLAN PRO</div>
-      <div class="plan-price" style="color:var(--purple)">$79.990</div>
-      <div class="plan-period">mensual · 21 a 50 autos</div>
-      <div style="margin-top:14px">
-        <div class="plan-feature">✅ Todo el plan premium</div>
-        <div class="plan-feature">✅ Dashboard analytics completo</div>
-        <div class="plan-feature">✅ CRM de clientes integrado</div>
-        <div class="plan-feature">✅ Carga masiva Excel/CSV</div>
-        <div class="plan-feature">✅ Autofact con descuento</div>
-        <div class="plan-feature">✅ Facturación electrónica</div>
-      </div>
-      <button class="btn btn-purple" style="margin-top:14px">Contratar Pro</button>
-    </div>
-    <div class="plan-card" style="border-color:rgba(234,179,8,.4);background:rgba(234,179,8,.05)">
-      <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:8px">⭐ ENTERPRISE</div>
-      <div class="plan-price" style="color:var(--yellow)">A medida</div>
-      <div class="plan-period">+50 autos · Precio negociado</div>
-      <div style="margin-top:14px">
-        <div class="plan-feature">✅ Todo el plan Pro</div>
-        <div class="plan-feature">✅ API propia para integrar tu sistema</div>
-        <div class="plan-feature">✅ Manager dedicado Motorplace</div>
-        <div class="plan-feature">✅ Transferencias masivas gestionadas</div>
-        <div class="plan-feature">✅ Tasas bancarias negociadas</div>
-      </div>
-      <button class="btn btn-yellow" style="margin-top:14px">Contactar Ventas</button>
-    </div>
-    <div class="card" style="background:rgba(232,0,29,.05);border-color:rgba(232,0,29,.2)">
-      <div style="font-size:13px;font-weight:700;margin-bottom:8px">🛡 Incluido en TODOS los planes</div>
-      <div style="font-size:12px;color:var(--gray);line-height:1.8">
-        ✅ Informe básico PatentesChile por auto<br>
-        ✅ Badge Verificado por Motorplace<br>
-        ✅ Acceso a Plata Hoy · Subastas Express<br>
-        ✅ KYC de compradores verificado<br>
-        ✅ Bóveda Escrow disponible
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SHEET: CHAT -->
+<!-- SHEET: CHAT IA -->
 <div class="sheet" id="sheet-chat">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('chat')"><i class="fa-solid fa-arrow-left"></i></div>
@@ -591,59 +637,46 @@
     <span class="badge badge-g">Online</span>
   </div>
   <div class="sheet-body">
-    <div class="card" style="background:rgba(232,0,29,.04);border-color:rgba(232,0,29,.15);font-size:12px;color:var(--gray);margin-bottom:16px">
-      <strong style="color:var(--white)">🤖 ¿Para qué sirve el Asesor IA?</strong><br><br>
-      • Comparar vehículos y alertar si el precio no es de mercado<br>
-      • Explicar Escrow, FEA, Plata Hoy y transferencia E2E<br>
-      • Simular crédito directamente en el chat<br>
-      • Consultar patente y verificar estado legal<br>
-      • Asesorar en subastas Express
-    </div>
     <div class="chat-box" id="chatBox">
-      <div class="cmsg sys">🔒 Chat encriptado · KYC activo · IA Motorplace</div>
-      <div class="cmsg ai">¡Hola! Soy el asesor IA de Motorplace. Puedo ayudarte a comprar, vender, subastar o verificar un auto. ¿En qué te ayudo?</div>
+      <div class="cmsg sys">🔒 Chat encriptado · KYC activo</div>
+      <div class="cmsg ai">¡Hola! Soy el asesor IA de Motorplace. ¿En qué te puedo ayudar?</div>
     </div>
     <div class="chat-inp-wrap">
       <input class="chat-inp" id="chatInp" placeholder="Escribe tu pregunta…" onkeydown="if(event.key==='Enter')sendChat()">
       <button class="chat-send" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-      <div class="mchip" onclick="quickMsg('Como funciona Plata Hoy?')" style="font-size:11px;padding:6px 12px">💰 Plata Hoy</div>
       <div class="mchip" onclick="quickMsg('El BMW tiene multas?')" style="font-size:11px;padding:6px 12px">🔎 Multas</div>
+      <div class="mchip" onclick="quickMsg('Acepta parte de pago?')" style="font-size:11px;padding:6px 12px">🔄 Parte pago</div>
       <div class="mchip" onclick="quickMsg('Simular credito 48 meses')" style="font-size:11px;padding:6px 12px">💳 Crédito</div>
       <div class="mchip" onclick="quickMsg('Como funciona el Escrow?')" style="font-size:11px;padding:6px 12px">🔒 Escrow</div>
-      <div class="mchip" onclick="quickMsg('Cuanto tarda la transferencia')" style="font-size:11px;padding:6px 12px">⏱ Transferencia</div>
     </div>
   </div>
 </div>
 
-<!-- SHEET: NOTIF -->
+<!-- SHEET: NOTIFICACIONES -->
 <div class="sheet" id="sheet-notif">
   <div class="sheet-bar">
     <div class="sheet-back" onclick="closeSheet('notif')"><i class="fa-solid fa-arrow-left"></i></div>
     <div class="sheet-ttl">🔔 Notificaciones</div>
-    <span class="badge badge-r">5</span>
+    <span class="badge badge-r">4</span>
   </div>
   <div class="sheet-body">
     <div class="card" style="border-left:3px solid var(--green)">
-      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">💰 Nueva subasta Plata Hoy</div><div style="font-size:10px;color:var(--gray)">ahora</div></div>
-      <div style="font-size:12px;color:var(--gray);margin-top:4px">Toyota Corolla Cross 2020 en Providencia. Precio mínimo $9.500.000. Quedan 3h 24min.</div>
-    </div>
-    <div class="card" style="border-left:3px solid var(--green)">
       <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">✅ KYC aprobado</div><div style="font-size:10px;color:var(--gray)">5 min</div></div>
-      <div style="font-size:12px;color:var(--gray);margin-top:4px">Tu identidad fue verificada. Ya puedes usar Escrow, FEA y Plata Hoy.</div>
-    </div>
-    <div class="card" style="border-left:3px solid var(--yellow)">
-      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">🟡 Visita confirmada</div><div style="font-size:10px;color:var(--gray)">8 min</div></div>
-      <div style="font-size:12px;color:var(--gray);margin-top:4px">El vendedor del BMW S1000XR confirmó tu visita para mañana 10:00 AM.</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">Tu identidad fue verificada. Ya puedes usar Escrow y FEA.</div>
     </div>
     <div class="card" style="border-left:3px solid var(--purple)">
-      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">📋 Ficha Express completada</div><div style="font-size:10px;color:var(--gray)">15 min</div></div>
+      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">📋 Ficha Express completada</div><div style="font-size:10px;color:var(--gray)">10 min</div></div>
       <div style="font-size:12px;color:var(--gray);margin-top:4px">BMW S1000XR: Sin multas · Sin remates. Consulta Autofact para informe legal completo.</div>
     </div>
     <div class="card" style="border-left:3px solid var(--blue)">
-      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">💬 Nuevo mensaje</div><div style="font-size:10px;color:var(--gray)">22 min</div></div>
+      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">💬 Nuevo mensaje</div><div style="font-size:10px;color:var(--gray)">20 min</div></div>
       <div style="font-size:12px;color:var(--gray);margin-top:4px">Vendedor del BMW: "Acepto parte de pago con pickup o moto de menor cilindrada."</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--orange)">
+      <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:700">🎯 Alerta de precio</div><div style="font-size:10px;color:var(--gray)">1 hr</div></div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">Suzuki GSX-S750 en tu zona: $5.900.000. ¡Oportunidad!</div>
     </div>
   </div>
 </div>
@@ -665,64 +698,474 @@
     <span class="badge badge-o">SaaS</span>
   </div>
   <div class="sheet-body">
-    <div style="border:2px dashed rgba(245,158,11,.3);background:rgba(245,158,11,.04);border-radius:14px;padding:24px;text-align:center;cursor:pointer;margin-bottom:16px">
+    <div style="border:2px dashed rgba(245,158,11,.3);background:rgba(245,158,11,.04);border-radius:14px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px" onclick="alert('Producción: sube tu planilla Excel/CSV con el stock completo.')">
       <div style="font-size:40px;margin-bottom:8px">📊</div>
       <div style="font-size:14px;font-weight:700;margin-bottom:4px">Subir Excel / CSV</div>
       <div style="font-size:12px;color:var(--gray)">Formato: Marca, Modelo, Año, Km, Precio, Stock</div>
       <button class="btn btn-orange" style="margin-top:14px;width:auto;padding:10px 22px;display:inline-block">Seleccionar Archivo</button>
     </div>
     <div class="sec-ttl">Stock actual (12 unidades)</div>
-    <div class="stock-row"><div class="stock-ico">🏍️</div><div style="flex:1"><div style="font-size:13px;font-weight:700">BMW S1000XR 2021</div><div style="font-size:11px;color:var(--gray)">$11.630.000</div></div><span class="badge badge-g">🟢 Online</span></div>
-    <div class="stock-row"><div class="stock-ico">🚗</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Mercedes GLA 200 2022</div><div style="font-size:11px;color:var(--gray)">$18.900.000</div></div><span class="badge badge-g">🟢 Online</span></div>
-    <div class="stock-row"><div class="stock-ico" style="background:rgba(34,197,94,.1)">💰</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Toyota Corolla Cross 2020</div><div style="font-size:11px;color:var(--green)">Subasta activa · 3h restantes</div></div><span class="badge badge-g">💰 Plata Hoy</span></div>
-    <div class="stock-row"><div class="stock-ico">🏍️</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Suzuki GSX-S750 2020</div><div style="font-size:11px;color:var(--gray)">$5.900.000</div></div><span class="badge badge-y">🟡 Reservado</span></div>
+    <div class="stock-row"><div class="stock-ico">🏍️</div><div style="flex:1"><div style="font-size:13px;font-weight:700">BMW S1000XR 2021</div><div style="font-size:11px;color:var(--gray)">$11.630.000</div></div><span class="badge badge-g">✅ Online</span></div>
+    <div class="stock-row"><div class="stock-ico">🚗</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Mercedes GLA 200 2022</div><div style="font-size:11px;color:var(--gray)">$18.900.000</div></div><span class="badge badge-g">✅ Online</span></div>
+    <div class="stock-row" style="opacity:.5"><div class="stock-ico" style="filter:grayscale(1)">🚙</div><div style="flex:1"><div style="font-size:13px;font-weight:700;text-decoration:line-through;color:var(--gray)">Toyota Corolla Cross</div><div style="font-size:11px;color:var(--gray2)">$14.500.000</div></div><span class="badge badge-gr">❌ Off</span></div>
+    <div class="stock-row"><div class="stock-ico">🏍️</div><div style="flex:1"><div style="font-size:13px;font-weight:700">Suzuki GSX-S750 2020</div><div style="font-size:11px;color:var(--gray)">$5.900.000</div></div><span class="badge badge-g">✅ Online</span></div>
     <button class="btn btn-orange" style="margin-top:8px">+ Agregar Vehículo Manual</button>
   </div>
 </div>
 
-<!-- SHEET: DASHBOARD -->
-<div class="sheet" id="sheet-dashboard">
-  <div class="sheet-bar">
-    <div class="sheet-back" onclick="closeSheet('dashboard')"><i class="fa-solid fa-arrow-left"></i></div>
-    <div class="sheet-ttl">📊 Dashboard Analytics</div>
-    <span class="badge badge-o">SaaS</span>
-  </div>
-  <div class="sheet-body">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      <div class="card" style="text-align:center;padding:14px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--green)">4.821</div>
-        <div style="font-size:11px;color:var(--gray)">Visitas este mes</div>
-        <div style="font-size:10px;color:var(--green)">▲ 23%</div>
-      </div>
-      <div class="card" style="text-align:center;padding:14px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--blue)">198</div>
-        <div style="font-size:11px;color:var(--gray)">Contactos</div>
-        <div style="font-size:10px;color:var(--blue)">▲ 15%</div>
-      </div>
-      <div class="card" style="text-align:center;padding:14px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--orange)">8</div>
-        <div style="font-size:11px;color:var(--gray)">Ventas</div>
-        <div style="font-size:10px;color:var(--orange)">▲ 33%</div>
-      </div>
-      <div class="card" style="text-align:center;padding:14px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--green)">2</div>
-        <div style="font-size:11px;color:var(--gray)">Plata Hoy</div>
-        <div style="font-size:10px;color:var(--green)">Adjudicados</div>
-      </div>
-    </div>
-    <div class="sec-ttl">Trámites rápidos</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">💳 Pagar Multas</button>
-      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">📄 Permiso Circulación</button>
-      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">📋 Autofact Masivo</button>
-      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">🔄 Transferencia</button>
-      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">💰 Plata Hoy</button>
-      <button class="btn btn-ghost" style="margin:0;font-size:12px;padding:12px">🧾 Facturación</button>
-    </div>
-  </div>
-</div>
+</div><!-- #app -->
 
-</div><!-- /app -->
-<script src="app.js"></script>
+<script>
+let mockCars = [
+  { id: 1, name: "BMW S1000XR", price: "$10.500.000", available: true, isDealer: false, reportLevel: 'none', top: 30, left: 30, emoji: "🏍️" },
+  { id: 2, name: "Subaru XV", price: "$11.200.000", available: true, isDealer: false, reportLevel: 'express', top: 50, left: 50, emoji: "🚗" },
+  { id: 3, name: "Fiat Doblò", price: "$8.900.000", available: false, isDealer: true, reportLevel: 'autofact', top: 40, left: 70, emoji: "🚐" }
+// ===== DATA =====
+var cars = {
+  bmw:{
+    id:'bmw',name:'BMW S1000 XR HP',price:'$11.630.000',meta:'2021 · 18.000 km · Providencia',ico:'🏍️',available:true,
+    tags:[{t:'KYC',c:'dtag-g'},{t:'FEA',c:'dtag-b'},{t:'Escrow',c:'dtag-cy'},{t:'HP Pkg',c:'dtag-o'}],
+    ficha:{marca:'BMW',modelo:'S1000 XR',anio:2021,km:'18.000',motor:'999cc 4cil',cv:207,color:'Blanco',vin:'WBS1H9C04M'}
+  },
+  mercedes:{
+    id:'mercedes',name:'Mercedes GLA 200 AMG',price:'$18.900.000',meta:'2022 · 32.000 km · Las Condes',ico:'🚗',available:true,
+    tags:[{t:'KYC',c:'dtag-g'},{t:'Escrow',c:'dtag-cy'},{t:'Garantía',c:'dtag-b'}],
+    ficha:{marca:'Mercedes',modelo:'GLA 200',anio:2022,km:'32.000',motor:'1.3T 4cil',cv:163,color:'Negro',vin:'W1N4N4GB8NJ'}
+  },
+  toyota:{
+    id:'toyota',name:'Toyota Corolla Cross',price:'$14.500.000',meta:'2022 · 24.000 km · Ñuñoa',ico:'🚙',available:false,
+    tags:[{t:'Sin Stock',c:'dtag-gr'},{t:'Avisar',c:'dtag-b'}],
+    ficha:{marca:'Toyota',modelo:'Corolla Cross',anio:2022,km:'24.000',motor:'2.0 Híbrido',cv:122,color:'Plata',vin:'JTDKARFUXN3'}
+  },
+  automotora:{
+    id:'automotora',name:'AutoPrime SpA · SaaS',price:'12 pubs activas',meta:'Plan Profesional · Vitacura',ico:'🏢',available:true,
+    tags:[{t:'SaaS B2B',c:'dtag-o'},{t:'Verificado',c:'dtag-g'},{t:'Reportes VIP',c:'dtag-p'}],
+    ficha:null
+  },
+  suzuki:{
+    id:'suzuki',name:'Suzuki GSX-S750',price:'$5.900.000',meta:'2020 · 12.000 km · Vitacura',ico:'🏍️',available:true,
+    tags:[{t:'KYC',c:'dtag-g'},{t:'Crédito',c:'dtag-o'}],
+    ficha:{marca:'Suzuki',modelo:'GSX-S750',anio:2020,km:'12.000',motor:'749cc 4cil',cv:114,color:'Azul',vin:'JS1AGXXX'}
+  }
+};
+
+var userType = 'particular';
+var expressUsed = {};
+var aiIdx = 0;
+var aiReplies = [
+  'El BMW no tiene multas vigentes según el Registro Civil. ¿Quieres el informe Autofact completo?',
+  'Puedo activar el proceso de Escrow si decides avanzar. ¿Lo iniciamos?',
+  'El vehículo tiene mantenciones al día en la red oficial. ¿Coordinamos una inspección?',
+  'La firma FEA tiene plena validez legal en Chile sin necesitar notaría física.',
+  'Puedo simular el crédito con convenios bancarios. ¿Cuántos meses prefieres?',
+  'El proceso E2E cubre desde el acuerdo hasta el cambio de titular en el Registro Civil.'
+];
+
+function setRole(role) {
+  document.getElementById('roleIndicator').innerText = role.toUpperCase();
+  document.getElementById('mainNav').innerHTML = role === 'automotora' ? 
+    `<div class="bnav-item">Stock</div><div class="bnav-item">API</div>` : 
+    `<div class="bnav-item">Mapa</div><div class="bnav-item">Publicar</div>`;
+  renderPins();
+  changeScreen('map');
+}
+
+function renderPins() {
+  let wrapper = document.getElementById('pinsWrapper'); wrapper.innerHTML = "";
+  mockCars.forEach(car => {
+    let pin = document.createElement('div');
+    pin.className = 'map-pin';
+    pin.style.top = car.top + '%'; pin.style.left = car.left + '%';
+    let pClass = !car.available ? 'unavailable' : (car.isDealer ? 'dealer' : (car.reportLevel === 'express' ? 'premium' : 'standard'));
+    pin.innerHTML = `<div class="pin-ball ${pClass}">${car.available ? car.emoji : '❌'}</div>`;
+    pin.onclick = () => openCarDetails(car);
+    wrapper.appendChild(pin);
+  });
+}
+
+function openCarDetails(car) {
+  document.getElementById('lblTitle').innerText = car.name + (car.available ? "" : " (VENDIDO)");
+  document.getElementById('lblPrice').innerText = car.price;
+  let box = document.getElementById('boxActions');
+  box.innerHTML = car.available ? 
+    `<button class="btn btn-green" onclick="alert('Acción')">Ver Detalles</button>` : 
+    `<p style="color:var(--gray)">Auto no disponible</p>`;
+  document.getElementById('detailCard').classList.add('open');
+}
+
+function closeDetail() { document.getElementById('detailCard').classList.remove('open'); }
+function changeScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('scr' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active');
+// ===== SPLASH =====
+setTimeout(function(){
+  var sp = document.getElementById('splash');
+  sp.style.opacity = '0';
+  setTimeout(function(){
+    sp.style.display = 'none';
+    document.getElementById('login').style.display = 'block';
+  }, 500);
+}, 2200);
+
+// ===== LOGIN =====
+function doLogin(type){
+  userType = type;
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('mapScreen').style.display = 'block';
+  buildDrawer();
+  buildPerfil();
+  buildPublicar();
+  buildConvenios();
+  calcCredito();
+}
+function doLogout(){
+  document.getElementById('mapScreen').style.display = 'none';
+  document.getElementById('login').style.display = 'block';
+  userType = 'particular';
+  expressUsed = {};
+}
+
+// ===== DRAWER =====
+function buildDrawer(){
+  var isA = userType === 'automotora';
+  var av = document.getElementById('drw-av');
+  av.textContent = isA ? 'A' : 'P';
+  av.style.background = isA ? 'linear-gradient(135deg,#f59e0b,#d97706)' : 'linear-gradient(135deg,var(--red),#ff4d6d)';
+  document.getElementById('drw-uname').textContent = isA ? 'AutoPrime SpA' : 'Particular';
+  document.getElementById('drw-usub').textContent = isA ? 'SaaS Profesional · 12 pubs' : 'KYC Verificado · Free';
+
+  var saasBlock = isA ? (
+    '<div class="drw-sep">Automotora SaaS</div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'cargamasiva\')">' +
+      '<div class="di-ico" style="background:rgba(245,158,11,.1)">📦</div>' +
+      '<div class="di-lbl">Carga Masiva<div class="di-sub">Excel / CSV</div></div>' +
+      '<div class="di-badge-o">B2B</div>' +
+    '</div>' +
+    '<div class="di" onclick="closeDrawer();openFichaVIP()">' +
+      '<div class="di-ico" style="background:rgba(139,92,246,.1)">📋</div>' +
+      '<div class="di-lbl">Reportes VIP<div class="di-sub">Autofact sin costo extra</div></div>' +
+      '<div class="di-badge">VIP</div>' +
+    '</div>'
+  ) : '';
+
+  document.getElementById('drawerItems').innerHTML =
+    '<div class="drw-sep">Principal</div>' +
+    '<div class="di on" onclick="closeDrawer()"><div class="di-ico" style="background:rgba(232,0,29,.1)">🗺️</div><div class="di-lbl">Mapa Georreferenciado<div class="di-sub">Búsqueda por radio</div></div></div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'busqueda\')"><div class="di-ico" style="background:rgba(59,130,246,.1)">🔍</div><div class="di-lbl">Buscar Vehículos<div class="di-sub">Filtros avanzados + stock</div></div></div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'publicar\')"><div class="di-ico" style="background:rgba(34,197,94,.1)">➕</div><div class="di-lbl">Publicar Vehículo<div class="di-sub">Fotos + valorización IA</div></div></div>' +
+    '<div class="drw-sep">Servicios</div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'escrow\')"><div class="di-ico" style="background:rgba(139,92,246,.1)">🔒</div><div class="di-lbl">Bóveda Escrow<div class="di-sub">Compra 100% segura</div></div><div class="di-badge">ACTIVO</div></div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'transferencia\')"><div class="di-ico" style="background:rgba(6,182,212,.1)">🔄</div><div class="di-lbl">Transferencia E2E<div class="di-sub">Seguimiento completo</div></div></div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'chat\')"><div class="di-ico" style="background:rgba(6,182,212,.1)">🤖</div><div class="di-lbl">Chat IA<div class="di-sub">Asesor 24/7</div></div></div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'credito\')"><div class="di-ico" style="background:rgba(245,158,11,.1)">💳</div><div class="di-lbl">Crédito Automotriz<div class="di-sub">Simulador + convenios</div></div></div>' +
+    saasBlock +
+    '<div class="drw-sep">Mi cuenta</div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'perfil\')"><div class="di-ico" style="background:rgba(255,255,255,.05)">👤</div><div class="di-lbl">Mi Perfil</div></div>' +
+    '<div class="di" onclick="closeDrawer();openSheet(\'notif\')"><div class="di-ico" style="background:rgba(255,255,255,.05)">🔔</div><div class="di-lbl">Notificaciones<div class="di-sub">4 sin leer</div></div><div class="di-badge">4</div></div>';
+}
+function openDrawer(){ document.getElementById('drawer').classList.add('on'); document.getElementById('drawerOverlay').classList.add('on'); }
+function closeDrawer(){ document.getElementById('drawer').classList.remove('on'); document.getElementById('drawerOverlay').classList.remove('on'); }
+
+// ===== PERFIL =====
+function buildPerfil(){
+  var isA = userType === 'automotora';
+  document.getElementById('perfil-ttl').textContent = isA ? '🏢 Panel Automotora' : '👤 Mi Perfil';
+  var avBg = isA ? 'linear-gradient(135deg,#f59e0b,#d97706)' : 'linear-gradient(135deg,var(--red),#ff4d6d)';
+  var nombre = isA ? 'AutoPrime SpA' : 'Usuario Particular';
+  var subLabel = isA ? 'SaaS Profesional · Plan Empresarial' : 'KYC Verificado · Plan Gratuito';
+  var pubs = isA ? '12' : '1';
+  var vistas = isA ? '4.821' : '847';
+  var contactos = isA ? '198' : '23';
+  var fichas = isA ? '34' : '0';
+  var escrows = isA ? '2' : '0';
+  var saasPanel = isA ? (
+    '<div class="sec-ttl">Panel SaaS</div>' +
+    '<div class="card" style="background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)">' +
+      '<div class="stat-row"><span>Plan activo</span><span class="stat-val" style="color:var(--orange)">PRO</span></div>' +
+      '<div class="stat-row"><span>Publicaciones</span><span class="stat-val">Ilimitadas</span></div>' +
+      '<div class="stat-row"><span>Reportes Autofact</span><span class="stat-val" style="color:var(--green)">VIP</span></div>' +
+    '</div>'
+  ) : '';
+
+  document.getElementById('perfil-body').innerHTML =
+    '<div class="card" style="text-align:center;padding:24px">' +
+      '<div style="width:72px;height:72px;border-radius:22px;background:' + avBg + ';display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 12px;font-weight:900">' + (isA?'A':'P') + '</div>' +
+      '<div style="font-size:18px;font-weight:800">' + nombre + '</div>' +
+      '<div style="font-size:12px;color:var(--green);margin-top:4px">' + subLabel + '</div>' +
+    '</div>' +
+    '<div class="sec-ttl">Estadísticas</div>' +
+    '<div class="card">' +
+      '<div class="stat-row"><span>Publicaciones activas</span><span class="stat-val" style="color:var(--red)">' + pubs + '</span></div>' +
+      '<div class="stat-row"><span>Vistas este mes</span><span class="stat-val" style="color:var(--blue)">' + vistas + '</span></div>' +
+      '<div class="stat-row"><span>Contactos recibidos</span><span class="stat-val" style="color:var(--green)">' + contactos + '</span></div>' +
+      '<div class="stat-row"><span>Fichas Autofact</span><span class="stat-val" style="color:var(--purple)">' + fichas + '</span></div>' +
+      '<div class="stat-row"><span>Transacciones Escrow</span><span class="stat-val" style="color:var(--cyan)">' + escrows + '</span></div>' +
+    '</div>' +
+    saasPanel +
+    '<button class="btn btn-ghost" onclick="closeSheet(\'perfil\');setTimeout(doLogout,300)">🚪 Cerrar sesión</button>';
+}
+
+// ===== PUBLICAR =====
+function buildPublicar(){
+  var isA = userType === 'automotora';
+  document.getElementById('pub-title').textContent = isA ? '📦 Publicar / Carga Masiva' : '➕ Publicar Vehículo';
+  document.getElementById('pub-body').innerHTML = isA ? getPublicarAutomotora() : getPublicarParticular();
+}
+function getPublicarParticular(){
+  return '<div class="sec-ttl">📷 Carga de Fotos</div>' +
+    '<div class="photo-grid">' +
+      '<div class="photo-slot filled" onclick="fakePhoto(this)">🏍️</div>' +
+      '<div class="photo-slot filled" onclick="fakePhoto(this)">📸</div>' +
+      '<div class="photo-slot add-slot" onclick="fakePhoto(this)"><i class="fa-solid fa-plus"></i></div>' +
+      '<div class="photo-slot" onclick="fakePhoto(this)"><i class="fa-solid fa-camera" style="opacity:.3"></i></div>' +
+      '<div class="photo-slot" onclick="fakePhoto(this)"><i class="fa-solid fa-camera" style="opacity:.3"></i></div>' +
+      '<div class="photo-slot" onclick="fakePhoto(this)"><i class="fa-solid fa-camera" style="opacity:.3"></i></div>' +
+    '</div>' +
+    '<p style="font-size:11px;color:var(--gray);text-align:center;margin-bottom:16px">La IA detecta el modelo automáticamente · Mínimo 3 fotos</p>' +
+    '<div class="card">' +
+      '<div class="inp-g"><div class="inp-lbl">Marca</div><input class="inp" placeholder="ej: BMW"></div>' +
+      '<div class="inp-g"><div class="inp-lbl">Modelo</div><input class="inp" value="S1000 XR"></div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+        '<div class="inp-g"><div class="inp-lbl">Año</div><input class="inp" value="2021"></div>' +
+        '<div class="inp-g"><div class="inp-lbl">Km</div><input class="inp" value="18.000"></div>' +
+      '</div>' +
+      '<div class="inp-g"><div class="inp-lbl">Precio CLP</div><input class="inp" value="11.630.000"></div>' +
+    '</div>' +
+    '<div class="card" style="background:rgba(34,197,94,.05);border-color:rgba(34,197,94,.2)">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px">🤖 Valorización IA</div>' +
+      '<div class="stat-row"><span>Precio mercado est.</span><span class="stat-val" style="color:var(--green)">$11.2–12.1M</span></div>' +
+      '<div class="stat-row"><span>Tu precio</span><span class="stat-val" style="color:var(--orange)">$11.63M</span></div>' +
+      '<div class="stat-row"><span>Demanda en zona</span><span class="stat-val" style="color:var(--blue)">Alta</span></div>' +
+    '</div>' +
+    '<button class="btn btn-green">✅ Publicar con FEA Digital</button>';
+}
+function getPublicarAutomotora(){
+  return '<div class="card" style="background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.2)">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:6px">🏢 Panel SaaS Automotora</div>' +
+      '<div style="font-size:12px;color:var(--gray)">Publica individual o carga masiva con Excel/CSV.</div>' +
+    '</div>' +
+    '<div class="sec-ttl">📷 Fotos del Vehículo</div>' +
+    '<div class="photo-grid">' +
+      '<div class="photo-slot filled" onclick="fakePhoto(this)">🚗</div>' +
+      '<div class="photo-slot add-slot" onclick="fakePhoto(this)"><i class="fa-solid fa-plus"></i></div>' +
+      '<div class="photo-slot" onclick="fakePhoto(this)"><i class="fa-solid fa-camera" style="opacity:.3"></i></div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<div class="inp-g"><div class="inp-lbl">Marca</div><input class="inp" placeholder="ej: Mercedes-Benz"></div>' +
+      '<div class="inp-g"><div class="inp-lbl">Modelo</div><input class="inp" placeholder="ej: GLA 200 AMG"></div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+        '<div class="inp-g"><div class="inp-lbl">Año</div><input class="inp" value="2022"></div>' +
+        '<div class="inp-g"><div class="inp-lbl">Km</div><input class="inp" value="32.000"></div>' +
+      '</div>' +
+      '<div class="inp-g"><div class="inp-lbl">Precio CLP</div><input class="inp" value="18.900.000"></div>' +
+    '</div>' +
+    '<button class="btn btn-orange">📦 Publicar en Stock</button>' +
+    '<button class="btn btn-ghost" onclick="closeSheet(\'publicar\');openSheet(\'cargamasiva\')">📊 Ir a Carga Masiva</button>';
+}
+function fakePhoto(el){
+  var emojis=['🏍️','🚗','🚙','📸','🖼️'];
+  el.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+  el.classList.add('filled');
+  el.classList.remove('add-slot');
+}
+
+// ===== DETAIL CARD =====
+function showDetail(id){
+  var car = cars[id]; if(!car) return;
+  document.getElementById('dc-name').textContent = car.name;
+  document.getElementById('dc-price').textContent = car.price;
+  document.getElementById('dc-meta').textContent = car.meta;
+  document.getElementById('dc-ico').textContent = car.ico;
+
+  var tagsHtml = '';
+  for(var i=0; i<car.tags.length; i++){
+    tagsHtml += '<div class="dtag ' + car.tags[i].c + '">' + car.tags[i].t + '</div>';
+  }
+  document.getElementById('dc-tags').innerHTML = tagsHtml;
+
+  if(!car.available){
+    document.getElementById('dc-actions').innerHTML =
+      '<div class="unavail-msg">❌ Vehículo fuera de stock</div>' +
+      '<div class="dc-btns"><button class="dcbtn dcbtn-out" onclick="quickMsg(\'Avisame cuando Toyota Corolla Cross este disponible\');openSheet(\'chat\')"><i class="fa-solid fa-bell"></i> Notificarme</button></div>';
+  } else {
+    var fid = id;
+    document.getElementById('dc-actions').innerHTML =
+      '<div class="dc-btns">' +
+        '<button class="dcbtn dcbtn-g" onclick="openFicha(\'' + fid + '\')"><i class="fa-solid fa-file-lines"></i> Ficha</button>' +
+        '<button class="dcbtn dcbtn-red" onclick="openSheet(\'chat\')"><i class="fa-solid fa-comments"></i> Chat</button>' +
+        '<button class="dcbtn dcbtn-out" onclick="openSheet(\'escrow\')"><i class="fa-solid fa-vault"></i> Escrow</button>' +
+        '<button class="dcbtn dcbtn-cy" onclick="openSheet(\'transferencia\')"><i class="fa-solid fa-rotate"></i> E2E</button>' +
+      '</div>';
+  }
+  document.getElementById('detailCard').classList.remove('hidden');
+}
+function hideDetail(){ document.getElementById('detailCard').classList.add('hidden'); }
+
+// ===== FICHA TÉCNICA =====
+function openFicha(id){
+  var car = cars[id];
+  if(!car || !car.ficha){ alert('Ficha no disponible para este registro.'); return; }
+  var f = car.ficha;
+  var isA = userType === 'automotora';
+  var expressFree = !expressUsed[id] || isA;
+  var expressLabel = expressFree ? 'Escáner Express (Gratis)' : 'Escáner Express ($500)';
+  var autofactLabel = isA ? 'Autofact Oficial (VIP sin costo)' : 'Autofact Oficial ($7.000)';
+
+  document.getElementById('ficha-title').textContent = f.marca + ' ' + f.modelo;
+  document.getElementById('ficha-body').innerHTML =
+    '<div class="card">' +
+      '<div class="sec-ttl" style="margin-bottom:10px">Datos del Vehículo</div>' +
+      '<div class="f-row"><span>Marca</span><span class="f-val">' + f.marca + '</span></div>' +
+      '<div class="f-row"><span>Modelo</span><span class="f-val">' + f.modelo + '</span></div>' +
+      '<div class="f-row"><span>Año</span><span class="f-val">' + f.anio + '</span></div>' +
+      '<div class="f-row"><span>Kilometraje</span><span class="f-val">' + f.km + ' km</span></div>' +
+      '<div class="f-row"><span>Motor</span><span class="f-val">' + f.motor + '</span></div>' +
+      '<div class="f-row"><span>Potencia</span><span class="f-val">' + f.cv + ' CV</span></div>' +
+      '<div class="f-row"><span>Color</span><span class="f-val">' + f.color + '</span></div>' +
+      '<div class="f-row"><span>VIN parcial</span><span class="f-val">' + f.vin + '***</span></div>' +
+    '</div>' +
+    '<div class="sec-ttl">Nivel Express</div>' +
+    '<p style="font-size:12px;color:var(--gray);margin-bottom:12px">Multas Registro Civil + Historial Remates AACH/PatentesChile. Primera consulta gratis, siguientes $500.</p>' +
+    '<div id="express-result"></div>' +
+    '<button class="scan-btn scan-express" onclick="runExpress(\'' + id + '\')">' +
+      '<i class="fa-solid fa-magnifying-glass-chart"></i> ' + expressLabel +
+    '</button>' +
+    '<div class="sec-ttl">Nivel Full · Autofact Oficial</div>' +
+    '<p style="font-size:12px;color:var(--gray);margin-bottom:12px">Reporte legal completo: Prendas, Embargos, Prohibiciones, Historial propietarios.' + (isA ? ' <strong style="color:var(--purple)">Acceso VIP incluido en tu plan.</strong>' : '') + '</p>' +
+    '<div id="autofact-result"></div>' +
+    '<button class="scan-btn scan-autofact" onclick="runAutofact(\'' + id + '\')">' +
+      '<i class="fa-solid fa-shield-halved"></i> ' + autofactLabel +
+    '</button>' +
+    '<button class="btn btn-ghost" style="margin-top:8px" onclick="openSheet(\'transferencia\')">🔄 Ver Seguimiento E2E</button>';
+
+  openSheet('ficha');
+}
+function openFichaVIP(){ openFicha('bmw'); }
+
+function runExpress(id){
+  var isA = userType === 'automotora';
+  var isFree = !expressUsed[id] || isA;
+  if(!isFree){
+    if(!confirm('Esta consulta tiene un costo de $500. ¿Continuar?')) return;
+  }
+  if(!isA) expressUsed[id] = true;
+  var el = document.getElementById('express-result');
+  if(el) el.innerHTML =
+    '<div class="scan-res res-ok">' +
+      '<strong>✅ Escáner Express completado</strong><br>' +
+      '🚫 Multas vigentes: 0 (Registro Civil)<br>' +
+      '📦 Remates: Sin registros (AACH/PatentesChile)<br>' +
+      '<span style="font-size:10px;color:rgba(34,197,94,.6)">Consulta: ' + new Date().toLocaleTimeString() + ' · ' + (isFree?'$0':'$500') + ' cobrado</span>' +
+    '</div>';
+}
+function runAutofact(id){
+  var isA = userType === 'automotora';
+  if(!isA){
+    if(!confirm('Esta consulta tiene un costo de $7.000. ¿Continuar?')) return;
+  }
+  var el = document.getElementById('autofact-result');
+  if(el) el.innerHTML =
+    '<div class="scan-res res-full">' +
+      '<strong>🟣 Autofact Oficial · Reporte Completo</strong><br>' +
+      '⚖️ Prendas: 0<br>' +
+      '🔒 Embargos: 0<br>' +
+      '🚫 Prohibiciones: Sin registros<br>' +
+      '👥 Propietarios anteriores: 2<br>' +
+      '🛡 Estado: <strong>LIMPIO – Apto para transferencia</strong><br>' +
+      '<span style="font-size:10px;color:rgba(139,92,246,.6)">' + (isA?'VIP sin cargo':'$7.000 cobrado') + ' · ' + new Date().toLocaleDateString() + '</span>' +
+    '</div>';
+}
+
+// ===== CRÉDITO =====
+function buildConvenios(){
+  var el = document.getElementById('convenios-block');
+  if(!el) return;
+  if(userType === 'automotora'){
+    el.innerHTML =
+      '<div class="sec-ttl">Convenios SaaS B2B</div>' +
+      '<div class="conv-card"><strong style="color:var(--blue)">🏦 Banco Estado · Tasa preferencial</strong><br>Tasa: 0.8% mensual · Preaprobación 1 min · Cupo hasta $80M</div>' +
+      '<div class="conv-card"><strong style="color:var(--blue)">🏦 Santander · Convenio Automotora</strong><br>Tasa: 0.9% mensual · Sin pie mínimo</div>' +
+      '<div class="conv-card"><strong style="color:var(--blue)">💳 CAT · Crédito Automotriz</strong><br>Tasa: 1.0% mensual · Especial parque certificado</div>';
+  } else {
+    el.innerHTML = '';
+  }
+}
+function calcCredito(){
+  var precio = parseFloat((document.getElementById('cr-precio')||{value:'11630000'}).value.replace(/\D/g,''))||11630000;
+  var pie = parseFloat((document.getElementById('cr-pie')||{value:'20'}).value)||20;
+  var plazo = parseInt((document.getElementById('cr-plazo')||{value:'48'}).value)||48;
+  var tasa = parseFloat((document.getElementById('cr-tasa')||{value:'1.2'}).value)||1.2;
+  var pieVal = precio * pie / 100;
+  var monto = precio - pieVal;
+  var t = tasa / 100;
+  var cuota = t===0 ? monto/plazo : monto*(t*Math.pow(1+t,plazo))/(Math.pow(1+t,plazo)-1);
+  var total = cuota*plazo + pieVal;
+  function fmt(n){ return '$' + Math.round(n).toLocaleString('es-CL'); }
+  var ep = document.getElementById('cr-res-pie');
+  var em = document.getElementById('cr-res-monto');
+  var ec = document.getElementById('cr-res-cuota');
+  var et = document.getElementById('cr-res-total');
+  if(ep) ep.textContent = fmt(pieVal);
+  if(em) em.textContent = fmt(monto);
+  if(ec) ec.textContent = fmt(cuota);
+  if(et) et.textContent = fmt(total);
+}
+
+// ===== MAP CONTROLS =====
+function setRadius(v){
+  document.getElementById('rval').textContent = v + ' km';
+  document.getElementById('mapCount').textContent = Math.round(v * 2.2);
+}
+function toggleChip(id){
+  document.querySelectorAll('.mchip').forEach(function(c){ c.classList.remove('on'); });
+  var el = document.getElementById('chip-'+id);
+  if(el) el.classList.add('on');
+  var counts = {all:18,premium:4,escrow:6,credito:11,ficha:7,stock:14};
+  var labels = {all:'Cercanos',premium:'Premium',escrow:'Con Escrow',credito:'Con Crédito',ficha:'Ficha Full',stock:'En Stock'};
+  document.getElementById('mapCount').textContent = counts[id]||18;
+  document.getElementById('mapCountLabel').textContent = labels[id]||'Cercanos';
+  hideDetail();
+}
+
+// ===== SHEETS =====
+function openSheet(id){
+  closeDrawer();
+  var s = document.getElementById('sheet-'+id); if(!s) return;
+  s.style.display = 'block';
+  setTimeout(function(){ s.classList.add('on'); }, 10);
+}
+function closeSheet(id){
+  var s = document.getElementById('sheet-'+id); if(!s) return;
+  s.classList.remove('on');
+  setTimeout(function(){ s.style.display='none'; }, 360);
+}
+
+// ===== NAV =====
+function navTo(id){
+  document.querySelectorAll('.bni').forEach(function(b){ b.classList.remove('on'); });
+  var el = document.getElementById('bni-'+id);
+  if(el) el.classList.add('on');
+}
+
+// ===== CHAT =====
+function sendChat(){
+  var inp = document.getElementById('chatInp');
+  var msg = inp.value.trim(); if(!msg) return;
+  addMsg(msg,'me'); inp.value='';
+  setTimeout(function(){ addMsg(aiReplies[aiIdx % aiReplies.length],'ai'); aiIdx++; }, 800);
+}
+function addMsg(text,type){
+  var box = document.getElementById('chatBox');
+  var d = document.createElement('div');
+  d.className = 'cmsg '+type;
+  d.textContent = text;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+function quickMsg(text){
+  document.getElementById('chatInp').value = text;
+  if(!document.getElementById('sheet-chat').classList.contains('on')) openSheet('chat');
+  sendChat();
+}
+</script>
 </body>
-</html>
